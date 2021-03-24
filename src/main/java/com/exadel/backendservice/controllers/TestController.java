@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
  * Пример rest-контроллера с подключенным swagger
  */
 
+//TODO Delete in the future
+
 @Hidden
 @RestController
 @Tag(name="Тестовый контроллер", description="Проверка работоспособности swagger")
