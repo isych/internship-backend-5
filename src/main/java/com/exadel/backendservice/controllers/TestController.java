@@ -3,6 +3,7 @@ package com.exadel.backendservice.controllers;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,10 +30,10 @@ public class TestController {
 
     @PostMapping("/hello/{username}")
     @Operation(
-            summary = "Отображает приветствие для пользователя с именем username на странице",
-            description = "Отображает приветствие для пользователя с именем username на странице"
+            summary = "Отображает приветствие для пользователя с введенным именем на странице",
+            description = "Отображает приветствие для пользователя с введенным именем на странице"
     )
-    public String helloUser(@PathVariable @Parameter(description = "Задает имя пользователя") String username){
+    public String helloUser(@PathVariable @Parameter(description = "Задает имя пользователя", example = "Alex") String username){
         return "Hello, " + username;
     }
 
