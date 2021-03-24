@@ -20,7 +20,7 @@ public class TestController {
 
     @GetMapping("gethello")
     @Operation(
-            summary = "Отображение приветсвия на странице",
+            summary = "Отображение приветствия на странице",
             description = "Отображает Hello, World!!! на странице"
     )
     public String getHello(){
@@ -29,8 +29,8 @@ public class TestController {
 
     @PostMapping("/hello/{username}")
     @Operation(
-            summary = "Отображает приветсвие для пользователя с именем username на страенице",
-            description = "Отображает приветсвие для пользователя с именем username на страенице"
+            summary = "Отображает приветствие для пользователя с именем username на странице",
+            description = "Отображает приветствие для пользователя с именем username на странице"
     )
     public String helloUser(@PathVariable @Parameter(description = "Задает имя пользователя") String username){
         return "Hello, " + username;
