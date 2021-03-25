@@ -1,6 +1,5 @@
 package com.exadel.backendservice.controllers;
 
-import com.exadel.backendservice.dto.UserDto;
 import com.exadel.backendservice.entity.UserEntity;
 import com.exadel.backendservice.model.AuthRequest;
 import com.exadel.backendservice.model.AuthResponse;
@@ -8,6 +7,8 @@ import com.exadel.backendservice.model.RegistrationRequest;
 import com.exadel.backendservice.security.JwtProvider;
 import com.exadel.backendservice.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,8 +40,10 @@ public class AuthController {
     }
 
     @PostMapping("register")
-    public String registerUser(@RequestBody @Valid RegistrationRequest registrationRequest) {
-        return userService.saveUser(registrationRequest)? "User created" : "User not created";
+    public ResponseEntity<?> registerUser(@RequestBody @Valid RegistrationRequest registrationRequest) {
+        return userService.saveUser(registrationRequest)?
+                  new ResponseEntity<>("User created", HttpStatus.OK) :
+                  new ResponseEntity<>("User not created", HttpStatus.OK);
     }
 
 }
