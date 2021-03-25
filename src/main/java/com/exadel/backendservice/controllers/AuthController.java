@@ -54,7 +54,7 @@ public class AuthController {
      * Метод решистрации новых пользователей (администратовров/техничекских специалистов)
      *
      * @param registrationRequest - объект, передаваемый из формы аутентификации пользователей
-     * @return возвращает экземпляр объекта {@link AuthResponse}
+     * @return возвращает экземпляр объекта {@link ResponseEntity}
      * @author Dmitry Karachun
      */
     @ApiOperation(value = "Метод для регистрации нового пользователя (требуются права администратора)")
