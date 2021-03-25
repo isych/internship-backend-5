@@ -53,6 +53,7 @@ public class AuthController {
      * @return возвращает экземпляр объекта {@link AuthResponse}
      * @author Dmitry Karachun
      */
+
     @PostMapping("register")
     public ResponseEntity<?> registerUser(@RequestBody @Valid RegistrationRequest registrationRequest) {
         return userService.saveUser(registrationRequest)?
