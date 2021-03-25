@@ -1,6 +1,5 @@
 package com.exadel.backendservice.security;
 
-import com.exadel.backendservice.exception.AuthenticationException;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -43,8 +42,8 @@ public class JwtFilter extends GenericFilterBean {
 
     private String getTokenFromRequest(HttpServletRequest request) {
         String bearer = request.getHeader(AUTHORIZATION);
-        if (hasText(bearer) && bearer.startsWith("Bearer ")) {
-            return bearer.substring(7);
+        if (hasText(bearer)) {
+            return bearer;
         }
         return null;
     }
