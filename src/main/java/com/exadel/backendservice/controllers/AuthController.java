@@ -29,6 +29,13 @@ public class AuthController {
         this.jwtProvider = jwtProvider;
     }
 
+    /**
+     * Метод получения JWT-токена для пользователя
+     *
+     * @param request - объект, передаваемый из формы аутентификации пользователей
+     * @return возвращает экземпляр объекта {@link AuthResponse}
+     * @author Dmitry Karachun
+     */
     @PostMapping("auth")
     public AuthResponse auth(@RequestBody AuthRequest request) {
         UserEntity userEntity = userService.findByLoginAndPassword(request.getLogin(), request.getPassword());
@@ -39,6 +46,13 @@ public class AuthController {
         return new AuthResponse("null");
     }
 
+    /**
+     * Метод решистрации новых пользователей (администратовров/техничекских специалистов)
+     *
+     * @param registrationRequest - объект, передаваемый из формы аутентификации пользователей
+     * @return возвращает экземпляр объекта {@link AuthResponse}
+     * @author Dmitry Karachun
+     */
     @PostMapping("register")
     public ResponseEntity<?> registerUser(@RequestBody @Valid RegistrationRequest registrationRequest) {
         return userService.saveUser(registrationRequest)?

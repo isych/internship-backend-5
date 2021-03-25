@@ -1,7 +1,10 @@
 package com.exadel.backendservice.security;
 
+import com.exadel.backendservice.services.impl.UserServiceImpl;
 import io.jsonwebtoken.*;
 import lombok.extern.java.Log;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -13,12 +16,14 @@ import java.util.Date;
 @Log
 public class JwtProvider {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(JwtProvider.class);
+
     @Value("$(jwt.secret)")
     private String jwtSecret;
 
     public String generateToken(String login) {
         Date date = Date.from(LocalDateTime.now().plusDays(1).atZone(ZoneId.systemDefault()).toInstant());
-        log.info("Generated new token for user with login is " + login);
+        LOGGER.info("Generated new token for user with login is " + login);
         return Jwts.builder()
                 .setSubject(login)
                 .setExpiration(date)
@@ -31,15 +36,15 @@ public class JwtProvider {
             Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token);
             return true;
         } catch (ExpiredJwtException expEx) {
-            log.severe("Token expired");
+            LOGGER.warn("Token expired");
         } catch (UnsupportedJwtException unsEx) {
-            log.severe("Unsupported jwt");
+            LOGGER.warn("Unsupported jwt");
         } catch (MalformedJwtException mjEx) {
-            log.severe("Malformed jwt");
+            LOGGER.warn("Malformed jwt");
         } catch (SignatureException sEx) {
-            log.severe("Invalid signature");
+            LOGGER.warn("Invalid signature");
         } catch (Exception e) {
-            log.severe("invalid token");
+            LOGGER.warn("invalid token");
         }
         return false;
     }
