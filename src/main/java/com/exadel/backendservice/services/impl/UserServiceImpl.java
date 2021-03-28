@@ -36,6 +36,8 @@ public class UserServiceImpl implements UserService {
                 userRole = roleEntityRepository.findByName("ROLE_TECH");
             } else if (registrationRequest.getRole().toLowerCase().trim().equals("admin")) {
                 userRole = roleEntityRepository.findByName("ROLE_ADMIN");
+            } else if (registrationRequest.getRole().toLowerCase().trim().equals("superadmin")) {
+                userRole = roleEntityRepository.findByName("ROLE_SUPERADMIN");
             } else {
                 LOGGER.info("User not created. Role specified incorrectly.");
                 return false;
