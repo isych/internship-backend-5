@@ -1,5 +1,6 @@
 package com.exadel.backendservice.services.impl;
 
+import com.exadel.backendservice.dto.UserDtoWithId;
 import com.exadel.backendservice.entity.RoleEntity;
 import com.exadel.backendservice.entity.UserEntity;
 import com.exadel.backendservice.model.RegistrationRequest;
@@ -11,6 +12,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -69,5 +73,11 @@ public class UserServiceImpl implements UserService {
             }
         }
         return null;
+    }
+
+    public List<UserDtoWithId> getAllUsers(){
+        return userEntityRepository.findAll().stream()
+                                        .map(elem -> new UserDtoWithId(elem.getId(), elem.getFio(), elem.getRoleEntity().getName().substring(5), elem.getEmail()))
+                                        .collect(Collectors.toList());
     }
 }

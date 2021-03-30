@@ -1,5 +1,6 @@
 package com.exadel.backendservice.controllers;
 
+import com.exadel.backendservice.dto.UserDtoWithId;
 import com.exadel.backendservice.entity.UserEntity;
 import com.exadel.backendservice.model.AuthRequest;
 import com.exadel.backendservice.model.AuthResponse;
@@ -11,16 +12,14 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
-@RequestMapping("/api/user/")
-@Api(tags = "Сервис аутентификации и регистрации пользователей системы (администраторы/тех. специалисты)")
+@RequestMapping("/api/users/")
+@Api(tags = "Контроллер для работы с пользователями")
 public class AuthController {
 
     private final UserService userService;
@@ -63,6 +62,18 @@ public class AuthController {
         return userService.saveUser(registrationRequest)?
                   new ResponseEntity<>("User created", HttpStatus.OK) :
                   new ResponseEntity<>("User not created", HttpStatus.OK);
+    }
+
+    /**
+     * Метод для получения всех зарегистрированных в системе пользоателей
+     *
+     * @return возвращает экземпляр объекта {@link List<UserDtoWithId>}
+     * @author Dmitry Karachun
+     */
+    @ApiOperation(value = "Метод для получения всех зарегистрированных в системе пользоателей")
+    @GetMapping("getAllUsers")
+    public List<UserDtoWithId> getAllUsers(){
+        return userService.getAllUsers();
     }
 
 }
