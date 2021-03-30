@@ -75,6 +75,7 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
+    @Override
     public List<UserDtoWithId> getAllUsers(){
         return userEntityRepository.findAll().stream()
                                         .map(elem -> new UserDtoWithId(elem.getId(), elem.getFio(), elem.getRoleEntity().getName().substring(5), elem.getEmail()))

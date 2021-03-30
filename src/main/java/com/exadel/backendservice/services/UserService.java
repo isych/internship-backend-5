@@ -1,6 +1,5 @@
 package com.exadel.backendservice.services;
 
-import com.exadel.backendservice.dto.UserDto;
 import com.exadel.backendservice.dto.UserDtoWithId;
 import com.exadel.backendservice.entity.UserEntity;
 import com.exadel.backendservice.model.RegistrationRequest;
