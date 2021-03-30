@@ -56,7 +56,7 @@ public class AuthController {
      * @return возвращает экземпляр объекта {@link ResponseEntity}
      * @author Dmitry Karachun
      */
-    @ApiOperation(value = "Метод для регистрации нового пользователя (требуются права администратора)")
+    @ApiOperation(value = "Метод для регистрации нового пользователя (варианты ролей: admin/tech/superadmin . Регистр не важен)")
     @PostMapping("register")
     public ResponseEntity<?> registerUser(@RequestBody @Valid RegistrationRequest registrationRequest) {
         return userService.saveUser(registrationRequest)?
