@@ -3,10 +3,7 @@
 Приложение настроено для запуска через Docker. Если docker не использутеся, то нужно изменить под себя параметры доступа к БД в файле application.properties.
 
 Последовательность запуска:
-1. maven clean
-2. maven package
-3. docker image build -t rest-server .
-4. docker-compose up
+1. В консоли ввыполнить команду: docker-compose up
 
 Ссылка для доступа к swagger: http://localhost:8081/swagger-ui/
 

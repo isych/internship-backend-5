@@ -8,9 +8,10 @@ services:
       POSTGRES_DB: app_db
       POSTGRES_USER: app_user
       POSTGRES_PASSWORD: password
+    restart: on-failure
 
   rest:
-    image: rest-server
+    image: karachun/rest-server
     ports:
       - "8081:8081"
     environment:
@@ -20,6 +21,7 @@ services:
     volumes:
       - ./target/backendservice-0.0.1-SNAPSHOT.jar:/app.jar
     command: java -jar /app.jar
+    restart: on-failure
 
   gadmin:
     image: dpage/pgadmin4
@@ -31,3 +33,4 @@ services:
       PGADMIN_LISTEN_PORT: 5454
     logging:
       driver: none
+    restart: on-failure
