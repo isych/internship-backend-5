@@ -2,7 +2,13 @@
 
 Ссылка для доступа к swagger локально: http://localhost:8081/swagger-ui/
 
-База данных настроена для запуска через Docker. Если docker не использутеся, то нужно изменить под себя параметры доступа к БД в файле application.properties.
+Приложение настроено для запуска через Docker. Если docker не использутеся, то нужно изменить под себя параметры доступа к БД в файле application.properties.
+
+Последовательность запуска:
+1. maven clean
+2. maven package
+3. docker image build -t rest-server .
+4. docker-compose up
 
 Spring Security подключена, но использовать JWT не обязательно. Все пользователи имеют полный доступ.
 
