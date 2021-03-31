@@ -24,10 +24,10 @@ services:
   gadmin:
     image: dpage/pgadmin4
     ports:
-      - 5454:5454/tcp
+      - "5454:5454/tcp"
     environment:
-      - PGADMIN_DEFAULT_EMAIL=admin@admin.com
-      - PGADMIN_DEFAULT_PASSWORD=pass
-      - PGADMIN_LISTEN_PORT=5454
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: pass
+      PGADMIN_LISTEN_PORT: 5454
     logging:
       driver: none
