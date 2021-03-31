@@ -1,7 +1,5 @@
 # Java Internship. Backend Team-5
 
-Ссылка для доступа к swagger локально: http://localhost:8081/swagger-ui/
-
 Приложение настроено для запуска через Docker. Если docker не использутеся, то нужно изменить под себя параметры доступа к БД в файле application.properties.
 
 Последовательность запуска:
@@ -9,6 +7,8 @@
 2. maven package
 3. docker image build -t rest-server .
 4. docker-compose up
+
+Ссылка для доступа к swagger: http://localhost:8081/swagger-ui/
 
 Для запуска pgAdmin4 требуется:
 1. в консоли выполнить команду docker ps и получить идентификатор контейнера с именем postgres:12.6-alpine
