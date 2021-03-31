@@ -22,6 +22,7 @@
         <jsonwebtoken.version>0.9.1</jsonwebtoken.version>
         <validation.api.version>2.0.1.Final</validation.api.version>
         <springfox.boot.starter.version>3.0.0</springfox.boot.starter.version>
+        <flyway.version>7.7.1</flyway.version>
 
     </properties>
 
@@ -79,6 +80,11 @@
             <artifactId>springfox-boot-starter</artifactId>
             <version>${springfox.boot.starter.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-maven-plugin</artifactId>
+            <version>${flyway.version}</version>
+        </dependency>
 
     </dependencies>
 
@@ -95,6 +101,11 @@
                         </exclude>
                     </excludes>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-maven-plugin</artifactId>
+                <version>${flyway.version}</version>
             </plugin>
         </plugins>
     </build>
