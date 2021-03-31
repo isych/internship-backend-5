@@ -9,12 +9,14 @@ services:
       POSTGRES_USER: app_user
       POSTGRES_PASSWORD: password
 
-#  rest:
-#    image: rest-server
-#    ports:
-#      - "8081:8081"
-#    depends_on:
-#      - db
-#    volumes:
-#      - ./target/backendservice-0.0.1-SNAPSHOT.jar:/app.jar
-#    command: java -jar /app.jar
+  rest:
+    image: rest-server
+    ports:
+      - "8081:8081"
+    environment:
+      DATABASE_HOST: db
+    depends_on:
+      - db
+    volumes:
+      - ./target/backendservice-0.0.1-SNAPSHOT.jar:/app.jar
+    command: java -jar /app.jar
