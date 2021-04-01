@@ -1,5 +1,6 @@
 package com.exadel.backendservice.controllers;
 
+import com.exadel.backendservice.dto.RoleDto;
 import com.exadel.backendservice.dto.UserDtoWithId;
 import com.exadel.backendservice.entity.UserEntity;
 import com.exadel.backendservice.model.AuthRequest;
@@ -111,5 +112,18 @@ public class UserController {
     public List<UserDtoWithId> getAllSuperAdmins(){
         return userService.getAllSuperAdmins();
     }
+
+    /**
+     * Метод для получения списка ролей
+     *
+     * @return возвращает экземпляр объекта {@link List<RoleDto>}
+     * @author Dmitry Karachun
+     */
+    @ApiOperation(value = "Метод для получения списка ролей")
+    @GetMapping("getAllRoles")
+    public List<RoleDto> getAllRoles(){
+        return userService.getListRoles();
+    }
+
 
 }

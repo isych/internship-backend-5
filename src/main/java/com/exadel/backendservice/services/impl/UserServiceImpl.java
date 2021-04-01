@@ -1,5 +1,6 @@
 package com.exadel.backendservice.services.impl;
 
+import com.exadel.backendservice.dto.RoleDto;
 import com.exadel.backendservice.dto.UserDtoWithId;
 import com.exadel.backendservice.entity.RoleEntity;
 import com.exadel.backendservice.entity.UserEntity;
@@ -99,5 +100,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserDtoWithId> getAllSuperAdmins() {
         return modifyUserEntityToUserDtoWithId(userEntityRepository.findAllByRoleEntity_Name("ROLE_SUPERADMIN"));
+    }
+
+    @Override
+    public List<RoleDto> getListRoles() {
+        return roleEntityRepository.findAll().stream()
+                .map(elem -> new RoleDto(elem.getName().substring(5)))
+                .collect(Collectors.toList());
     }
 }
