@@ -11,4 +11,7 @@ public interface UserService {
     UserEntity findByLoginAndPassword(String login, String password);
     Boolean saveUser(RegistrationRequest registrationRequest);
     List<UserDtoWithId> getAllUsers();
+    List<UserDtoWithId> getAllAdmins();
+    List<UserDtoWithId> getAllTechSpec();
+    List<UserDtoWithId> getAllSuperAdmins();
 }

@@ -59,6 +59,12 @@ public class UserServiceImpl implements UserService {
         return result;
     }
 
+    private static List<UserDtoWithId> modifyUserEntityToUserDtoWithId(List<UserEntity> userEntityList){
+        return userEntityList.stream()
+                .map(elem -> new UserDtoWithId(elem.getId(), elem.getFio(), elem.getRoleEntity().getName().substring(5), elem.getEmail()))
+                .collect(Collectors.toList());
+    }
+
     @Override
     public UserEntity findByLogin(String login) {
         return userEntityRepository.findByLogin(login);
@@ -77,8 +83,21 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserDtoWithId> getAllUsers(){
-        return userEntityRepository.findAll().stream()
-                                        .map(elem -> new UserDtoWithId(elem.getId(), elem.getFio(), elem.getRoleEntity().getName().substring(5), elem.getEmail()))
-                                        .collect(Collectors.toList());
+        return modifyUserEntityToUserDtoWithId(userEntityRepository.findAll());
+    }
+
+    @Override
+    public List<UserDtoWithId> getAllAdmins() {
+        return modifyUserEntityToUserDtoWithId(userEntityRepository.findAllByRoleEntity_Name("ROLE_ADMIN"));
+    }
+
+    @Override
+    public List<UserDtoWithId> getAllTechSpec() {
+        return modifyUserEntityToUserDtoWithId(userEntityRepository.findAllByRoleEntity_Name("ROLE_TECH"));
+    }
+
+    @Override
+    public List<UserDtoWithId> getAllSuperAdmins() {
+        return modifyUserEntityToUserDtoWithId(userEntityRepository.findAllByRoleEntity_Name("ROLE_SUPERADMIN"));
     }
 }

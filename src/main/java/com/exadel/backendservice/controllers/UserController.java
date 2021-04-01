@@ -20,13 +20,13 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/users/")
 @Api(tags = "Контроллер для работы с пользователями")
-public class AuthController {
+public class UserController {
 
     private final UserService userService;
     private final JwtProvider jwtProvider;
 
     @Autowired
-    public AuthController(UserService userService, JwtProvider jwtProvider) {
+    public UserController(UserService userService, JwtProvider jwtProvider) {
         this.userService = userService;
         this.jwtProvider = jwtProvider;
     }
@@ -70,10 +70,46 @@ public class AuthController {
      * @return возвращает экземпляр объекта {@link List<UserDtoWithId>}
      * @author Dmitry Karachun
      */
-    @ApiOperation(value = "Метод для получения всех зарегистрированных в системе пользоателей")
+    @ApiOperation(value = "Метод для получения всех зарегистрированных в системе пользователей")
     @GetMapping("getAllUsers")
     public List<UserDtoWithId> getAllUsers(){
         return userService.getAllUsers();
+    }
+
+    /**
+     * Метод для получения всех администраторов, зарегистрированных в системе
+     *
+     * @return возвращает экземпляр объекта {@link List<UserDtoWithId>}
+     * @author Dmitry Karachun
+     */
+    @ApiOperation(value = "Метод для получения всех зарегистрированных в системе администраторов")
+    @GetMapping("getAllAdmins")
+    public List<UserDtoWithId> getAllAdmins(){
+        return userService.getAllAdmins();
+    }
+
+    /**
+     * Метод для получения всех технических специалистов, зарегистрированных в системе
+     *
+     * @return возвращает экземпляр объекта {@link List<UserDtoWithId>}
+     * @author Dmitry Karachun
+     */
+    @ApiOperation(value = "Метод для получения всех зарегистрированных в системе технических специалистов")
+    @GetMapping("getAllTechSpec")
+    public List<UserDtoWithId> getAllTechSpec(){
+        return userService.getAllTechSpec();
+    }
+
+    /**
+     * Метод для получения всех супер-администраторов, зарегистрированных в системе
+     *
+     * @return возвращает экземпляр объекта {@link List<UserDtoWithId>}
+     * @author Dmitry Karachun
+     */
+    @ApiOperation(value = "Метод для получения всех зарегистрированных в системе супер-администраторов")
+    @GetMapping("getAllSuperAdmins")
+    public List<UserDtoWithId> getAllSuperAdmins(){
+        return userService.getAllSuperAdmins();
     }
 
 }

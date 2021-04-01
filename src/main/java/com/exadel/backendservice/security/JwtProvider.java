@@ -1,6 +1,5 @@
 package com.exadel.backendservice.security;
 
-import com.exadel.backendservice.services.impl.UserServiceImpl;
 import io.jsonwebtoken.*;
 import lombok.extern.java.Log;
 import org.slf4j.Logger;
@@ -8,8 +7,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.Base64;
 import java.util.Date;
 
 @Component
@@ -18,16 +19,26 @@ public class JwtProvider {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JwtProvider.class);
 
-    @Value("$(jwt.secret)")
+    @Value("${jwt.token.secret}")
     private String jwtSecret;
 
+    @Value("${jwt.token.expired}")
+    private long validityInMinutes;
+
+    @PostConstruct
+    protected void init() {
+        jwtSecret = Base64.getEncoder().encodeToString(jwtSecret.getBytes());
+    }
+
     public String generateToken(String login) {
-        Date date = Date.from(LocalDateTime.now().plusDays(1).atZone(ZoneId.systemDefault()).toInstant());
+        Date now = Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant());
+        Date expDate = Date.from(LocalDateTime.now().plusMinutes(validityInMinutes).atZone(ZoneId.systemDefault()).toInstant());
         LOGGER.info("Generated new token for user with login is " + login);
         return Jwts.builder()
                 .setSubject(login)
-                .setExpiration(date)
-                .signWith(SignatureAlgorithm.HS512, jwtSecret)
+                .setIssuedAt(now)
+                .setExpiration(expDate)
+                .signWith(SignatureAlgorithm.HS256, jwtSecret)
                 .compact();
     }
 
