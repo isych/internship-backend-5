@@ -29,8 +29,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-//                .antMatchers("/api/user/register").hasRole("SUPERADMIN")
-//                .antMatchers("/api/user/auth").permitAll()
+//                .antMatchers("/api/users/register").hasRole("SUPERADMIN")
+//                .antMatchers("/api/users/auth").permitAll()
                 .antMatchers("/**").permitAll()
                 .and()
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);

@@ -3,7 +3,9 @@ package com.exadel.backendservice.security;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.GenericFilterBean;
 
@@ -32,12 +34,17 @@ public class JwtFilter extends GenericFilterBean {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
            String token = getTokenFromRequest((HttpServletRequest) servletRequest);
            if (token != null && jwtProvider.validateToken(token)) {
-               String userLogin = jwtProvider.getLoginFromToken(token);
-               CustomUserDetails customUserDetails = customUserDetailsService.loadUserByUsername(userLogin);
-               UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(customUserDetails, null, customUserDetails.getAuthorities());
-               SecurityContextHolder.getContext().setAuthentication(auth);
+               Authentication auth = getAuthentication(token);
+               if (auth != null) {
+                   SecurityContextHolder.getContext().setAuthentication(auth);
+               }
            }
            filterChain.doFilter(servletRequest, servletResponse);
+    }
+
+    public Authentication getAuthentication(String token) {
+        UserDetails userDetails = customUserDetailsService.loadUserByUsername(jwtProvider.getLoginFromToken(token));
+        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
     private String getTokenFromRequest(HttpServletRequest request) {
