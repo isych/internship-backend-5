@@ -1,5 +1,6 @@
 package com.exadel.backendservice.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -7,7 +8,8 @@ import lombok.NonNull;
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.sql.Timestamp;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "event_table")
@@ -37,19 +39,13 @@ public class EventEntity {
     @Enumerated(EnumType.STRING)
     private EventType type;
 
-    @ManyToMany(cascade = {CascadeType.ALL})
+    @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
     @JoinTable(
-            name = "Event_Label",
+            name = "event_label",
             joinColumns = {@JoinColumn(name = "event_id")},
             inverseJoinColumns = {@JoinColumn(name = "label_id")}
     )
-    private List<LabelEntity> labels;
+    private Set<LabelEntity> labels = new HashSet<>();
 
-    @ManyToMany(cascade = {CascadeType.ALL})
-    @JoinTable(
-            name = "Event_Tech",
-            joinColumns = {@JoinColumn(name = "event_id")},
-            inverseJoinColumns = {@JoinColumn(name = "tech_id")}
-    )
-    private List<TechEntity> technologies;
+
 }

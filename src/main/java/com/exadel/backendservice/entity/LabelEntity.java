@@ -7,7 +7,8 @@ import lombok.NonNull;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "label_table")
@@ -22,4 +23,8 @@ public class LabelEntity {
     @Size(min = 1, max = 30)
     private String name;
 
+    @Transient
+    @ManyToMany(mappedBy = "labels", fetch = FetchType.EAGER)
+    private Set<EventEntity> eventEntities = new HashSet<>();
+    
 }
