@@ -2,6 +2,7 @@ package com.exadel.backendservice.services.impl;
 
 import com.exadel.backendservice.dto.EventWithLabelAndDirectionDto;
 import com.exadel.backendservice.entity.EventEntity;
+import com.exadel.backendservice.entity.EventType;
 import com.exadel.backendservice.repository.EventRepository;
 import com.exadel.backendservice.services.EventService;
 import org.slf4j.Logger;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -43,5 +45,12 @@ public class EventServiceImpl implements EventService {
         LOGGER.trace("EventDto list: {}", eventDtos.toString());
         LOGGER.debug("Finish method");
         return eventDtos;
+    }
+
+    @Override
+    public List<String> getEventTypes() {
+        return Arrays.stream(EventType.values())
+                .map(EventType::getName)
+                .collect(Collectors.toList());
     }
 }

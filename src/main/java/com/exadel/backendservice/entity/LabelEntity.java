@@ -2,11 +2,11 @@ package com.exadel.backendservice.entity;
 
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
+import lombok.ToString;
 
 import javax.persistence.*;
-import javax.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -19,12 +19,12 @@ public class LabelEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @NonNull
-    @Size(min = 1, max = 30)
+    @Column(length = 64, nullable = false)
     private String name;
 
-    @Transient
-    @ManyToMany(mappedBy = "labels", fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "labels")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private Set<EventEntity> eventEntities = new HashSet<>();
-    
+
 }

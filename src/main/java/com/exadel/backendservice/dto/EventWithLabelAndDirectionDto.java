@@ -7,8 +7,6 @@ import java.util.Set;
 @Data
 public class EventWithLabelAndDirectionDto {
 
-    private Integer id;
-
     private String name;
 
     private String description;
@@ -21,7 +19,7 @@ public class EventWithLabelAndDirectionDto {
 
     private Set<String> labels;
 
-    private Set<DirectionsDto> directionsDtos;
+    private Set<EventStackDto> eventStackDtos;
 
 
 }

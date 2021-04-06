@@ -8,6 +8,13 @@ import org.springframework.core.convert.converter.Converter;
 import java.util.stream.Collectors;
 
 public class EventEntityToEventDtoConverter implements Converter<EventEntity, EventWithLabelAndDirectionDto> {
+
+    private final EventStackEntityToEventStackDtoConverter eventStackConverter;
+
+    public EventEntityToEventDtoConverter(EventStackEntityToEventStackDtoConverter eventStackConverter) {
+        this.eventStackConverter = eventStackConverter;
+    }
+
     @Override
     public EventWithLabelAndDirectionDto convert(EventEntity entity) {
         EventWithLabelAndDirectionDto dto = new EventWithLabelAndDirectionDto();
@@ -17,6 +24,11 @@ public class EventEntityToEventDtoConverter implements Converter<EventEntity, Ev
         dto.setEndDate(entity.getEndDate().toString());
         dto.setType(entity.getType().toString());
         dto.setLabels(entity.getLabels().stream().map(LabelEntity::getName).collect(Collectors.toSet()));
+        dto.setEventStackDtos(entity.getEventStack().stream()
+                .map(eventStackConverter::convert)
+                .collect(Collectors.toSet()));
         return dto;
     }
+
+
 }

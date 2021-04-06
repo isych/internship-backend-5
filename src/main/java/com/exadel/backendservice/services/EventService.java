@@ -9,4 +9,6 @@ public interface EventService {
     EventEntity saveEvent(EventEntity event);
 
     List<EventWithLabelAndDirectionDto> getAllEvents();
+
+    List<String> getEventTypes();
 }

@@ -1,12 +1,11 @@
 package com.exadel.backendservice.entity;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
+import lombok.ToString;
 
 import javax.persistence.*;
-import javax.validation.constraints.Size;
 import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.Set;
@@ -21,12 +20,10 @@ public class EventEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @NonNull
-    @Size(max = 60)
+    @Column(length = 64, nullable = false)
     private String name;
 
-    @NonNull
-    @Size(min = 1, max = 250)
+    @Column(length = 256, nullable = false)
     private String description;
 
     @Column(name = "start_date")
@@ -35,17 +32,24 @@ public class EventEntity {
     @Column(name = "end_date")
     private Timestamp endDate;
 
-    @NonNull
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private EventType type;
 
-    @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.ALL)
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     @JoinTable(
             name = "event_label",
             joinColumns = {@JoinColumn(name = "event_id")},
             inverseJoinColumns = {@JoinColumn(name = "label_id")}
     )
     private Set<LabelEntity> labels = new HashSet<>();
+
+    @OneToMany(mappedBy = "event")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    private Set<EventStackEntity> eventStack = new HashSet<>();
 
 
 }
