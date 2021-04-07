@@ -31,13 +31,13 @@ insert into label_table
 values (6, 'agile');
 
 insert into event_table
-values (1, 'description-text', '2003-1-1', 'event 1', '2003-1-1', 'meetup');
+values (1, 'description-text', '2003-1-1', 'event 1', '2003-1-1', 1);
 
 insert into event_table
-values (2, 'description-text', '2003-1-1', 'event 2', '2003-1-1', 'internship');
+values (2, 'description-text', '2003-1-1', 'event 2', '2003-1-1', 2);
 
 insert into event_table
-values (3, 'description-text', '2003-1-1', 'event 3', '2003-1-1', 'training');
+values (3, 'description-text', '2003-1-1', 'event 3', '2003-1-1', 3);
 
 insert into event_label values (1, 1);
 insert into event_label values (1, 2);
@@ -50,3 +50,9 @@ insert into event_label values (2, 6);
 insert into event_label values (3, 6);
 insert into event_label values (3, 3);
 insert into event_label values (3, 1);
+
+insert into event_stack_table values (1,'frontend', 'tech stack description',1);
+insert into event_stack_table values (2,'backend', 'tech stack description',1);
+insert into event_stack_table values (3,'frontend', 'tech stack description',2);
+insert into event_stack_table values (4,'backend', 'tech stack description',2);
+insert into event_stack_table values (5,'fullstack', 'tech stack description',3);

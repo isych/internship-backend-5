@@ -31,7 +31,7 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public EventEntity saveEvent(EventEntity event) {
-        return null;
+        return eventRepository.save(event);
     }
 
     @Override
@@ -50,7 +50,7 @@ public class EventServiceImpl implements EventService {
     @Override
     public List<String> getEventTypes() {
         return Arrays.stream(EventType.values())
-                .map(EventType::getName)
+                .map(Enum::toString)
                 .collect(Collectors.toList());
     }
 }

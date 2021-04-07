@@ -3,8 +3,6 @@ package com.exadel.backendservice.util.converter;
 import com.exadel.backendservice.dto.EventWithLabelAndDirectionDto;
 import com.exadel.backendservice.entity.EventEntity;
 import com.exadel.backendservice.entity.EventType;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.convert.ConversionService;
 import org.springframework.core.convert.converter.Converter;
 
 import java.sql.Timestamp;

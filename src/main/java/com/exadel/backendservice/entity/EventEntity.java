@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -33,7 +34,7 @@ public class EventEntity {
     private Timestamp endDate;
 
     @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
+    @Type(type = "com.exadel.backendservice.entity.usertype.EventTypeUserType")
     private EventType type;
 
     @ManyToMany(cascade = CascadeType.ALL)
