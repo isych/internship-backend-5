@@ -50,10 +50,3 @@ insert into event_label values (2, 6);
 insert into event_label values (3, 6);
 insert into event_label values (3, 3);
 insert into event_label values (3, 1);
-
-insert into event_stack_table values (1,'frontend', 'tech stack description',1);
-insert into event_stack_table values (2,'backend', 'tech stack description',1);
-insert into event_stack_table values (3,'frontend', 'tech stack description',2);
-insert into event_stack_table values (4,'backend', 'tech stack description',2);
-insert into event_stack_table values (5,'fullstack', 'tech stack description',3);
-
