@@ -1,6 +1,6 @@
-package com.exadel.backendservice.entity;
+package com.exadel.backendservice.model;
 
-import com.exadel.backendservice.entity.usertype.PersistentEnum;
+import com.exadel.backendservice.model.usertype.PersistentEnum;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor

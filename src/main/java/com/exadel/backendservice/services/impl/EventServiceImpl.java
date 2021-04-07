@@ -2,7 +2,7 @@ package com.exadel.backendservice.services.impl;
 
 import com.exadel.backendservice.dto.EventWithLabelAndDirectionDto;
 import com.exadel.backendservice.entity.EventEntity;
-import com.exadel.backendservice.entity.EventType;
+import com.exadel.backendservice.model.EventType;
 import com.exadel.backendservice.repository.EventRepository;
 import com.exadel.backendservice.services.EventService;
 import org.slf4j.Logger;

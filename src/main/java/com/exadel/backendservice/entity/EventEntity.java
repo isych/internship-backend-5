@@ -1,5 +1,6 @@
 package com.exadel.backendservice.entity;
 
+import com.exadel.backendservice.model.EventType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -34,7 +35,7 @@ public class EventEntity {
     private Timestamp endDate;
 
     @Column(nullable = false)
-    @Type(type = "com.exadel.backendservice.entity.usertype.EventTypeUserType")
+    @Type(type = "com.exadel.backendservice.model.usertype.EventTypeUserType")
     private EventType type;
 
     @ManyToMany(cascade = CascadeType.ALL)

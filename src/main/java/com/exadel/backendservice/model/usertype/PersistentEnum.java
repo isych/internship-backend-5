@@ -1,4 +1,4 @@
-package com.exadel.backendservice.entity.usertype;
+package com.exadel.backendservice.model.usertype;
 
 public interface PersistentEnum {
     int getId();

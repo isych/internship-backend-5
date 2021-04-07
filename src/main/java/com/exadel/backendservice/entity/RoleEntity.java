@@ -1,7 +1,6 @@
 package com.exadel.backendservice.entity;
 
 import lombok.Data;
-
 import javax.persistence.*;
 
 @Entity

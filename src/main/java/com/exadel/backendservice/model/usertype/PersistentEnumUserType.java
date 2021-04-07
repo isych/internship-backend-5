@@ -1,4 +1,4 @@
-package com.exadel.backendservice.entity.usertype;
+package com.exadel.backendservice.model.usertype;
 
 import org.hibernate.HibernateException;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;

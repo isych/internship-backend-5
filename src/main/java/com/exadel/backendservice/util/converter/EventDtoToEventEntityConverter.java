@@ -2,7 +2,7 @@ package com.exadel.backendservice.util.converter;
 
 import com.exadel.backendservice.dto.EventWithLabelAndDirectionDto;
 import com.exadel.backendservice.entity.EventEntity;
-import com.exadel.backendservice.entity.EventType;
+import com.exadel.backendservice.model.EventType;
 import org.springframework.core.convert.converter.Converter;
 
 import java.sql.Timestamp;

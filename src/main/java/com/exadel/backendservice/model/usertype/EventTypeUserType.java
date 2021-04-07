@@ -1,6 +1,6 @@
-package com.exadel.backendservice.entity.usertype;
+package com.exadel.backendservice.model.usertype;
 
-import com.exadel.backendservice.entity.EventType;
+import com.exadel.backendservice.model.EventType;
 
 public class EventTypeUserType extends PersistentEnumUserType<EventType> {
 
