@@ -10,6 +10,7 @@ import com.exadel.backendservice.security.JwtProvider;
 import com.exadel.backendservice.services.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,18 +20,13 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/users/")
 @Api(tags = "Контроллер для работы с пользователями")
 public class UserController {
 
     private final UserService userService;
     private final JwtProvider jwtProvider;
-
-    @Autowired
-    public UserController(UserService userService, JwtProvider jwtProvider) {
-        this.userService = userService;
-        this.jwtProvider = jwtProvider;
-    }
 
     /**
      * Метод получения JWT-токена для пользователя
