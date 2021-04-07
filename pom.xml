@@ -23,7 +23,8 @@
         <validation.api.version>2.0.1.Final</validation.api.version>
         <springfox.boot.starter.version>3.0.0</springfox.boot.starter.version>
         <flyway.version>7.7.1</flyway.version>
-
+        <validation.api.version>2.0.1.Final</validation.api.version>
+        <springfox.boot.starter.version>3.0.0</springfox.boot.starter.version>
     </properties>
 
     <dependencies>
@@ -52,9 +53,14 @@
             <optional>true</optional>
         </dependency>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <version>${validation.api.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-boot-starter</artifactId>
+            <version>${springfox.boot.starter.version}</version>
         </dependency>
         <dependency>
             <groupId>com.google.code.gson</groupId>
