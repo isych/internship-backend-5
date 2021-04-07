@@ -35,7 +35,7 @@ public class UserServiceImpl implements UserService {
 
     public Boolean saveUser(RegistrationRequest registrationRequest) {
         boolean result = false;
-        if(userEntityRepository.findByLogin(registrationRequest.getLogin()) == null) {
+        if (userEntityRepository.findByLogin(registrationRequest.getLogin()) == null) {
             RoleEntity userRole;
             if (registrationRequest.getRole().toLowerCase().trim().equals("tech")) {
                 userRole = roleEntityRepository.findByName("ROLE_TECH");
