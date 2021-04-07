@@ -43,7 +43,7 @@ public class EventController {
 
     @ApiOperation(value = "Метод для получения списка всех типов событий")
     @GetMapping("/types")
-    public ResponseEntity<List<EventWithLabelAndDirectionDto>> getEventTypes() {
+    public ResponseEntity<List<String>> getEventTypes() {
         return new ResponseEntity(eventService.getEventTypes(), HttpStatus.OK);
     }
 }
