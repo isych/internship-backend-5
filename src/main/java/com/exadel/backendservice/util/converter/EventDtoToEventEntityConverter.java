@@ -6,21 +6,20 @@ import com.exadel.backendservice.model.EventType;
 import org.springframework.core.convert.converter.Converter;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class EventDtoToEventEntityConverter implements Converter<EventWithLabelAndDirectionDto, Event> {
 
     @Override
     public Event convert(EventWithLabelAndDirectionDto event) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         Event entity = new Event();
         entity.setName(event.getName());
         entity.setDescription(event.getDescription());
         entity.setType(EventType.valueOf(event.getType()));
-        entity.setStartDate(getTimestamp(event.getStartDate()));
-        entity.setEndDate(getTimestamp(event.getEndDate()));
+        entity.setStartDate(LocalDateTime.parse(event.getStartDate(), formatter));
+        entity.setEndDate(LocalDateTime.parse(event.getEndDate()));
         return entity;
-    }
-
-    private Timestamp getTimestamp(String datetime) {
-        return Timestamp.valueOf(datetime.replace("T", " "));
     }
 }

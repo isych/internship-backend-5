@@ -8,7 +8,7 @@ import lombok.ToString;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -29,10 +29,10 @@ public class Event {
     private String description;
 
     @Column(name = "start_date")
-    private Timestamp startDate;
+    private LocalDateTime startDate;
 
     @Column(name = "end_date")
-    private Timestamp endDate;
+    private LocalDateTime  endDate;
 
     @Column(nullable = false)
     @Type(type = "com.exadel.backendservice.model.usertype.EventTypeUserType")
