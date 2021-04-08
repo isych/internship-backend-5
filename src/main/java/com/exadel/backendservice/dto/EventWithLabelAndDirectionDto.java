@@ -2,6 +2,7 @@ package com.exadel.backendservice.dto;
 
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @Data
@@ -11,9 +12,9 @@ public class EventWithLabelAndDirectionDto {
 
     private String description;
 
-    private String startDate;
+    private LocalDateTime startDate;
 
-    private String endDate;
+    private LocalDateTime endDate;
 
     private String type;
 

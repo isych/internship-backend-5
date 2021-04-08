@@ -13,13 +13,12 @@ public class EventDtoToEventEntityConverter implements Converter<EventWithLabelA
 
     @Override
     public Event convert(EventWithLabelAndDirectionDto event) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         Event entity = new Event();
         entity.setName(event.getName());
         entity.setDescription(event.getDescription());
         entity.setType(EventType.valueOf(event.getType()));
-        entity.setStartDate(LocalDateTime.parse(event.getStartDate(), formatter));
-        entity.setEndDate(LocalDateTime.parse(event.getEndDate()));
+        entity.setStartDate(event.getStartDate());
+        entity.setEndDate(event.getEndDate());
         return entity;
     }
 }

@@ -18,7 +18,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/event/")
-@Api(tags = "Сервис для работы с анонсами событий")
+@Api(tags = "Контроллер для работы с анонсами событий")
 public class EventController {
 
     private final EventService eventService;

@@ -20,8 +20,8 @@ public class EventEntityToEventDtoConverter implements Converter<Event, EventWit
         EventWithLabelAndDirectionDto dto = new EventWithLabelAndDirectionDto();
         dto.setName(entity.getName());
         dto.setDescription(entity.getDescription());
-        dto.setStartDate(entity.getStartDate().toString());
-        dto.setEndDate(entity.getEndDate().toString());
+        dto.setStartDate(entity.getStartDate());
+        dto.setEndDate(entity.getEndDate());
         dto.setType(entity.getType().toString());
         dto.setLabels(entity.getLabels().stream().map(Label::getName).collect(Collectors.toSet()));
         dto.setEventStackDtos(entity.getEventStack().stream()
