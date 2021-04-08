@@ -1,6 +1,5 @@
 package com.exadel.backendservice.services.impl;
 
-import com.exadel.backendservice.dto.RoleDto;
 import com.exadel.backendservice.dto.UserDtoWithId;
 import com.exadel.backendservice.entity.Role;
 import com.exadel.backendservice.entity.User;
@@ -8,31 +7,25 @@ import com.exadel.backendservice.model.RegistrationRequest;
 import com.exadel.backendservice.repository.RoleEntityRepository;
 import com.exadel.backendservice.repository.UserEntityRepository;
 import com.exadel.backendservice.services.UserService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
+@Slf4j
 public class UserServiceImpl implements UserService {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
 
     private final UserEntityRepository userEntityRepository;
     private final RoleEntityRepository roleEntityRepository;
     private final PasswordEncoder passwordEncoder;
 
-    @Autowired
-    public UserServiceImpl(UserEntityRepository userEntityRepository, RoleEntityRepository roleEntityRepository, PasswordEncoder passwordEncoder) {
-        this.userEntityRepository = userEntityRepository;
-        this.roleEntityRepository = roleEntityRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
-
+    @Transactional
     public Boolean saveUser(RegistrationRequest registrationRequest) {
         boolean result = false;
         if (userEntityRepository.findByLogin(registrationRequest.getLogin()) == null) {
@@ -44,7 +37,7 @@ public class UserServiceImpl implements UserService {
             } else if (registrationRequest.getRole().toLowerCase().trim().equals("superadmin")) {
                 userRole = roleEntityRepository.findByName("ROLE_SUPERADMIN");
             } else {
-                LOGGER.info("User not created. Role specified incorrectly.");
+                log.info("User not created. Role specified incorrectly.");
                 return false;
             }
             User user = new User();
@@ -55,7 +48,7 @@ public class UserServiceImpl implements UserService {
             user.setFio(registrationRequest.getFio());
             userEntityRepository.save(user);
             result = true;
-            LOGGER.info("User created");
+            log.info("User created");
         }
         return result;
     }
@@ -103,9 +96,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<RoleDto> getListRoles() {
+    public List<String> getListRoles() {
         return roleEntityRepository.findAll().stream()
-                .map(elem -> new RoleDto(elem.getName().substring(5)))
+                .map(elem -> elem.getName().substring(5))
                 .collect(Collectors.toList());
     }
 }
