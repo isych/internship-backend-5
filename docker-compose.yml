@@ -1,0 +1,34 @@
+version: '3'
+services:
+  db:
+    image: postgres:12.6-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: app_db
+      POSTGRES_USER: app_user
+      POSTGRES_PASSWORD: password
+    restart: on-failure
+
+  rest:
+    image: karachun/rest-server
+    ports:
+      - "8081:8081"
+    environment:
+      DATABASE_HOST: db
+    depends_on:
+      - db
+    command: java -jar /app.jar
+    restart: on-failure
+
+  gadmin:
+    image: dpage/pgadmin4
+    ports:
+      - "5454:5454/tcp"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: pass
+      PGADMIN_LISTEN_PORT: 5454
+    logging:
+      driver: none
+    restart: on-failure

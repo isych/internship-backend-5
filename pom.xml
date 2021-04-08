@@ -18,6 +18,11 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
+        <gson.version>2.8.6</gson.version>
+        <jsonwebtoken.version>0.9.1</jsonwebtoken.version>
+        <validation.api.version>2.0.1.Final</validation.api.version>
+        <springfox.boot.starter.version>3.0.0</springfox.boot.starter.version>
+        <flyway.version>7.7.1</flyway.version>
         <validation.api.version>2.0.1.Final</validation.api.version>
         <springfox.boot.starter.version>3.0.0</springfox.boot.starter.version>
     </properties>
@@ -57,6 +62,26 @@
             <artifactId>springfox-boot-starter</artifactId>
             <version>${springfox.boot.starter.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>${gson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>${jsonwebtoken.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-maven-plugin</artifactId>
+            <version>${flyway.version}</version>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -72,6 +97,11 @@
                         </exclude>
                     </excludes>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-maven-plugin</artifactId>
+                <version>${flyway.version}</version>
             </plugin>
         </plugins>
     </build>
