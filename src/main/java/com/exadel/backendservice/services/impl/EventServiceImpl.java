@@ -5,6 +5,8 @@ import com.exadel.backendservice.entity.Event;
 import com.exadel.backendservice.model.EventType;
 import com.exadel.backendservice.repository.EventRepository;
 import com.exadel.backendservice.services.EventService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,18 +18,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
+@RequiredArgsConstructor
 public class EventServiceImpl implements EventService {
-    private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
 
     private final EventRepository eventRepository;
     private final ConversionService conversionService;
-
-
-    @Autowired
-    public EventServiceImpl(EventRepository eventRepository, ConversionService conversionService) {
-        this.eventRepository = eventRepository;
-        this.conversionService = conversionService;
-    }
 
     @Override
     public Event saveEvent(Event event) {
@@ -36,14 +32,14 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public List<EventWithLabelAndDirectionDto> getAllEvents() {
-        LOGGER.debug("Get all events from DB method");
+        log.debug("Get all events from DB method");
         List<Event> eventsList = eventRepository.findAll();
-        LOGGER.trace("Event list from DB: {}", eventsList.toString());
+        log.trace("Event list from DB: {}", eventsList.toString());
         List<EventWithLabelAndDirectionDto> eventDtos = eventsList.stream()
                 .map(entity -> conversionService.convert(entity, EventWithLabelAndDirectionDto.class))
                 .collect(Collectors.toList());
-        LOGGER.trace("EventDto list: {}", eventDtos.toString());
-        LOGGER.debug("Finish method");
+        log.trace("EventDto list: {}", eventDtos.toString());
+        log.debug("Finish method");
         return eventDtos;
     }
 
