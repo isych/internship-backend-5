@@ -4,9 +4,9 @@ import lombok.Data;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "role_table")
+@Table(name = "roles")
 @Data
-public class RoleEntity {
+public class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

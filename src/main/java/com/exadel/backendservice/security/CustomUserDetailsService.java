@@ -1,6 +1,6 @@
 package com.exadel.backendservice.security;
 
-import com.exadel.backendservice.entity.UserEntity;
+import com.exadel.backendservice.entity.User;
 import com.exadel.backendservice.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -15,7 +15,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public CustomUserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserEntity userEntity = userService.findByLogin(username);
-        return CustomUserDetails.fromUserEntityToCustomUserDetails(userEntity);
+        User user = userService.findByLogin(username);
+        return CustomUserDetails.fromUserEntityToCustomUserDetails(user);
     }
 }

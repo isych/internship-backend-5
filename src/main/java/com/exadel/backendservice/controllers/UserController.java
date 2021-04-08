@@ -2,7 +2,7 @@ package com.exadel.backendservice.controllers;
 
 import com.exadel.backendservice.dto.RoleDto;
 import com.exadel.backendservice.dto.UserDtoWithId;
-import com.exadel.backendservice.entity.UserEntity;
+import com.exadel.backendservice.entity.User;
 import com.exadel.backendservice.model.AuthRequest;
 import com.exadel.backendservice.model.AuthResponse;
 import com.exadel.backendservice.model.RegistrationRequest;
@@ -11,7 +11,6 @@ import com.exadel.backendservice.services.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -38,9 +37,9 @@ public class UserController {
     @ApiOperation(value = "Метод для авторизации и получения JWT-токена")
     @PostMapping("auth")
     public AuthResponse auth(@RequestBody AuthRequest request) {
-        UserEntity userEntity = userService.findByLoginAndPassword(request.getLogin(), request.getPassword());
-        if(userEntity != null) {
-            String token = jwtProvider.generateToken(userEntity.getLogin());
+        User user = userService.findByLoginAndPassword(request.getLogin(), request.getPassword());
+        if(user != null) {
+            String token = jwtProvider.generateToken(user.getLogin());
             return new AuthResponse(token);
         }
         return new AuthResponse("null");

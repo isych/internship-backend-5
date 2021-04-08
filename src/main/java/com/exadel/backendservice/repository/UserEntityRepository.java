@@ -1,16 +1,12 @@
 package com.exadel.backendservice.repository;
 
-import com.exadel.backendservice.entity.UserEntity;
+import com.exadel.backendservice.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-public interface UserEntityRepository extends JpaRepository<UserEntity, Integer> {
-    UserEntity findByLogin(String login);
-    List<UserEntity> findAll();
-    List<UserEntity> findAllByRoleEntity_Name(String roleName);
+public interface UserEntityRepository extends JpaRepository<User, Integer> {
+    User findByLogin(String login);
+    List<User> findAll();
+    List<User> findAllByRoleEntity_Name(String roleName);
 }

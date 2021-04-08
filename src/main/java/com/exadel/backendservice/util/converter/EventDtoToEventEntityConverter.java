@@ -1,17 +1,17 @@
 package com.exadel.backendservice.util.converter;
 
 import com.exadel.backendservice.dto.EventWithLabelAndDirectionDto;
-import com.exadel.backendservice.entity.EventEntity;
+import com.exadel.backendservice.entity.Event;
 import com.exadel.backendservice.model.EventType;
 import org.springframework.core.convert.converter.Converter;
 
 import java.sql.Timestamp;
 
-public class EventDtoToEventEntityConverter implements Converter<EventWithLabelAndDirectionDto, EventEntity> {
+public class EventDtoToEventEntityConverter implements Converter<EventWithLabelAndDirectionDto, Event> {
 
     @Override
-    public EventEntity convert(EventWithLabelAndDirectionDto event) {
-        EventEntity entity = new EventEntity();
+    public Event convert(EventWithLabelAndDirectionDto event) {
+        Event entity = new Event();
         entity.setName(event.getName());
         entity.setDescription(event.getDescription());
         entity.setType(EventType.valueOf(event.getType()));

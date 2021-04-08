@@ -8,10 +8,10 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.Size;
 
 @Entity
-@Table(name = "user_table")
+@Table(name = "users")
 @Data
 @NoArgsConstructor
-public class UserEntity {
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,7 +27,7 @@ public class UserEntity {
 
     @OneToOne
     @JoinColumn(name = "role_id")
-    private RoleEntity roleEntity;
+    private Role roleEntity;
 
     @NonNull
     @Size(min = 1, max = 100)

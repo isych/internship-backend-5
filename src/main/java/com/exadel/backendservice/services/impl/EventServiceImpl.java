@@ -1,7 +1,7 @@
 package com.exadel.backendservice.services.impl;
 
 import com.exadel.backendservice.dto.EventWithLabelAndDirectionDto;
-import com.exadel.backendservice.entity.EventEntity;
+import com.exadel.backendservice.entity.Event;
 import com.exadel.backendservice.model.EventType;
 import com.exadel.backendservice.repository.EventRepository;
 import com.exadel.backendservice.services.EventService;
@@ -30,14 +30,14 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public EventEntity saveEvent(EventEntity event) {
+    public Event saveEvent(Event event) {
         return eventRepository.save(event);
     }
 
     @Override
     public List<EventWithLabelAndDirectionDto> getAllEvents() {
         LOGGER.debug("Get all events from DB method");
-        List<EventEntity> eventsList = eventRepository.findAll();
+        List<Event> eventsList = eventRepository.findAll();
         LOGGER.trace("Event list from DB: {}", eventsList.toString());
         List<EventWithLabelAndDirectionDto> eventDtos = eventsList.stream()
                 .map(entity -> conversionService.convert(entity, EventWithLabelAndDirectionDto.class))

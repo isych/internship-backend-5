@@ -13,10 +13,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "event_table")
+@Table(name = "events")
 @Data
 @NoArgsConstructor
-public class EventEntity {
+public class Event {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,12 +46,12 @@ public class EventEntity {
             joinColumns = {@JoinColumn(name = "event_id")},
             inverseJoinColumns = {@JoinColumn(name = "label_id")}
     )
-    private Set<LabelEntity> labels = new HashSet<>();
+    private Set<Label> labels = new HashSet<>();
 
     @OneToMany(mappedBy = "event")
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    private Set<EventStackEntity> eventStack = new HashSet<>();
+    private Set<EventStack> eventStack = new HashSet<>();
 
 
 }

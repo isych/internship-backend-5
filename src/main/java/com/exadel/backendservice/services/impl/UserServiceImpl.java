@@ -2,8 +2,8 @@ package com.exadel.backendservice.services.impl;
 
 import com.exadel.backendservice.dto.RoleDto;
 import com.exadel.backendservice.dto.UserDtoWithId;
-import com.exadel.backendservice.entity.RoleEntity;
-import com.exadel.backendservice.entity.UserEntity;
+import com.exadel.backendservice.entity.Role;
+import com.exadel.backendservice.entity.User;
 import com.exadel.backendservice.model.RegistrationRequest;
 import com.exadel.backendservice.repository.RoleEntityRepository;
 import com.exadel.backendservice.repository.UserEntityRepository;
@@ -36,7 +36,7 @@ public class UserServiceImpl implements UserService {
     public Boolean saveUser(RegistrationRequest registrationRequest) {
         boolean result = false;
         if (userEntityRepository.findByLogin(registrationRequest.getLogin()) == null) {
-            RoleEntity userRole;
+            Role userRole;
             if (registrationRequest.getRole().toLowerCase().trim().equals("tech")) {
                 userRole = roleEntityRepository.findByName("ROLE_TECH");
             } else if (registrationRequest.getRole().toLowerCase().trim().equals("admin")) {
@@ -47,36 +47,36 @@ public class UserServiceImpl implements UserService {
                 LOGGER.info("User not created. Role specified incorrectly.");
                 return false;
             }
-            UserEntity userEntity = new UserEntity();
-            userEntity.setLogin(registrationRequest.getLogin());
-            userEntity.setRoleEntity(userRole);
-            userEntity.setPassword(passwordEncoder.encode(registrationRequest.getPassword()));
-            userEntity.setEmail(registrationRequest.getEmail());
-            userEntity.setFio(registrationRequest.getFio());
-            userEntityRepository.save(userEntity);
+            User user = new User();
+            user.setLogin(registrationRequest.getLogin());
+            user.setRoleEntity(userRole);
+            user.setPassword(passwordEncoder.encode(registrationRequest.getPassword()));
+            user.setEmail(registrationRequest.getEmail());
+            user.setFio(registrationRequest.getFio());
+            userEntityRepository.save(user);
             result = true;
             LOGGER.info("User created");
         }
         return result;
     }
 
-    private static List<UserDtoWithId> modifyUserEntityToUserDtoWithId(List<UserEntity> userEntityList){
-        return userEntityList.stream()
+    private static List<UserDtoWithId> modifyUserEntityToUserDtoWithId(List<User> userList){
+        return userList.stream()
                 .map(elem -> new UserDtoWithId(elem.getId(), elem.getFio(), elem.getRoleEntity().getName().substring(5), elem.getEmail()))
                 .collect(Collectors.toList());
     }
 
     @Override
-    public UserEntity findByLogin(String login) {
+    public User findByLogin(String login) {
         return userEntityRepository.findByLogin(login);
     }
 
     @Override
-    public UserEntity findByLoginAndPassword(String login, String password) {
-        UserEntity userEntity = findByLogin(login);
-        if (userEntity != null) {
-            if (passwordEncoder.matches(password, userEntity.getPassword())) {
-                return userEntity;
+    public User findByLoginAndPassword(String login, String password) {
+        User user = findByLogin(login);
+        if (user != null) {
+            if (passwordEncoder.matches(password, user.getPassword())) {
+                return user;
             }
         }
         return null;

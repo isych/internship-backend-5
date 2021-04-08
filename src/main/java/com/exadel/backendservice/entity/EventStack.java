@@ -5,10 +5,10 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "event_stack_table")
+@Table(name = "event_stack")
 @Data
 @NoArgsConstructor
-public class EventStackEntity {
+public class EventStack {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -21,5 +21,5 @@ public class EventStackEntity {
 
     @ManyToOne
     @JoinColumn(name = "event_id", nullable = false)
-    private EventEntity event;
+    private Event event;
 }

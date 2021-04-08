@@ -9,10 +9,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "label_table")
+@Table(name = "labels")
 @Data
 @NoArgsConstructor
-public class LabelEntity {
+public class Label {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -23,6 +23,6 @@ public class LabelEntity {
     @ManyToMany(mappedBy = "labels")
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    private Set<EventEntity> eventEntities = new HashSet<>();
+    private Set<Event> eventEntities = new HashSet<>();
 
 }
