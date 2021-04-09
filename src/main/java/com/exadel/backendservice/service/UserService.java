@@ -1,4 +1,4 @@
-package com.exadel.backendservice.services;
+package com.exadel.backendservice.service;
 
 import com.exadel.backendservice.dto.UserDtoWithId;
 import com.exadel.backendservice.entity.User;

@@ -5,8 +5,6 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class EventStackDto extends AbstractDto {
-    private Integer id;
+public class CountryDto extends AbstractDto {
     private String name;
-    private String description;
 }

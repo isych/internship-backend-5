@@ -1,7 +1,7 @@
 package com.exadel.backendservice.security;
 
 import com.exadel.backendservice.entity.User;
-import com.exadel.backendservice.services.UserService;
+import com.exadel.backendservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
