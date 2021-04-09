@@ -1,8 +1,6 @@
 package com.exadel.backendservice.entity;
 
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import javax.persistence.*;
@@ -11,11 +9,10 @@ import java.util.Set;
 
 @Data
 @Entity
-@Table(name = "country")
+@Table(name = "city")
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class CountryEntity implements Serializable {
-
+public class City implements Serializable {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -24,7 +21,10 @@ public class CountryEntity implements Serializable {
     @Column(name = "name", nullable = false)
     String name;
 
-    @OneToMany(mappedBy = "countryEntity")
-    private Set<CityEntity> cityEntities;
+    @ManyToOne
+    @JoinColumn(name = "country_id", nullable = false)
+    Country country;
 
+    @OneToMany(mappedBy = "cityEntity")
+    private Set<Candidate> candidateEntities;
 }

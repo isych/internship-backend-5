@@ -11,11 +11,10 @@ import java.util.Set;
 
 @Data
 @Entity
-@Table(name = "event_stack")
+@Table(name = "country")
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class EventStackEntity implements Serializable {
-
+public class Country implements Serializable {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -24,10 +23,6 @@ public class EventStackEntity implements Serializable {
     @Column(name = "name", nullable = false)
     String name;
 
-    @Column(name = "description", nullable = false)
-    String description;
-
-    @OneToMany(mappedBy = "eventStackEntity")
-    private Set<CandidateEntity> candidateEntities;
-
+    @OneToMany(mappedBy = "countryEntity")
+    private Set<City> cityEntities;
 }

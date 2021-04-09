@@ -11,8 +11,7 @@ import java.io.Serializable;
 @Table(name = "candidate")
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class CandidateEntity implements Serializable {
-
+public class Candidate implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     Integer id;
@@ -39,9 +38,9 @@ public class CandidateEntity implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "city_id", nullable = false)
-    CityEntity cityEntity;
+    City city;
 
     @ManyToOne
     @JoinColumn(name = "event_stack_id", nullable = false)
-    EventStackEntity eventStackEntity;
+    EventStack eventStack;
 }

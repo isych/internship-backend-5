@@ -10,12 +10,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
-
 @RestController
 @RequestMapping("/api/candidates/")
 @Api(tags = "Контроллер для работы с кандидатами")
 public class CandidateController {
-
     private final CandidateService candidateService;
 
     @Autowired
@@ -36,5 +34,4 @@ public class CandidateController {
                 new ResponseEntity<>("Candidate created", HttpStatus.CREATED):
                 new ResponseEntity<>("Candidate not created", HttpStatus.valueOf(500));
     }
-
 }

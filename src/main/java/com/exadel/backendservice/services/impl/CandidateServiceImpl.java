@@ -1,7 +1,7 @@
 package com.exadel.backendservice.services.impl;
 
 import com.exadel.backendservice.dto.CandidateDto;
-import com.exadel.backendservice.entity.CandidateEntity;
+import com.exadel.backendservice.entity.Candidate;
 import com.exadel.backendservice.repository.CandidateRepository;
 import com.exadel.backendservice.repository.CityRepository;
 import com.exadel.backendservice.repository.EventStackRepository;
@@ -12,11 +12,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
+@Slf4j
 @Service
 public class CandidateServiceImpl implements CandidateService {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(CandidateServiceImpl.class); // @slf4g ?????????????????
 
     private final CandidateRepository candidateRepository;
     private final CityRepository cityRepository;
@@ -31,26 +29,27 @@ public class CandidateServiceImpl implements CandidateService {
 
     @Override
     public boolean create(CandidateDto candidateDto) {
+        boolean result = false;
+        Candidate candidate = new Candidate();
 
         try {
-            CandidateEntity candidateEntity = new CandidateEntity();
+            candidate.setFullName(candidateDto.getFullName());
+            candidate.setPhone(candidateDto.getPhone());
+            candidate.setEmail(candidateDto.getEmail());
+            candidate.setSkype(candidateDto.getSkype());
+            candidate.setCv(candidateDto.getCv());
+            candidate.setCity(cityRepository.getOne(candidateDto.getCity()));
+            candidate.setEventStack(eventStackRepository.getOne(candidateDto.getEventStack()));
+            log.info("Candidate created: id = {}", candidate.getId());
 
-            candidateEntity.setFullName(candidateDto.getFullName());
-            candidateEntity.setPhone(candidateDto.getPhone());
-            candidateEntity.setEmail(candidateDto.getEmail());
-            candidateEntity.setSkype(candidateDto.getSkype());
-            candidateEntity.setCv(candidateDto.getCv());
-            candidateEntity.setCityEntity(cityRepository.getOne(candidateDto.getCity()));
-            candidateEntity.setEventStackEntity(eventStackRepository.getOne(candidateDto.getEventStack()));
+            candidateRepository.save(candidate);
+            log.info("Candidate saved: id = {}", candidate.getId());
 
-            candidateRepository.save(candidateEntity);
-
-            LOGGER.info("User created: ID = " + candidateEntity.getId());  // @slf4g ?????????????????
-
+            result = true;
         }catch (Exception ex){
-            return false;
+            log.info("Candidate wasn't saved");
         }
 
-        return true;
+        return result;
     }
 }
