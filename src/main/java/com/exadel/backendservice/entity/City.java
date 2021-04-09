@@ -25,6 +25,6 @@ public class City implements Serializable {
     @JoinColumn(name = "country_id", nullable = false)
     Country country;
 
-    @OneToMany(mappedBy = "cityEntity")
-    private Set<Candidate> candidateEntities;
+    @OneToMany(mappedBy = "city")
+    private Set<Candidate> candidates;
 }

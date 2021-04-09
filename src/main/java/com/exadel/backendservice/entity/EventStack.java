@@ -26,6 +26,6 @@ public class EventStack implements Serializable {
     @Column(name = "description", nullable = false)
     String description;
 
-    @OneToMany(mappedBy = "eventStackEntity")
-    private Set<Candidate> candidateEntities;
+    @OneToMany(mappedBy = "eventStack")
+    private Set<Candidate> candidates;
 }

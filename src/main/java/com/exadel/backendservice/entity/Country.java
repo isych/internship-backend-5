@@ -23,6 +23,6 @@ public class Country implements Serializable {
     @Column(name = "name", nullable = false)
     String name;
 
-    @OneToMany(mappedBy = "countryEntity")
-    private Set<City> cityEntities;
+    @OneToMany(mappedBy = "country")
+    private Set<City> cities;
 }
