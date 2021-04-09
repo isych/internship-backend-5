@@ -1,5 +1,6 @@
 package com.exadel.backendservice.services.impl;
 
+import com.exadel.backendservice.dto.EventStackDto;
 import com.exadel.backendservice.dto.EventWithLabelAndDirectionDto;
 import com.exadel.backendservice.entity.Event;
 import com.exadel.backendservice.model.EventType;
@@ -7,10 +8,11 @@ import com.exadel.backendservice.repository.EventRepository;
 import com.exadel.backendservice.services.EventService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -22,6 +24,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class EventServiceImpl implements EventService {
 
+    private static int eventPageCount;
     private final EventRepository eventRepository;
     private final ConversionService conversionService;
 
@@ -48,5 +51,17 @@ public class EventServiceImpl implements EventService {
         return Arrays.stream(EventType.values())
                 .map(Enum::toString)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<EventStackDto> getPageOfEvents() {
+        Pageable pageable = PageRequest.of(eventPageCount, 8, Sort.by("name"));
+
+        Page<Event> page = eventRepository.findAll(pageable);
+        List<EventStackDto> eventStackDtos = page.get()
+                .map(event -> new EventStackDto(event.getName(), event.getDescription()))
+                .collect(Collectors.toList());
+
+        return eventStackDtos;
     }
 }

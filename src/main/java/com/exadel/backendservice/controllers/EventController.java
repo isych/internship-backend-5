@@ -1,5 +1,6 @@
 package com.exadel.backendservice.controllers;
 
+import com.exadel.backendservice.dto.EventStackDto;
 import com.exadel.backendservice.dto.EventWithLabelAndDirectionDto;
 import com.exadel.backendservice.services.EventService;
 import com.exadel.backendservice.services.impl.UserServiceImpl;
@@ -34,5 +35,11 @@ public class EventController {
     @GetMapping("/types")
     public ResponseEntity<List<String>> getEventTypes() {
         return new ResponseEntity<>(eventService.getEventTypes(), HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "Метод для получения части ивентов")
+    @GetMapping("/page")
+    public ResponseEntity<List<EventStackDto>> getPagingEvents() {
+        return new ResponseEntity<>(eventService.getPageOfEvents(), HttpStatus.OK);
     }
 }

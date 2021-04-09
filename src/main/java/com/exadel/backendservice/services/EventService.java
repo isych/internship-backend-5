@@ -1,5 +1,6 @@
 package com.exadel.backendservice.services;
 
+import com.exadel.backendservice.dto.EventStackDto;
 import com.exadel.backendservice.dto.EventWithLabelAndDirectionDto;
 import com.exadel.backendservice.entity.Event;
 
@@ -11,4 +12,6 @@ public interface EventService {
     List<EventWithLabelAndDirectionDto> getAllEvents();
 
     List<String> getEventTypes();
+
+    List<EventStackDto> getPageOfEvents();
 }
