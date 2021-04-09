@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -38,8 +40,8 @@ public class EventController {
     }
 
     @ApiOperation(value = "Метод для получения части ивентов")
-    @GetMapping("/page")
-    public ResponseEntity<List<EventStackDto>> getPagingEvents() {
-        return new ResponseEntity<>(eventService.getPageOfEvents(), HttpStatus.OK);
+    @GetMapping("/qualifier")
+    public ResponseEntity<Page<EventStackDto>> getPagingEvents(Pageable pageable) {
+        return new ResponseEntity<>(eventService.getPageOfEvents(pageable), HttpStatus.OK);
     }
 }

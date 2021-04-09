@@ -9,10 +9,7 @@ import com.exadel.backendservice.services.EventService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.convert.ConversionService;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -54,14 +51,16 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public List<EventStackDto> getPageOfEvents() {
-        Pageable pageable = PageRequest.of(eventPageCount, 8, Sort.by("name"));
+    public Page<EventStackDto> getPageOfEvents(Pageable pageable) {
+        //Pageable pageable = PageRequest.of(eventPageCount, 8, Sort.by("name"));
 
         Page<Event> page = eventRepository.findAll(pageable);
         List<EventStackDto> eventStackDtos = page.get()
                 .map(event -> new EventStackDto(event.getName(), event.getDescription()))
                 .collect(Collectors.toList());
 
-        return eventStackDtos;
+        Page<EventStackDto> eventPage = new PageImpl<>(eventStackDtos);
+
+        return eventPage;
     }
 }
