@@ -1,4 +1,4 @@
-package com.exadel.backendservice.services.impl;
+package com.exadel.backendservice.service.impl;
 
 import com.exadel.backendservice.dto.UserDtoWithId;
 import com.exadel.backendservice.entity.Role;
@@ -6,7 +6,7 @@ import com.exadel.backendservice.entity.User;
 import com.exadel.backendservice.model.RegistrationRequest;
 import com.exadel.backendservice.repository.RoleEntityRepository;
 import com.exadel.backendservice.repository.UserEntityRepository;
-import com.exadel.backendservice.services.UserService;
+import com.exadel.backendservice.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;

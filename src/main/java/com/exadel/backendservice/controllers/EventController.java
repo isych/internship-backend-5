@@ -1,14 +1,10 @@
 package com.exadel.backendservice.controllers;
 
-import com.exadel.backendservice.dto.EventWithLabelAndDirectionDto;
-import com.exadel.backendservice.services.EventService;
-import com.exadel.backendservice.services.impl.UserServiceImpl;
+import com.exadel.backendservice.dto.resp.EventListDto;
+import com.exadel.backendservice.service.EventService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,8 +21,8 @@ public class EventController {
 
     @ApiOperation(value = "Метод для получения списка всех событий")
     @GetMapping
-    public ResponseEntity<List<EventWithLabelAndDirectionDto>> getAllEvents() {
-        List<EventWithLabelAndDirectionDto> events = eventService.getAllEvents();
+    public ResponseEntity<List<EventListDto>> getAllEvents() {
+        List<EventListDto> events = eventService.getAllEvents();
         return new ResponseEntity<>(events, HttpStatus.OK);
     }
 

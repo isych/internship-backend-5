@@ -6,7 +6,7 @@ import com.exadel.backendservice.model.AuthRequest;
 import com.exadel.backendservice.model.AuthResponse;
 import com.exadel.backendservice.model.RegistrationRequest;
 import com.exadel.backendservice.security.JwtProvider;
-import com.exadel.backendservice.services.UserService;
+import com.exadel.backendservice.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
