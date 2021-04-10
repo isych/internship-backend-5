@@ -52,14 +52,13 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public Page<EventStackDto> getPageOfEvents(Pageable pageable) {
-        //Pageable pageable = PageRequest.of(eventPageCount, 8, Sort.by("name"));
 
         Page<Event> page = eventRepository.findAll(pageable);
         List<EventStackDto> eventStackDtos = page.get()
                 .map(event -> new EventStackDto(event.getName(), event.getDescription()))
                 .collect(Collectors.toList());
 
-        Page<EventStackDto> eventPage = new PageImpl<>(eventStackDtos);
+        Page<EventStackDto> eventPage = new PageImpl<>(eventStackDtos, pageable, pageable.getPageSize());
 
         return eventPage;
     }
