@@ -2,12 +2,15 @@ package com.exadel.backendservice.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class EventStackDto {
+@EqualsAndHashCode(callSuper = false)
+public class EventStackDto extends AbstractDto {
+    private Integer id;
     private String name;
-    private String descriptions;
+    private String description;
 }

@@ -8,28 +8,25 @@ import lombok.ToString;
 import javax.persistence.*;
 import java.util.Set;
 
-@Entity
-@Table(name = "event_stack")
 @Data
+@Entity
+@Table(name = "city")
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class EventStack extends AbstractEntity{
+@ToString(callSuper = true)
+public class City extends AbstractEntity {
 
-    @Column(nullable = false, length = 30)
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(nullable = false, length = 100)
-    private String description;
-
     @ManyToOne
-    @JoinColumn(name = "event_id", nullable = false)
-    private Event event;
+    @JoinColumn(name = "country_id", nullable = false)
+    private Country country;
+
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @OneToMany(mappedBy = "eventStack")
+    @OneToMany(mappedBy = "city")
     private Set<Candidate> candidates;
+
 }
-
-
-

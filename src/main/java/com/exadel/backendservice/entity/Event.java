@@ -16,11 +16,8 @@ import java.util.Set;
 @Table(name = "events")
 @Data
 @NoArgsConstructor
-public class Event {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+@EqualsAndHashCode(callSuper = true)
+public class Event extends AbstractEntity {
 
     @Column(length = 64, nullable = false)
     private String name;
@@ -32,7 +29,7 @@ public class Event {
     private LocalDateTime startDate;
 
     @Column(name = "end_date")
-    private LocalDateTime  endDate;
+    private LocalDateTime endDate;
 
     @Column(nullable = false)
     @Type(type = "com.exadel.backendservice.model.usertype.EventTypeUserType")

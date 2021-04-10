@@ -4,18 +4,20 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import javax.persistence.*;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "labels")
 @Data
+@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
-public class Label {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+public class Label extends AbstractEntity {
 
     @Column(length = 64, nullable = false)
     private String name;
@@ -23,6 +25,6 @@ public class Label {
     @ManyToMany(mappedBy = "labels")
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    private Set<Event> eventEntities = new HashSet<>();
+    private Set<Event> events = new HashSet<>();
 
 }
