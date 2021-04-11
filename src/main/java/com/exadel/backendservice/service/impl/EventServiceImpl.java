@@ -1,9 +1,8 @@
 package com.exadel.backendservice.service.impl;
 
-import com.exadel.backendservice.dto.SearchEventDto;
-import com.exadel.backendservice.dto.resp.EventListDto;
+import com.exadel.backendservice.dto.resp.SearchEventDto;
 import com.exadel.backendservice.entity.Event;
-import com.exadel.backendservice.mapper.converter.EventMapper;
+import com.exadel.backendservice.mapper.converter.SearchEventMapper;
 import com.exadel.backendservice.model.EventType;
 import com.exadel.backendservice.repository.EventRepository;
 import com.exadel.backendservice.service.EventService;
@@ -25,8 +24,7 @@ import java.util.stream.Collectors;
 public class EventServiceImpl implements EventService {
 
     private final EventRepository eventRepository;
-    private final ConversionService conversionService;
-    private final EventMapper eventMapper;
+    private final SearchEventMapper eventMapper;
 
     @Override
     public Event saveEvent(Event event) {
@@ -34,15 +32,15 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public List<EventListDto> getAllEvents() {
+    public List<SearchEventDto> getAllEvents() {
         log.debug("Get all events from DB method");
         List<Event> eventsList = eventRepository.findAll();
         log.trace("Event list from DB: {}", eventsList.toString());
-        List<EventListDto> eventDtos = eventMapper.toDto(eventsList);
+        List<SearchEventDto> eventDtos = eventMapper.toDto(eventsList);
 //        List<EventWithLabelAndDirectionDto> eventDtos = eventsList.stream()
 //                .map(entity -> conversionService.convert(entity, EventWithLabelAndDirectionDto.class))
 //                .collect(Collectors.toList());
-        log.trace("EventDto list: {}", eventDtos.toString());
+        log.debug("EventDto list: {}", eventDtos.toString());
         log.debug("Finish method");
         return eventDtos;
     }

@@ -3,6 +3,7 @@ package com.exadel.backendservice.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -23,7 +24,12 @@ public class City extends AbstractEntity {
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @OneToMany(mappedBy = "city")
-    private Set<Candidate> candidates;
+    private Set<Candidate> candidates = new HashSet<>();
+
+    @ManyToMany(mappedBy = "cities")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    private Set<Event> events = new HashSet<>();
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude

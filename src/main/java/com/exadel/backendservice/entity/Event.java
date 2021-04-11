@@ -25,6 +25,9 @@ public class Event extends AbstractEntity {
     @Column(length = 256, nullable = false)
     private String description;
 
+    @Column(length = 256)
+    private String pictureUrl;
+
     @Column(name = "start_date")
     private LocalDateTime startDate;
 
@@ -50,13 +53,14 @@ public class Event extends AbstractEntity {
     @ToString.Exclude
     private Set<EventStack> eventStack = new HashSet<>();
 
-    @ManyToOne
-    @JoinColumn(name = "city", nullable = false)
+    @ManyToMany(cascade = CascadeType.ALL)
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    private City city;
-
-    @Column(name = "picture_url")
-    private String pictureUrl;
+    @JoinTable(
+            name = "event_city",
+            joinColumns = {@JoinColumn(name = "event_id")},
+            inverseJoinColumns = {@JoinColumn(name = "city_id")}
+    )
+    private Set<City> cities = new HashSet<>();
 
 }
