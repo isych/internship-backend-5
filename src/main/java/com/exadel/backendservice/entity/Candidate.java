@@ -1,5 +1,8 @@
 package com.exadel.backendservice.entity;
 
+import com.exadel.backendservice.model.CandidateStatus;
+import com.exadel.backendservice.model.InterviewProcess;
+import com.exadel.backendservice.model.PreferredTime;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -16,6 +19,14 @@ public class Candidate extends AbstractEntity {
 
     @Column(nullable = false)
     private String fullName;
+    @Column(length = 100)
+    private String summary;
+
+    @Enumerated(EnumType.STRING)
+    private PreferredTime preferredTime = PreferredTime.NONE;
+
+    @Enumerated(EnumType.STRING)
+    private InterviewProcess interviewProcess = InterviewProcess.WAITING;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)

@@ -1,8 +1,7 @@
 package com.exadel.backendservice.service.impl;
 
-import com.exadel.backendservice.dto.resp.LocationDto;
-import com.exadel.backendservice.entity.Country;
-import com.exadel.backendservice.mapper.converter.LocationMapper;
+import com.exadel.backendservice.dto.resp.CountryWithCityDto;
+import com.exadel.backendservice.mapper.converter.CountryWithCitiesMapper;
 import com.exadel.backendservice.repository.CountryRepository;
 import com.exadel.backendservice.service.LocationService;
 import lombok.extern.slf4j.Slf4j;
@@ -16,18 +15,18 @@ import java.util.List;
 public class LocationServiceImpl implements LocationService {
 
     private final CountryRepository countryRepository;
-    private final LocationMapper locationMapper;
+    private final CountryWithCitiesMapper countryWithCitiesMapper;
 
     @Autowired
-    public LocationServiceImpl(CountryRepository countryRepository, LocationMapper locationMapper) {
+    public LocationServiceImpl(CountryRepository countryRepository, CountryWithCitiesMapper countryWithCitiesMapper) {
         this.countryRepository = countryRepository;
-        this.locationMapper = locationMapper;
+        this.countryWithCitiesMapper = countryWithCitiesMapper;
     }
 
     @Override
-    public List<LocationDto> getAllCountriesWithCities() {
-        List<LocationDto> locationDtos = locationMapper.toDto(countryRepository.findAll());
-        log.debug("Location Dto list -> {}", locationDtos);
-        return locationDtos;
+    public List<CountryWithCityDto> getAllCountriesWithCities() {
+        List<CountryWithCityDto> countryWithCityDtos = countryWithCitiesMapper.toDto(countryRepository.findAll());
+        log.debug("Location Dto list -> {}", countryWithCityDtos);
+        return countryWithCityDtos;
     }
 }

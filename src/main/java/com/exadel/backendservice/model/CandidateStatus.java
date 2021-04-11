@@ -1,4 +1,4 @@
-package com.exadel.backendservice.entity;
+package com.exadel.backendservice.model;
 
 public enum CandidateStatus {
     GREEN, RED, YELLOW

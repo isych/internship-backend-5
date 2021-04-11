@@ -8,7 +8,7 @@ import java.util.List;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class LocationDto extends AbstractDto {
+public class CountryWithCityDto extends AbstractDto {
     private String name;
     private List<String> cities;
 

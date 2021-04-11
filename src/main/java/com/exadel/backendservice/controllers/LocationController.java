@@ -1,6 +1,6 @@
 package com.exadel.backendservice.controllers;
 
-import com.exadel.backendservice.dto.resp.LocationDto;
+import com.exadel.backendservice.dto.resp.CountryWithCityDto;
 import com.exadel.backendservice.service.LocationService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -27,8 +27,8 @@ public class LocationController {
 
     @GetMapping
     @ApiOperation(value = "Метод для получения списка со странами и их городами")
-    public ResponseEntity<List<LocationDto>> getCountriesWithCitiesDto() {
-        List<LocationDto> locationDtos = locationService.getAllCountriesWithCities();
-        return new ResponseEntity<>(locationDtos, HttpStatus.OK);
+    public ResponseEntity<List<CountryWithCityDto>> getCountriesWithCitiesDto() {
+        List<CountryWithCityDto> countryWithCityDtos = locationService.getAllCountriesWithCities();
+        return new ResponseEntity<>(countryWithCityDtos, HttpStatus.OK);
     }
 }
