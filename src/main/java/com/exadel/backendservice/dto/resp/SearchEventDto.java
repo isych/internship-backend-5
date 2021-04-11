@@ -14,7 +14,6 @@ import java.util.List;
 public class SearchEventDto extends AbstractDto {
     private Integer id;
     private LocalDateTime startDate;
-    private LocalDateTime endDate;
     private List<LocationDto> locations;
     private EventType type;
     private String pictureUrl;

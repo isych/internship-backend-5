@@ -9,6 +9,9 @@ import com.exadel.backendservice.service.EventService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -47,5 +50,13 @@ public class EventServiceImpl implements EventService {
         return Arrays.stream(EventType.values())
                 .map(Enum::toString)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Page<SearchEventDto> getEventsPage(Pageable pageable) {
+        Page<Event> page = eventRepository.findAll(pageable);
+        List<SearchEventDto> eventList = page.get().map(eventMapper::toDto).collect(Collectors.toList());
+        log.debug("SearchEventDto -> {}", eventList);
+        return new PageImpl<>(eventList);
     }
 }

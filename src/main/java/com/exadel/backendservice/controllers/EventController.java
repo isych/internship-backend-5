@@ -5,6 +5,8 @@ import com.exadel.backendservice.service.EventService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,5 +34,11 @@ public class EventController {
     @GetMapping("/types")
     public ResponseEntity<List<String>> getEventTypes() {
         return new ResponseEntity<>(eventService.getEventTypes(), HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "Метод для частичного извлечения списка событий")
+    @GetMapping("/page")
+    public ResponseEntity<Page<SearchEventDto>> getPageOfEvents(Pageable pageable) {
+        return new ResponseEntity<>(eventService.getEventsPage(pageable), HttpStatus.OK);
     }
 }
