@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Data
@@ -27,6 +28,11 @@ public class City extends AbstractEntity {
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @OneToMany(mappedBy = "city")
-    private Set<Candidate> candidates;
+    private Set<Candidate> candidates = new HashSet<>();
+
+    @ManyToMany(mappedBy = "cities")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    private Set<Event> events = new HashSet<>();
 
 }
