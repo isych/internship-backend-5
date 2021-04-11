@@ -1,8 +1,9 @@
 package com.exadel.backendservice.controllers;
 
 import com.exadel.backendservice.dto.req.RegisterCandidateDto;
-import com.exadel.backendservice.exception.ApiRequestException;
-import com.exadel.backendservice.exception.ApiResponseException;
+import com.exadel.backendservice.entity.Candidate;
+import com.exadel.backendservice.exception.ApiRequestExceptionDto;
+import com.exadel.backendservice.exception.ApiResponseExceptionDto;
 import com.exadel.backendservice.service.CandidateService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -32,14 +33,16 @@ public class CandidateController {
     @ApiOperation(value = "Метод для регистрации нового пользователя ")
     @PostMapping
     public ResponseEntity<String> registerCandidate(@RequestBody @Valid RegisterCandidateDto candidateDto){
+
         if (Objects.isNull(candidateDto)) {
-            throw new ApiRequestException("Недостаточно данных для регистрации кандидата");
+            throw new ApiRequestExceptionDto("Dto level exception (Candidate)");
         }
 
-        if(Objects.isNull(candidateService.registerCandidate(candidateDto))){
-            throw new ApiResponseException("Кандидат не зарегистрирован в системе");
+        Candidate candidateWithId = candidateService.registerCandidate(candidateDto);
+        if(Objects.isNull(candidateWithId)){
+            throw new ApiResponseExceptionDto("Entity Level Exception (Candidate)");
         }
 
-        return  new ResponseEntity<>("Регистрация кандидата прошла успешно", HttpStatus.CREATED);
+        return  new ResponseEntity("Candidate was created", HttpStatus.CREATED);
     }
 }

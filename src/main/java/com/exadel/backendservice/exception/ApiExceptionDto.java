@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
-public class ApiException {
+public class ApiExceptionDto {
     private final String massage;
     private final Throwable throwable;
     private final HttpStatus httpStatus;
