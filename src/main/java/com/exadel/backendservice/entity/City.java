@@ -1,14 +1,10 @@
 package com.exadel.backendservice.entity;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Set;
 
-@Data
 @Entity
 @Table(name = "city")
 @NoArgsConstructor
@@ -29,4 +25,8 @@ public class City extends AbstractEntity {
     @OneToMany(mappedBy = "city")
     private Set<Candidate> candidates;
 
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @OneToMany(mappedBy = "city")
+    private Set<Event> events;
 }

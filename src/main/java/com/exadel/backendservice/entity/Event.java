@@ -50,5 +50,13 @@ public class Event extends AbstractEntity {
     @ToString.Exclude
     private Set<EventStack> eventStack = new HashSet<>();
 
+    @ManyToOne
+    @JoinColumn(name = "city", nullable = false)
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    private City city;
+
+    @Column(name = "picture_url")
+    private String pictureUrl;
 
 }
