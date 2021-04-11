@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@Data
 @Table(name = "city")
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
@@ -30,9 +31,4 @@ public class City extends AbstractEntity {
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private Set<Event> events = new HashSet<>();
-
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
-    @OneToMany(mappedBy = "city")
-    private Set<Event> events;
 }
