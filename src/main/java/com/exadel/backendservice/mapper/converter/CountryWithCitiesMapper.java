@@ -1,6 +1,6 @@
 package com.exadel.backendservice.mapper.converter;
 
-import com.exadel.backendservice.dto.resp.LocationDto;
+import com.exadel.backendservice.dto.resp.CountryWithCityDto;
 import com.exadel.backendservice.entity.City;
 import com.exadel.backendservice.entity.Country;
 import com.exadel.backendservice.mapper.AbstractMapper;
@@ -10,21 +10,21 @@ import javax.annotation.PostConstruct;
 import java.util.stream.Collectors;
 
 @Component
-public class LocationMapper extends AbstractMapper<Country, LocationDto> {
+public class CountryWithCitiesMapper extends AbstractMapper<Country, CountryWithCityDto> {
 
-    public LocationMapper() {
-        super(Country.class, LocationDto.class);
+    public CountryWithCitiesMapper() {
+        super(Country.class, CountryWithCityDto.class);
     }
 
     @PostConstruct
     public void setupMapper() {
-        mapper.createTypeMap(Country.class, LocationDto.class)
-                .addMappings(m -> m.skip(LocationDto::setCities))
+        mapper.createTypeMap(Country.class, CountryWithCityDto.class)
+                .addMappings(m -> m.skip(CountryWithCityDto::setCities))
                 .setPostConverter(toDtoConverter());
     }
 
     @Override
-    public void mapSpecificFields(Country source, LocationDto destination) {
+    public void mapSpecificFields(Country source, CountryWithCityDto destination) {
         destination.setCities(source.getCities().stream()
                 .map(City::getName)
                 .collect(Collectors.toList()));
