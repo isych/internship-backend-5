@@ -1,14 +1,15 @@
 package com.exadel.backendservice.service.impl;
 
+import com.exadel.backendservice.dto.resp.DetailedEventDto;
 import com.exadel.backendservice.dto.resp.SearchEventDto;
 import com.exadel.backendservice.entity.Event;
+import com.exadel.backendservice.mapper.converter.DetailedEventMapper;
 import com.exadel.backendservice.mapper.converter.SearchEventMapper;
 import com.exadel.backendservice.model.EventType;
 import com.exadel.backendservice.repository.EventRepository;
 import com.exadel.backendservice.service.EventService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.convert.ConversionService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -24,25 +25,13 @@ import java.util.stream.Collectors;
 public class EventServiceImpl implements EventService {
 
     private final EventRepository eventRepository;
+
+    private final DetailedEventMapper detailedEventMapper;
     private final SearchEventMapper eventMapper;
 
     @Override
     public Event saveEvent(Event event) {
         return eventRepository.save(event);
-    }
-
-    @Override
-    public List<SearchEventDto> getAllEvents() {
-        log.debug("Get all events from DB method");
-        List<Event> eventsList = eventRepository.findAll();
-        log.trace("Event list from DB: {}", eventsList.toString());
-        List<SearchEventDto> eventDtos = eventMapper.toDto(eventsList);
-//        List<EventWithLabelAndDirectionDto> eventDtos = eventsList.stream()
-//                .map(entity -> conversionService.convert(entity, EventWithLabelAndDirectionDto.class))
-//                .collect(Collectors.toList());
-        log.debug("EventDto list: {}", eventDtos.toString());
-        log.debug("Finish method");
-        return eventDtos;
     }
 
     @Override
@@ -58,5 +47,14 @@ public class EventServiceImpl implements EventService {
         List<SearchEventDto> eventList = page.get().map(eventMapper::toDto).collect(Collectors.toList());
         log.debug("SearchEventDto -> {}", eventList);
         return new PageImpl<>(eventList);
+    }
+
+    @Override
+    public DetailedEventDto getEventById(int id) {
+
+        Event event = eventRepository.findById(id).stream().findAny().orElse(null);
+        DetailedEventDto detailedEventDto = detailedEventMapper.toDto(event);
+        log.debug("DetailedEventFto -> {}", detailedEventDto);
+        return detailedEventDto;
     }
 }
