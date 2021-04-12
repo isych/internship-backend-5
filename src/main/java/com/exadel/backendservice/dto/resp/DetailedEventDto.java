@@ -1,6 +1,7 @@
 package com.exadel.backendservice.dto.resp;
 
 import com.exadel.backendservice.dto.AbstractDto;
+import com.exadel.backendservice.dto.LocationDto;
 import com.exadel.backendservice.entity.City;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -18,6 +19,5 @@ public class DetailedEventDto extends AbstractDto {
     private LocalDateTime startDate;
     private String type;
     private String pictureUrl;
-    private List<String> labels;
-    private List<CountryWithCityDto> countryWithCitiesDto;
+    private List<LocationDto> location;
 }
