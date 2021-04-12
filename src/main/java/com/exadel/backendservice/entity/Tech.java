@@ -5,26 +5,27 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "labels")
+@Table(name = "tech")
 @Data
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
-public class Label extends AbstractEntity {
+public class Tech extends AbstractEntity {
 
     @Column(length = 64, nullable = false)
     private String name;
 
-    @ManyToMany(mappedBy = "labels")
+    @ManyToMany(mappedBy = "techs")
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private Set<Event> events = new HashSet<>();
 
+    @OneToMany(mappedBy = "primaryTech")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    private Set<Candidate> candidates = new HashSet<>();
 }

@@ -10,4 +10,6 @@ public class InterviewDto extends AbstractDto {
     private String feedback;
     private String interviewerName;
     private InterviewerType interviewerType;
+
+    //TODO time
 }

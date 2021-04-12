@@ -23,7 +23,7 @@ public class SearchCandidateMapper extends AbstractMapper<Candidate, SearchCandi
 
     @Override
     public void mapSpecificFields(Candidate source, SearchCandidateDto destination) {
-        String name = source.getEventStack().getEvent().getName();
+        String name = source.getEvent().getName();
         destination.setEventName(name);
     }
 }

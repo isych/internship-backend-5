@@ -14,5 +14,5 @@ public class RegisterCandidateDto extends AbstractDto {
     private String skype;
     private String cv;
     private String city;
-    private Integer eventStackId;
+    private Integer eventId;
 }
