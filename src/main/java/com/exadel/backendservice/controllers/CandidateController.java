@@ -45,7 +45,7 @@ public class CandidateController {
         if(Objects.isNull(candidateWithIdDto)){
             throw new ApiResponseExceptionDto("Entity Level Exception (Candidate)");
         }
-        return  new ResponseEntity(candidateWithIdDto, HttpStatus.CREATED);
+        return  new ResponseEntity<>(candidateWithIdDto, HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "Метод для частичного извлечения кандидатов")
@@ -62,6 +62,6 @@ public class CandidateController {
     @ApiOperation(value = "Метод для извлечения кандидата по id")
     @GetMapping(value = "/{id}")
     public ResponseEntity<DetailedCandidateDto> getDetailedCandidateDtoBy(@RequestParam(name = "id") Integer id){
-        return new ResponseEntity(candidateService.getDetailedCandidateDto(id), HttpStatus.OK);
+        return new ResponseEntity<>(candidateService.getDetailedCandidateDto(id), HttpStatus.OK);
     }
 }
