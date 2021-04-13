@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Objects;
 
 @RestController
@@ -54,5 +55,23 @@ public class CandidateController {
     @GetMapping
     public ResponseEntity<Page<SearchCandidateDto>> getCandidatePage(Pageable pageable) {
         return new ResponseEntity<>(candidateService.getPageOfCandidates(pageable), HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "Метод для получения всех статусов кандидата")
+    @GetMapping("/statuses")
+    public ResponseEntity<List<String>> getStatuses() {
+        return new ResponseEntity<>(candidateService.getAllStatuses(), HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "Метод для получения всех статусов интервью кандидата")
+    @GetMapping("/interview-statuses")
+    public ResponseEntity<List<String>> getInterviewStatuses() {
+        return new ResponseEntity<>(candidateService.getInterviewStatuses(), HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "Метод для получения всех значений предпочитаемого времени кандидата ")
+    @GetMapping("/preferred-times")
+    public ResponseEntity<List<String>> getPreferredTime() {
+        return new ResponseEntity<>(candidateService.getAllPreferredTime(), HttpStatus.OK);
     }
 }
