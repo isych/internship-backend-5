@@ -1,6 +1,9 @@
 package com.exadel.backendservice.entity;
 
-import lombok.*;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -14,7 +17,7 @@ import java.util.Set;
 @ToString(callSuper = true)
 public class City extends AbstractEntity {
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", nullable = false, unique = true)
     private String name;
 
     @ManyToOne

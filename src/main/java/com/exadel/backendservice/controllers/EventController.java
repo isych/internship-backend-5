@@ -42,4 +42,10 @@ public class EventController {
     public ResponseEntity<DetailedEventDto> getEventById(@PathVariable(name = "id") int id) {
         return new ResponseEntity<>(eventService.getEventById(id), HttpStatus.OK);
     }
+
+    @ApiOperation(value = "Метод проверки уникальности имени события")
+    @GetMapping("uniqueness/{name}")
+    public ResponseEntity<Boolean> checkUniqueness(@PathVariable(name = "name") String name) {
+        return new ResponseEntity<>(eventService.isUnique(name), HttpStatus.OK);
+    }
 }

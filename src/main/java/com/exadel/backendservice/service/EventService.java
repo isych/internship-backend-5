@@ -16,4 +16,6 @@ public interface EventService {
     Page<SearchEventDto> getEventsPage(Pageable pageable);
 
     DetailedEventDto getEventById(int id);
+
+    Boolean isUnique(String name);
 }
