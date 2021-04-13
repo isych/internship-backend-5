@@ -12,7 +12,7 @@ import java.util.List;
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class SearchEventDto extends AbstractDto {
-    private Integer id;
+    private String name;
     private LocalDateTime startDate;
     private List<LocationDto> locations;
     private EventType type;

@@ -16,8 +16,6 @@ public class DetailedCandidateMapper extends AbstractMapper<Candidate, DetailedC
         mapper.createTypeMap(Candidate.class, DetailedCandidateDto.class)
                 .addMappings(m -> m.skip(DetailedCandidateDto::setCity))
                 .addMappings(m -> m.skip(DetailedCandidateDto::setCountry))
-                .addMappings(m -> m.skip(DetailedCandidateDto::setEventStackId))
-                .addMappings(m -> m.skip(DetailedCandidateDto::setEventStackName))
                 .addMappings(m -> m.skip(DetailedCandidateDto::setEventName))
                 .addMappings(m -> m.skip(DetailedCandidateDto::setInterviews))
                 .setPostConverter(toDtoConverter());
@@ -27,14 +25,10 @@ public class DetailedCandidateMapper extends AbstractMapper<Candidate, DetailedC
     public void mapSpecificFields(Candidate source, DetailedCandidateDto destination) {
         String city = source.getCity().getName();
         String country = source.getCity().getCountry().getName();
-        Integer eventStackId = source.getEventStack().getId();
-        String eventStackName = source.getEventStack().getName();
-        String eventName = source.getEventStack().getEvent().getName();
+        String eventName = source.getEvent().getName();
         //TODO InterviewDto
         destination.setCity(city);
         destination.setCountry(country);
-        destination.setEventStackId(eventStackId);
-        destination.setEventStackName(eventStackName);
         destination.setEventName(eventName);
     }
 }

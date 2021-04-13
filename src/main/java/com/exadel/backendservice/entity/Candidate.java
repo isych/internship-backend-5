@@ -50,6 +50,10 @@ public class Candidate extends AbstractEntity {
     private City city;
 
     @ManyToOne
-    @JoinColumn(name = "event_stack_id", nullable = false)
-    private EventStack eventStack;
+    @JoinColumn(name = "event_id", nullable = false)
+    private Event event;
+
+    @ManyToOne
+    @JoinColumn(name = "tech_id", nullable = false)
+    private Tech primaryTech;
 }

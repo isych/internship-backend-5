@@ -17,13 +17,16 @@ public class SearchCandidateMapper extends AbstractMapper<Candidate, SearchCandi
     @PostConstruct
     public void setupMapper() {
         mapper.createTypeMap(Candidate.class, SearchCandidateDto.class)
-                .addMappings(m -> m.skip(SearchCandidateDto::setEventName))
+                .addMappings(m -> m.skip(SearchCandidateDto::setEvent))
+                .addMappings(m -> m.skip(SearchCandidateDto::setPrimaryTech))
                 .setPostConverter(toDtoConverter());
     }
 
     @Override
     public void mapSpecificFields(Candidate source, SearchCandidateDto destination) {
-        String name = source.getEventStack().getEvent().getName();
-        destination.setEventName(name);
+        String event = source.getEvent().getName();
+        String tech = source.getPrimaryTech().getName();
+        destination.setEvent(event);
+        destination.setPrimaryTech(tech);
     }
 }

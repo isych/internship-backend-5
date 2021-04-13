@@ -35,23 +35,23 @@ public class Event extends AbstractEntity {
     private LocalDateTime endDate;
 
     @Column(nullable = false)
-    @Type(type = "com.exadel.backendservice.model.usertype.EventTypeUserType")
+    @Enumerated(EnumType.STRING)
     private EventType type;
 
     @ManyToMany(cascade = CascadeType.ALL)
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @JoinTable(
-            name = "event_label",
+            name = "event_tech",
             joinColumns = {@JoinColumn(name = "event_id")},
-            inverseJoinColumns = {@JoinColumn(name = "label_id")}
+            inverseJoinColumns = {@JoinColumn(name = "tech_id")}
     )
-    private Set<Label> labels = new HashSet<>();
+    private Set<Tech> techs = new HashSet<>();
 
     @OneToMany(mappedBy = "event")
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    private Set<EventStack> eventStack = new HashSet<>();
+    private Set<Candidate> candidates = new HashSet<>();
 
     @ManyToMany(cascade = CascadeType.ALL)
     @EqualsAndHashCode.Exclude

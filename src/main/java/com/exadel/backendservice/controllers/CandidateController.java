@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import javax.validation.Valid;
 import java.util.Objects;
 
@@ -35,18 +36,18 @@ public class CandidateController {
      */
     @ApiOperation(value = "Метод для регистрации нового пользователя ")
     @PostMapping
-    public ResponseEntity<String> registerCandidate(@RequestBody @Valid RegisterCandidateDto candidateDto){
+    public ResponseEntity<String> registerCandidate(@RequestBody @Valid RegisterCandidateDto candidateDto) {
 
         if (Objects.isNull(candidateDto)) {
             throw new ApiRequestExceptionDto("Dto level exception (Candidate)");
         }
 
         Candidate candidateWithId = candidateService.registerCandidate(candidateDto);
-        if(Objects.isNull(candidateWithId)){
+        if (Objects.isNull(candidateWithId)) {
             throw new ApiResponseExceptionDto("Entity Level Exception (Candidate)");
         }
 
-        return  new ResponseEntity("Candidate was created", HttpStatus.CREATED);
+        return new ResponseEntity<>("Candidate was created", HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "Метод для частичного извлечения кандидатов")

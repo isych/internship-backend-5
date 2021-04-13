@@ -35,10 +35,6 @@ public class DetailedCandidateDto extends AbstractDto {
 
     private PreferredTime preferredTime;
 
-    private Integer eventStackId;
-
-    private String eventStackName;
-
     private String eventName;
 
     private InterviewProcess interviewProcess;
