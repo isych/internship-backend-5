@@ -36,7 +36,7 @@ public class CandidateController {
      *
      * @param registerCandidateDto - объект, передаваемый из формы регистраци кандидатов
      */
-    @ApiOperation(value = "Метод для регистрации нового пользователя")
+    @ApiOperation(value = "Метод для регистрации нового кандидата")
     @PostMapping
     public ResponseEntity<CandidateWithIdDto> registerCandidate(@RequestBody @Valid RegisterCandidateDto registerCandidateDto) {
         CandidateWithIdDto candidateWithIdDto;

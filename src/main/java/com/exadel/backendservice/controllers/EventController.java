@@ -2,8 +2,8 @@ package com.exadel.backendservice.controllers;
 
 import com.exadel.backendservice.dto.req.CreateEventDto;
 import com.exadel.backendservice.dto.resp.DetailedEventDto;
+import com.exadel.backendservice.dto.resp.EventWithIdDto;
 import com.exadel.backendservice.dto.resp.SearchEventDto;
-import com.exadel.backendservice.entity.Event;
 import com.exadel.backendservice.exception.ApiRequestException;
 import com.exadel.backendservice.exception.ApiResponseException;
 import com.exadel.backendservice.service.EventService;
@@ -54,14 +54,14 @@ public class EventController {
 
     @ApiOperation("Метод для создания события")
     @PostMapping("/create")
-    public ResponseEntity<String> createEvent(@RequestBody @Valid CreateEventDto eventDto) {
+    public ResponseEntity<EventWithIdDto> createEvent(@RequestBody @Valid CreateEventDto eventDto) {
         if (Objects.isNull(eventDto) || !eventService.isUnique(eventDto.getName())) {
             throw new ApiRequestException("Cannot create event. Invalid input data.");
         }
-        Event event = eventService.saveEvent(eventDto);
-        if (Objects.isNull(event)) {
+        EventWithIdDto eventWithId = eventService.saveEvent(eventDto);
+        if (Objects.isNull(eventWithId)) {
             throw new ApiResponseException("Cannot create event. Internal error.");
         }
-        return new ResponseEntity<>("Event created", HttpStatus.OK);
+        return new ResponseEntity<>(eventWithId, HttpStatus.OK);
     }
 }

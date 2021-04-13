@@ -8,8 +8,8 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 
 @Component
-public class CandidateMapper extends AbstractMapper <Candidate, CandidateWithIdDto>{
-    public CandidateMapper() {
+public class CandidateWithIdMapper extends AbstractMapper<Candidate, CandidateWithIdDto> {
+    public CandidateWithIdMapper() {
         super(Candidate.class, CandidateWithIdDto.class);
     }
 

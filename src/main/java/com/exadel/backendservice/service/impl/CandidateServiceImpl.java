@@ -5,7 +5,7 @@ import com.exadel.backendservice.dto.resp.CandidateWithIdDto;
 import com.exadel.backendservice.dto.resp.DetailedCandidateDto;
 import com.exadel.backendservice.dto.resp.SearchCandidateDto;
 import com.exadel.backendservice.entity.Candidate;
-import com.exadel.backendservice.mapper.converter.CandidateMapper;
+import com.exadel.backendservice.mapper.converter.CandidateWithIdMapper;
 import com.exadel.backendservice.mapper.converter.DetailedCandidateMapper;
 import com.exadel.backendservice.mapper.converter.RegisterCandidateMapper;
 import com.exadel.backendservice.mapper.converter.SearchCandidateMapper;
@@ -35,7 +35,7 @@ public class CandidateServiceImpl implements CandidateService {
     private final RegisterCandidateMapper registerCandidateMapper;
     private final SearchCandidateMapper searchCandidateMapper;
     private final DetailedCandidateMapper detailedCandidateMapper;
-    private final CandidateMapper candidateMapper;
+    private final CandidateWithIdMapper candidateMapper;
 
     @Override
     public CandidateWithIdDto registerCandidate(RegisterCandidateDto registerCandidateDto) {
@@ -57,31 +57,27 @@ public class CandidateServiceImpl implements CandidateService {
     @Override
     public DetailedCandidateDto getDetailedCandidateDto(Integer id) {
         Candidate candidate = candidateRepository.getOne(id);
-        DetailedCandidateDto detailedCandidateDto = detailedCandidateMapper.toDto(candidate);
-        return detailedCandidateDto;
+        return detailedCandidateMapper.toDto(candidate);
     }
 
     @Override
     public List<String> getAllStatuses() {
-        List<String> statusList = Stream.of(CandidateStatus.values())
+        return Stream.of(CandidateStatus.values())
                 .map(Enum::name)
                 .collect(Collectors.toList());
-        return statusList;
     }
 
     @Override
     public List<String> getInterviewStatuses() {
-        List<String> interviewStatusesList = Stream.of(InterviewProcess.values())
+        return Stream.of(InterviewProcess.values())
                 .map(Enum::name)
                 .collect(Collectors.toList());
-        return interviewStatusesList;
     }
 
     @Override
     public List<String> getAllPreferredTime() {
-        List<String> preferredTimesList = Stream.of(PreferredTime.values())
+        return Stream.of(PreferredTime.values())
                 .map(Enum::name)
                 .collect(Collectors.toList());
-        return preferredTimesList;
     }
 }
