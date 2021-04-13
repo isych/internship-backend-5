@@ -3,9 +3,11 @@ package com.exadel.backendservice.mapper.converter;
 import com.exadel.backendservice.dto.resp.DetailedCandidateDto;
 import com.exadel.backendservice.entity.Candidate;
 import com.exadel.backendservice.mapper.AbstractMapper;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 
+@Component
 public class DetailedCandidateMapper extends AbstractMapper<Candidate, DetailedCandidateDto> {
     public DetailedCandidateMapper() {
         super(Candidate.class, DetailedCandidateDto.class);
