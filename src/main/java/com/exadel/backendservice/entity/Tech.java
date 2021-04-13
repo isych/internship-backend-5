@@ -16,7 +16,7 @@ import java.util.Set;
 @NoArgsConstructor
 public class Tech extends AbstractEntity {
 
-    @Column(length = 64, nullable = false)
+    @Column(length = 64, nullable = false, unique = true)
     private String name;
 
     @ManyToMany(mappedBy = "techs")

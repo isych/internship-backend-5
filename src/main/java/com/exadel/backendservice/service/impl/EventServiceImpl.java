@@ -57,4 +57,9 @@ public class EventServiceImpl implements EventService {
         log.debug("DetailedEventFto -> {}", detailedEventDto);
         return detailedEventDto;
     }
+
+    @Override
+    public Boolean isUnique(String name) {
+        return !eventRepository.existsByName(name);
+    }
 }
