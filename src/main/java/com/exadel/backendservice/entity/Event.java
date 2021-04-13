@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -19,7 +18,7 @@ import java.util.Set;
 @EqualsAndHashCode(callSuper = true)
 public class Event extends AbstractEntity {
 
-    @Column(length = 64, nullable = false)
+    @Column(length = 64, nullable = false, unique = true)
     private String name;
 
     @Column(length = 256, nullable = false)
@@ -35,23 +34,23 @@ public class Event extends AbstractEntity {
     private LocalDateTime endDate;
 
     @Column(nullable = false)
-    @Type(type = "com.exadel.backendservice.model.usertype.EventTypeUserType")
+    @Enumerated(EnumType.STRING)
     private EventType type;
 
     @ManyToMany(cascade = CascadeType.ALL)
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @JoinTable(
-            name = "event_label",
+            name = "event_tech",
             joinColumns = {@JoinColumn(name = "event_id")},
-            inverseJoinColumns = {@JoinColumn(name = "label_id")}
+            inverseJoinColumns = {@JoinColumn(name = "tech_id")}
     )
-    private Set<Label> labels = new HashSet<>();
+    private Set<Tech> techs = new HashSet<>();
 
     @OneToMany(mappedBy = "event")
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    private Set<EventStack> eventStack = new HashSet<>();
+    private Set<Candidate> candidates = new HashSet<>();
 
     @ManyToMany(cascade = CascadeType.ALL)
     @EqualsAndHashCode.Exclude

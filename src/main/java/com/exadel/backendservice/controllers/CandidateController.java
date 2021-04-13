@@ -4,8 +4,8 @@ import com.exadel.backendservice.dto.req.RegisterCandidateDto;
 import com.exadel.backendservice.dto.resp.CandidateWithIdDto;
 import com.exadel.backendservice.dto.resp.DetailedCandidateDto;
 import com.exadel.backendservice.dto.resp.SearchCandidateDto;
-import com.exadel.backendservice.exception.ApiRequestExceptionDto;
-import com.exadel.backendservice.exception.ApiResponseExceptionDto;
+import com.exadel.backendservice.exception.ApiRequestException;
+import com.exadel.backendservice.exception.ApiResponseException;
 import com.exadel.backendservice.service.CandidateService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -15,7 +15,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Objects;
 
 @RestController
@@ -36,16 +38,16 @@ public class CandidateController {
      */
     @ApiOperation(value = "Метод для регистрации нового пользователя")
     @PostMapping
-    public ResponseEntity<CandidateWithIdDto> registerCandidate(@RequestBody @Valid RegisterCandidateDto registerCandidateDto){
+    public ResponseEntity<CandidateWithIdDto> registerCandidate(@RequestBody @Valid RegisterCandidateDto registerCandidateDto) {
         CandidateWithIdDto candidateWithIdDto;
         if (Objects.isNull(registerCandidateDto)) {
-            throw new ApiRequestExceptionDto("Dto level exception (Candidate)");
+            throw new ApiRequestException("Dto level exception (Candidate)");
         }
         candidateWithIdDto = candidateService.registerCandidate(registerCandidateDto);
-        if(Objects.isNull(candidateWithIdDto)){
-            throw new ApiResponseExceptionDto("Entity Level Exception (Candidate)");
+        if (Objects.isNull(candidateWithIdDto)) {
+            throw new ApiResponseException("Entity Level Exception (Candidate)");
         }
-        return  new ResponseEntity<>(candidateWithIdDto, HttpStatus.CREATED);
+        return new ResponseEntity<>(candidateWithIdDto, HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "Метод для частичного извлечения кандидатов")
@@ -61,7 +63,25 @@ public class CandidateController {
      */
     @ApiOperation(value = "Метод для извлечения кандидата по id")
     @GetMapping(value = "/{id}")
-    public ResponseEntity<DetailedCandidateDto> getDetailedCandidateDtoBy(@RequestParam(name = "id") Integer id){
+    public ResponseEntity<DetailedCandidateDto> getDetailedCandidateDtoBy(@RequestParam(name = "id") Integer id) {
         return new ResponseEntity<>(candidateService.getDetailedCandidateDto(id), HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "Метод для получения всех статусов кандидата")
+    @GetMapping("/statuses")
+    public ResponseEntity<List<String>> getStatuses() {
+        return new ResponseEntity<>(candidateService.getAllStatuses(), HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "Метод для получения всех статусов интервью кандидата")
+    @GetMapping("/interview-statuses")
+    public ResponseEntity<List<String>> getInterviewStatuses() {
+        return new ResponseEntity<>(candidateService.getInterviewStatuses(), HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "Метод для получения всех значений предпочитаемого времени кандидата ")
+    @GetMapping("/preferred-times")
+    public ResponseEntity<List<String>> getPreferredTime() {
+        return new ResponseEntity<>(candidateService.getAllPreferredTime(), HttpStatus.OK);
     }
 }

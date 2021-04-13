@@ -1,14 +1,17 @@
 package com.exadel.backendservice.service.impl;
 
+import com.exadel.backendservice.dto.req.CreateEventDto;
+import com.exadel.backendservice.dto.resp.DetailedEventDto;
 import com.exadel.backendservice.dto.resp.SearchEventDto;
 import com.exadel.backendservice.entity.Event;
+import com.exadel.backendservice.mapper.converter.CreateEventMapper;
+import com.exadel.backendservice.mapper.converter.DetailedEventMapper;
 import com.exadel.backendservice.mapper.converter.SearchEventMapper;
 import com.exadel.backendservice.model.EventType;
 import com.exadel.backendservice.repository.EventRepository;
 import com.exadel.backendservice.service.EventService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.convert.ConversionService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -24,25 +27,16 @@ import java.util.stream.Collectors;
 public class EventServiceImpl implements EventService {
 
     private final EventRepository eventRepository;
-    private final SearchEventMapper eventMapper;
+
+    private final DetailedEventMapper detailedEventMapper;
+    private final SearchEventMapper searchEventMapper;
+    private final CreateEventMapper createEventMapper;
 
     @Override
-    public Event saveEvent(Event event) {
-        return eventRepository.save(event);
-    }
-
-    @Override
-    public List<SearchEventDto> getAllEvents() {
-        log.debug("Get all events from DB method");
-        List<Event> eventsList = eventRepository.findAll();
-        log.trace("Event list from DB: {}", eventsList.toString());
-        List<SearchEventDto> eventDtos = eventMapper.toDto(eventsList);
-//        List<EventWithLabelAndDirectionDto> eventDtos = eventsList.stream()
-//                .map(entity -> conversionService.convert(entity, EventWithLabelAndDirectionDto.class))
-//                .collect(Collectors.toList());
-        log.debug("EventDto list: {}", eventDtos.toString());
-        log.debug("Finish method");
-        return eventDtos;
+    public Event saveEvent(CreateEventDto dto) {
+        Event entity = createEventMapper.toEntity(dto);
+        log.debug("Create entity -> {}", entity);
+        return eventRepository.save(entity);
     }
 
     @Override
@@ -55,8 +49,22 @@ public class EventServiceImpl implements EventService {
     @Override
     public Page<SearchEventDto> getEventsPage(Pageable pageable) {
         Page<Event> page = eventRepository.findAll(pageable);
-        List<SearchEventDto> eventList = page.get().map(eventMapper::toDto).collect(Collectors.toList());
+        List<SearchEventDto> eventList = page.get().map(searchEventMapper::toDto).collect(Collectors.toList());
         log.debug("SearchEventDto -> {}", eventList);
         return new PageImpl<>(eventList);
+    }
+
+    @Override
+    public DetailedEventDto getEvent(String name) {
+
+        Event event = eventRepository.findByName(name).stream().findAny().orElse(null);
+        DetailedEventDto detailedEventDto = detailedEventMapper.toDto(event);
+        log.debug("DetailedEventFto -> {}", detailedEventDto);
+        return detailedEventDto;
+    }
+
+    @Override
+    public Boolean isUnique(String name) {
+        return !eventRepository.existsByName(name);
     }
 }
