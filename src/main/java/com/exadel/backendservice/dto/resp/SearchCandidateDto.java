@@ -8,6 +8,8 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class SearchCandidateDto extends AbstractDto {
+    private Integer id;
+
     private String primaryTech;
 
     private String fullName;

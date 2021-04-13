@@ -2,10 +2,12 @@ package com.exadel.backendservice.service.impl;
 
 import com.exadel.backendservice.dto.req.CreateEventDto;
 import com.exadel.backendservice.dto.resp.DetailedEventDto;
+import com.exadel.backendservice.dto.resp.EventWithIdDto;
 import com.exadel.backendservice.dto.resp.SearchEventDto;
 import com.exadel.backendservice.entity.Event;
 import com.exadel.backendservice.mapper.converter.CreateEventMapper;
 import com.exadel.backendservice.mapper.converter.DetailedEventMapper;
+import com.exadel.backendservice.mapper.converter.EventWithIdMapper;
 import com.exadel.backendservice.mapper.converter.SearchEventMapper;
 import com.exadel.backendservice.model.EventType;
 import com.exadel.backendservice.repository.EventRepository;
@@ -31,12 +33,15 @@ public class EventServiceImpl implements EventService {
     private final DetailedEventMapper detailedEventMapper;
     private final SearchEventMapper searchEventMapper;
     private final CreateEventMapper createEventMapper;
+    private final EventWithIdMapper eventWithIdMapper;
 
     @Override
-    public Event saveEvent(CreateEventDto dto) {
+    public EventWithIdDto saveEvent(CreateEventDto dto) {
         Event entity = createEventMapper.toEntity(dto);
         log.debug("Create entity -> {}", entity);
-        return eventRepository.save(entity);
+        EventWithIdDto eventWithIdDto = eventWithIdMapper.toDto(eventRepository.save(entity));
+        log.debug("Event with id dto -> {}", eventWithIdDto);
+        return eventWithIdDto;
     }
 
     @Override
