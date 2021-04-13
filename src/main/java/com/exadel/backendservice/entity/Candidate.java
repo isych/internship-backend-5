@@ -55,5 +55,5 @@ public class Candidate extends AbstractEntity {
 
     @ManyToOne
     @JoinColumn(name = "tech_id", nullable = false)
-    private Event primaryTech;
+    private Tech primaryTech;
 }

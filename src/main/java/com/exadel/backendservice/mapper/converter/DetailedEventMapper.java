@@ -29,7 +29,6 @@ public class DetailedEventMapper extends AbstractMapper<Event, DetailedEventDto>
         List<LocationDto> locationDtoList = source.getCities().stream()
                 .map(city -> new LocationDto(city.getName(), city.getCountry().getName()))
                 .collect(Collectors.toList());
-
         destination.setLocation(locationDtoList);
     }
 }

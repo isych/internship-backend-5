@@ -35,7 +35,7 @@ public class Event extends AbstractEntity {
     private LocalDateTime endDate;
 
     @Column(nullable = false)
-    @Type(type = "com.exadel.backendservice.model.usertype.EventTypeUserType")
+    @Enumerated(EnumType.STRING)
     private EventType type;
 
     @ManyToMany(cascade = CascadeType.ALL)
