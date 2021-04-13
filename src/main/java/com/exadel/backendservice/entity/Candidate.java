@@ -19,6 +19,7 @@ public class Candidate extends AbstractEntity {
 
     @Column(nullable = false)
     private String fullName;
+
     @Column(length = 100)
     private String summary;
 
