@@ -1,8 +1,10 @@
 package com.exadel.backendservice.service.impl;
 
+import com.exadel.backendservice.dto.req.CreateEventDto;
 import com.exadel.backendservice.dto.resp.DetailedEventDto;
 import com.exadel.backendservice.dto.resp.SearchEventDto;
 import com.exadel.backendservice.entity.Event;
+import com.exadel.backendservice.mapper.converter.CreateEventMapper;
 import com.exadel.backendservice.mapper.converter.DetailedEventMapper;
 import com.exadel.backendservice.mapper.converter.SearchEventMapper;
 import com.exadel.backendservice.model.EventType;
@@ -27,11 +29,14 @@ public class EventServiceImpl implements EventService {
     private final EventRepository eventRepository;
 
     private final DetailedEventMapper detailedEventMapper;
-    private final SearchEventMapper eventMapper;
+    private final SearchEventMapper searchEventMapper;
+    private final CreateEventMapper createEventMapper;
 
     @Override
-    public Event saveEvent(Event event) {
-        return eventRepository.save(event);
+    public Event saveEvent(CreateEventDto dto) {
+        Event entity = createEventMapper.toEntity(dto);
+        log.debug("Create entity -> {}", entity);
+        return eventRepository.save(entity);
     }
 
     @Override
@@ -44,15 +49,15 @@ public class EventServiceImpl implements EventService {
     @Override
     public Page<SearchEventDto> getEventsPage(Pageable pageable) {
         Page<Event> page = eventRepository.findAll(pageable);
-        List<SearchEventDto> eventList = page.get().map(eventMapper::toDto).collect(Collectors.toList());
+        List<SearchEventDto> eventList = page.get().map(searchEventMapper::toDto).collect(Collectors.toList());
         log.debug("SearchEventDto -> {}", eventList);
         return new PageImpl<>(eventList);
     }
 
     @Override
-    public DetailedEventDto getEventById(int id) {
+    public DetailedEventDto getEvent(String name) {
 
-        Event event = eventRepository.findById(id).stream().findAny().orElse(null);
+        Event event = eventRepository.findByName(name).stream().findAny().orElse(null);
         DetailedEventDto detailedEventDto = detailedEventMapper.toDto(event);
         log.debug("DetailedEventFto -> {}", detailedEventDto);
         return detailedEventDto;
