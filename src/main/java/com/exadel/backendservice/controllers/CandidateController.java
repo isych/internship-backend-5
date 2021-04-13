@@ -9,7 +9,7 @@ import com.exadel.backendservice.exception.ApiResponseException;
 import com.exadel.backendservice.service.CandidateService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -22,14 +22,10 @@ import java.util.Objects;
 
 @RestController
 @RequestMapping("/api/candidates")
+@RequiredArgsConstructor
 @Api(tags = "Контроллер для работы с кандидатами")
 public class CandidateController {
     private final CandidateService candidateService;
-
-    @Autowired
-    public CandidateController(CandidateService candidateService) {
-        this.candidateService = candidateService;
-    }
 
     /**
      * Метод регистрации нового кандидата
