@@ -1,32 +1,20 @@
 package com.exadel.backendservice.repository;
 
-import com.exadel.backendservice.ApplicationTestPropertyValues;
+import com.exadel.backendservice.AbstractTestConfig;
 import com.exadel.backendservice.entity.Role;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
-import org.testcontainers.containers.PostgreSQLContainer;
-import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 @Testcontainers
-class RoleEntityRepositoryTest {
-
-    @Container
-    static PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>("postgres:12.6-alpine");
+class RoleEntityRepositoryTest extends AbstractTestConfig {
 
     @Autowired
     private RoleEntityRepository repository;
-
-    @DynamicPropertySource
-    static void registerDynamicProperties(DynamicPropertyRegistry registry) {
-        ApplicationTestPropertyValues.populateRegistryFromContainers(registry, postgreSQLContainer);
-    }
 
     @Test
     void findByName() {
