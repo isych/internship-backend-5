@@ -14,7 +14,7 @@ public class RoutingTest {
 
     @DynamicPropertySource
     static void registerDynamicProperties(DynamicPropertyRegistry registry, PostgreSQLContainer<?> postgreSQLContainer) {
-        ApplicationTestPropertyValues.populateRegistryFromContainers(registry, postgreSQLContainer);
+        ApplicationTestPropertyValues.populateRegistryFromPostgresContainer(registry, postgreSQLContainer);
     }
 }
 
