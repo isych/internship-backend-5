@@ -25,6 +25,7 @@
         <flyway.version>7.7.1</flyway.version>
         <validation.api.version>2.0.1.Final</validation.api.version>
         <springfox.boot.starter.version>3.0.0</springfox.boot.starter.version>
+        <org.testcontainers.version>1.15.2</org.testcontainers.version>
     </properties>
 
     <dependencies>
@@ -107,6 +108,31 @@
             <artifactId>google-oauth-client-jetty</artifactId>
             <version>1.23.0</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>testcontainers</artifactId>
+            <version>${org.testcontainers.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>${org.testcontainers.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>${org.testcontainers.version}</version>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
     <build>
