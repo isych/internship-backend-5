@@ -1,5 +1,6 @@
 package com.exadel.backendservice.repository;
 
+import com.exadel.backendservice.AbstractTestConfig;
 import com.exadel.backendservice.ApplicationTestPropertyValues;
 import com.exadel.backendservice.entity.Role;
 import org.junit.jupiter.api.Test;
@@ -15,18 +16,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Testcontainers
-class RoleEntityRepositoryTest {
-
-    @Container
-    static PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>("postgres:12.6-alpine");
+class RoleEntityRepositoryTest extends AbstractTestConfig {
 
     @Autowired
     private RoleEntityRepository repository;
-
-    @DynamicPropertySource
-    static void registerDynamicProperties(DynamicPropertyRegistry registry) {
-        ApplicationTestPropertyValues.populateRegistryFromContainers(registry, postgreSQLContainer);
-    }
 
     @Test
     void findByName() {
