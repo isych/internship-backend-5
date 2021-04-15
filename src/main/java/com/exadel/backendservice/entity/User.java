@@ -36,4 +36,12 @@ public class User {
     @NonNull
     @Email
     private String email;
+
+    public User(String login,String password, Role roleEntity, String fio, String email) {
+        this.login = login;
+        this.password = password;
+        this.roleEntity = roleEntity;
+        this.fio = fio;
+        this.email = email;
+    }
 }

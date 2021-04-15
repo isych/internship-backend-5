@@ -1,7 +1,7 @@
 package com.exadel.backendservice.repository;
 
 import com.exadel.backendservice.ApplicationTestPropertyValues;
-import com.exadel.backendservice.entity.Role;
+import com.exadel.backendservice.entity.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 @Testcontainers
-class RoleEntityRepositoryTest {
+class UserEntityRepositoryTest {
 
     @Container
     static PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>("postgres:12.6-alpine");
@@ -26,23 +26,24 @@ class RoleEntityRepositoryTest {
     }
 
     @Autowired
-    private RoleEntityRepository repository;
+    private UserEntityRepository repository;
 
     @Test
-    void findByName() {
-        Role role_admin = repository.findByName("ROLE_ADMIN");
-        assertEquals(1, role_admin.getId());
-
-        Role role_tech = repository.findByName("ROLE_TECH");
-        assertEquals(2, role_tech.getId());
-
-        Role role_superadmin = repository.findByName("ROLE_SUPERADMIN");
-        assertEquals(3, role_superadmin.getId());
+    void findByLogin() {
+        User userFromDb = repository.findByLogin("test1-superadmin");
+        assertEquals(999990, userFromDb.getId());
     }
 
     @Test
     void findAll() {
-        var list1 = repository.findAll();
-        assertEquals(3, list1.size());
+        var list = repository.findAll();
+        assertEquals(11, list.size());
     }
+
+    @Test
+    void findAllByRoleEntity_Name() {
+        var list = repository.findAllByRoleEntity_Name("ROLE_ADMIN");
+        assertEquals(4, list.size());
+    }
+
 }
