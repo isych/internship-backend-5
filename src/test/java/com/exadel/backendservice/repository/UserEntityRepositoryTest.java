@@ -4,16 +4,9 @@ import com.exadel.backendservice.config.AbstractTestConfig;
 import com.exadel.backendservice.entity.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.DirtiesContext;
-import org.testcontainers.junit.jupiter.Testcontainers;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.springframework.test.annotation.DirtiesContext.ClassMode.BEFORE_CLASS;
 
-@SpringBootTest
-@Testcontainers
-@DirtiesContext(classMode = BEFORE_CLASS)
 class UserEntityRepositoryTest extends AbstractTestConfig {
 
     @Autowired
