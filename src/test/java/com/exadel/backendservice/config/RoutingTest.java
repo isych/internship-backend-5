@@ -1,4 +1,4 @@
-package com.exadel.backendservice;
+package com.exadel.backendservice.config;
 
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,6 +16,7 @@ public class RoutingTest {
     static void registerDynamicProperties(DynamicPropertyRegistry registry, PostgreSQLContainer<?> postgreSQLContainer) {
         ApplicationTestPropertyValues.populateRegistryFromPostgresContainer(registry, postgreSQLContainer);
     }
+
 }
 
 
