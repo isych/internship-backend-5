@@ -37,7 +37,7 @@ public class UserController {
     @PostMapping("auth")
     public AuthResponse auth(@RequestBody AuthRequest request) {
         User user = userService.findByLoginAndPassword(request.getLogin(), request.getPassword());
-        if(user != null) {
+        if (user != null) {
             String token = jwtProvider.generateToken(user.getLogin());
             return new AuthResponse(token);
         }
@@ -54,9 +54,9 @@ public class UserController {
     @ApiOperation(value = "Метод для регистрации нового пользователя (варианты ролей: admin/tech/superadmin . Регистр не важен)")
     @PostMapping("register")
     public ResponseEntity<?> registerUser(@RequestBody @Valid RegistrationRequest registrationRequest) {
-        return userService.saveUser(registrationRequest)?
-                  new ResponseEntity<>("User created", HttpStatus.OK) :
-                  new ResponseEntity<>("User not created", HttpStatus.OK);
+        return userService.saveUser(registrationRequest) ?
+                new ResponseEntity<>("User created", HttpStatus.OK) :
+                new ResponseEntity<>("User not created", HttpStatus.OK);
     }
 
     /**
@@ -67,7 +67,7 @@ public class UserController {
      */
     @ApiOperation(value = "Метод для получения всех зарегистрированных в системе пользователей")
     @GetMapping("getAllUsers")
-    public List<UserDtoWithId> getAllUsers(){
+    public List<UserDtoWithId> getAllUsers() {
         return userService.getAllUsers();
     }
 
@@ -79,7 +79,7 @@ public class UserController {
      */
     @ApiOperation(value = "Метод для получения всех зарегистрированных в системе администраторов")
     @GetMapping("getAllAdmins")
-    public List<UserDtoWithId> getAllAdmins(){
+    public List<UserDtoWithId> getAllAdmins() {
         return userService.getAllAdmins();
     }
 
@@ -91,7 +91,7 @@ public class UserController {
      */
     @ApiOperation(value = "Метод для получения всех зарегистрированных в системе технических специалистов")
     @GetMapping("getAllTechSpec")
-    public List<UserDtoWithId> getAllTechSpec(){
+    public List<UserDtoWithId> getAllTechSpec() {
         return userService.getAllTechSpec();
     }
 
@@ -103,7 +103,7 @@ public class UserController {
      */
     @ApiOperation(value = "Метод для получения всех зарегистрированных в системе супер-администраторов")
     @GetMapping("getAllSuperAdmins")
-    public List<UserDtoWithId> getAllSuperAdmins(){
+    public List<UserDtoWithId> getAllSuperAdmins() {
         return userService.getAllSuperAdmins();
     }
 
@@ -115,7 +115,7 @@ public class UserController {
      */
     @ApiOperation(value = "Метод для получения списка ролей")
     @GetMapping("getAllRoles")
-    public List<String> getAllRoles(){
+    public List<String> getAllRoles() {
         return userService.getListRoles();
     }
 
