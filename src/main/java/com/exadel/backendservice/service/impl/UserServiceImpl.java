@@ -25,7 +25,7 @@ public class UserServiceImpl implements UserService {
     private final RoleEntityRepository roleEntityRepository;
     private final PasswordEncoder passwordEncoder;
 
-    @Transactional
+//    @Transactional
     public Boolean saveUser(RegistrationRequest registrationRequest) {
         boolean result = false;
         if (userEntityRepository.findByLogin(registrationRequest.getLogin()) == null) {
