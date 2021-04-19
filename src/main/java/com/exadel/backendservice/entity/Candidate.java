@@ -43,8 +43,11 @@ public class Candidate extends AbstractEntity {
     @Column(nullable = false)
     private String skype;
 
-    @Column(name = "cv", nullable = false)
+    @Column(name = "cv")
     private String cv;
+
+    @Column(name = "cv_path")
+    private String cvPath;
 
     @ManyToOne
     @JoinColumn(name = "city_id", nullable = false)

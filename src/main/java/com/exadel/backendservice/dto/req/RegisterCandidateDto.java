@@ -11,7 +11,6 @@ import lombok.EqualsAndHashCode;
 public class RegisterCandidateDto extends AbstractDto {
     private String fullName;
     private String summary;
-    private String cv;
     private String email;
     private String phone;
     private String skype;

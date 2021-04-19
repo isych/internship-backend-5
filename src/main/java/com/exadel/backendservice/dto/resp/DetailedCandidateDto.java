@@ -19,8 +19,6 @@ public class DetailedCandidateDto extends AbstractDto {
 
     private String summary;
 
-    private String cv;
-
     private CandidateStatus status;
 
     private String phone;

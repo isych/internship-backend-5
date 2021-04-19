@@ -9,9 +9,7 @@ import com.exadel.backendservice.mapper.converter.CandidateWithIdMapper;
 import com.exadel.backendservice.mapper.converter.DetailedCandidateMapper;
 import com.exadel.backendservice.mapper.converter.RegisterCandidateMapper;
 import com.exadel.backendservice.mapper.converter.SearchCandidateMapper;
-import com.exadel.backendservice.model.CandidateStatus;
-import com.exadel.backendservice.model.InterviewProcess;
-import com.exadel.backendservice.model.PreferredTime;
+import com.exadel.backendservice.model.*;
 import com.exadel.backendservice.repository.CandidateRepository;
 import com.exadel.backendservice.service.CandidateService;
 import lombok.RequiredArgsConstructor;
@@ -20,8 +18,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -36,6 +39,7 @@ public class CandidateServiceImpl implements CandidateService {
     private final SearchCandidateMapper searchCandidateMapper;
     private final DetailedCandidateMapper detailedCandidateMapper;
     private final CandidateWithIdMapper candidateMapper;
+    private final FileStoreServiceImpl fileStoreService;
 
     @Override
     public CandidateWithIdDto registerCandidate(RegisterCandidateDto registerCandidateDto) {
@@ -79,5 +83,41 @@ public class CandidateServiceImpl implements CandidateService {
         return Stream.of(PreferredTime.values())
                 .map(Enum::name)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Optional<CandidateWithIdDto> uploadCv(Integer id, MultipartFile file) {
+        if (file.isEmpty()) {
+            throw new IllegalStateException("Cannot upload empty file");
+        }
+        if (!MimeTypes.isCvFile(Objects.requireNonNull(file.getContentType()))) {
+            throw new IllegalStateException("FIle uploaded is not doc or pdf");
+        }
+        Optional<Candidate> candidateOptional = candidateRepository.findById(id);
+        if (candidateOptional.isPresent()) {
+            String path = String.format("%s/%s", BucketName.CV.getBucketName(), UUID.randomUUID());
+            String fileName = String.format("%s", file.getOriginalFilename());
+            try {
+                fileStoreService.upload(path, fileName, Optional.of(fileStoreService.addMetadata(file)), file.getInputStream());
+            } catch (IOException e) {
+                throw new IllegalStateException("Failed to upload file", e);
+            }
+            Candidate candidate = candidateOptional.get();
+            candidate.setCv(fileName);
+            candidate.setCvPath(path);
+            candidateRepository.save(candidate);
+            return Optional.of(candidateMapper.toDto(candidate));
+        }
+        return Optional.empty();
+    }
+
+    @Override
+    public byte[] downloadCv(Integer id) {
+        Optional<Candidate> candidateOptional = candidateRepository.findById(id);
+        if (candidateOptional.isPresent()) {
+            Candidate candidate = candidateOptional.get();
+            return fileStoreService.download(candidate.getCvPath(), candidate.getCv());
+        }
+        return new byte[0];
     }
 }

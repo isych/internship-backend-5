@@ -15,10 +15,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -63,5 +65,21 @@ public class EventController {
             throw new ApiResponseException("Cannot create event. Internal error.");
         }
         return new ResponseEntity<>(eventWithId, HttpStatus.OK);
+    }
+
+    @ApiOperation("Метод для загрузки изображения события на сервер")
+    @PostMapping("/{id}/image/upload")
+    public ResponseEntity<EventWithIdDto> uploadImage(@RequestParam("id") Integer id, @RequestPart("file") MultipartFile file) {
+        Optional<EventWithIdDto> eventWithIdDtoOptional = eventService.uploadCv(id, file);
+        if (eventWithIdDtoOptional.isPresent()) {
+            return new ResponseEntity<>(eventWithIdDtoOptional.get(), HttpStatus.OK);
+        }
+        throw new ApiResponseException("Internal error");
+    }
+
+    @ApiOperation("Метод для скачивания изображения")
+    @GetMapping(value = "{id}/image/download")
+    public byte[] downloadImage(@PathVariable("id") Integer id) {
+        return eventService.downloadImage(id);
     }
 }

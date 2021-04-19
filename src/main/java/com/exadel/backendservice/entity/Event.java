@@ -24,8 +24,11 @@ public class Event extends AbstractEntity {
     @Column(length = 256, nullable = false)
     private String description;
 
-    @Column(length = 256)
-    private String pictureUrl;
+    @Column(name = "picture_name",length = 256)
+    private String pictureName;
+
+    @Column(name = "picture_path",length = 256)
+    private String picturePath;
 
     @Column(name = "start_date")
     private LocalDateTime startDate;
