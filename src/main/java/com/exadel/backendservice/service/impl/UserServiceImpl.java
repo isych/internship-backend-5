@@ -57,7 +57,7 @@ public class UserServiceImpl implements UserService {
         return result;
     }
 
-    private static List<UserDtoWithId> modifyUserEntityToUserDtoWithId(List<User> userList){
+    private static List<UserDtoWithId> modifyUserEntityToUserDtoWithId(List<User> userList) {
         return userList.stream()
                 .map(elem -> new UserDtoWithId(elem.getId(), elem.getFio(), elem.getRoleEntity().getName().substring(5), elem.getEmail()))
                 .collect(Collectors.toList());
@@ -80,7 +80,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDtoWithId> getAllUsers(){
+    public List<UserDtoWithId> getAllUsers() {
         return modifyUserEntityToUserDtoWithId(userEntityRepository.findAll());
     }
 

@@ -54,13 +54,13 @@ public class EventController {
 
     @ApiOperation("Метод для создания события")
     @PostMapping("/create")
-    public ResponseEntity<EventWithIdDto> createEvent(@RequestBody @Valid CreateEventDto eventDto) {
+    public ResponseEntity<?> createEvent(@RequestBody @Valid CreateEventDto eventDto) {
         if (Objects.isNull(eventDto) || !eventService.isUnique(eventDto.getName())) {
-            throw new ApiRequestException("Cannot create event. Invalid input data.");
+            return new ResponseEntity<>("Cannot create event. Invalid input data.", HttpStatus.OK);
         }
         EventWithIdDto eventWithId = eventService.saveEvent(eventDto);
         if (Objects.isNull(eventWithId)) {
-            throw new ApiResponseException("Cannot create event. Internal error.");
+            return new ResponseEntity<>("Cannot create event. Internal error.", HttpStatus.OK);
         }
         return new ResponseEntity<>(eventWithId, HttpStatus.OK);
     }
