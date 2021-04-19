@@ -53,30 +53,4 @@ class UserServiceImplTest extends AbstractTestConfig {
         List<UserDtoWithId> superadmin = userService.getAllSuperAdmins();
         assertEquals(3, superadmin.size());
     }
-
-    @Test
-    void getListRoles() {
-        List<String> response = userService.getListRoles();
-        List<String> result = Arrays.asList("ADMIN", "TECH", "SUPERADMIN");
-        assertEquals(result, response);
-    }
-
-    @Test
-    void saveUser() {
-        userService.saveUser(new RegistrationRequest("asafAFS", "ADSFADADS", "admin", "aafadf", "asdadfadf@adadfadsf.fd"));
-        assertEquals(5, userService.getAllAdmins().size());
-        assertEquals(12, userService.getAllUsers().size());
-
-        /* Не корректно указана роль */
-        userService.saveUser(new RegistrationRequest("dfghdgfhdfg", "gfdfhdfcvs", "adm", "xcvbdfghsgf", "sfasdgewrfd@adadfadsf.fd"));
-        assertEquals(12, userService.getAllUsers().size());
-
-        userService.saveUser(new RegistrationRequest("asdfadsd", "vbcbvxcvd", "tech", "xvbxcvbxcbv", "zcvaddasfadsf@adadfadsf.fd"));
-        assertEquals(5, userService.getAllTechSpec().size());
-        assertEquals(13, userService.getAllUsers().size());
-
-        userService.saveUser(new RegistrationRequest("cvfsdsdfgsfdg", "cvbsdfsdfg", "superadmin", "cvdfadfsg", "uklkjghfdgfd@adadfadsf.fd"));
-        assertEquals(4, userService.getAllSuperAdmins().size());
-        assertEquals(14, userService.getAllUsers().size());
-    }
 }
