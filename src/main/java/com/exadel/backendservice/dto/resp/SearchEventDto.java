@@ -16,5 +16,4 @@ public class SearchEventDto extends AbstractDto {
     private LocalDateTime startDate;
     private List<LocationDto> locations;
     private EventType type;
-    private String pictureUrl;
 }

@@ -15,8 +15,6 @@ public class CreateEventDto extends AbstractDto {
 
     private String description;
 
-    private String pictureUrl;
-
     private LocalDateTime startDate;
 
     private LocalDateTime endDate;

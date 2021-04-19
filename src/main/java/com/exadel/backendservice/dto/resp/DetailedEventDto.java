@@ -16,6 +16,5 @@ public class DetailedEventDto extends AbstractDto {
     private String description;
     private LocalDateTime startDate;
     private String type;
-    private String pictureUrl;
     private List<LocationDto> location;
 }

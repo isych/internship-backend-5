@@ -7,8 +7,11 @@ import com.exadel.backendservice.dto.resp.DetailedCandidateDto;
 import com.exadel.backendservice.dto.resp.SearchCandidateDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 public interface CandidateService {
     CandidateWithIdDto registerCandidate(RegisterCandidateDto candidateDto);
@@ -22,4 +25,9 @@ public interface CandidateService {
     List<String> getInterviewStatuses();
 
     List<String> getAllPreferredTime();
+
+    Optional<CandidateWithIdDto> uploadCv(Integer id, MultipartFile file);
+
+    byte[] downloadCv(Integer id) throws IOException;
+
 }
