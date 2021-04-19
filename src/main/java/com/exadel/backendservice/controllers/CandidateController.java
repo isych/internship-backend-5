@@ -34,18 +34,18 @@ public class CandidateController {
     /**
      * Метод регистрации нового кандидата
      *
-     * @param registerCandidateDto - объект, передаваемый из формы регистраци кандидатов
+     * @param registerCandidateDto - объект, передаваемый из формы регистрации кандидатов
      */
     @ApiOperation(value = "Метод для регистрации нового кандидата")
     @PostMapping
-    public ResponseEntity<CandidateWithIdDto> registerCandidate(@RequestBody @Valid RegisterCandidateDto registerCandidateDto) {
+    public ResponseEntity<?> registerCandidate(@RequestBody @Valid RegisterCandidateDto registerCandidateDto) {
         CandidateWithIdDto candidateWithIdDto;
         if (Objects.isNull(registerCandidateDto)) {
-            throw new ApiRequestException("Dto level exception (Candidate)");
+            return new ResponseEntity<>("Cannot create candidate. Invalid input data.", HttpStatus.OK);
         }
         candidateWithIdDto = candidateService.registerCandidate(registerCandidateDto);
         if (Objects.isNull(candidateWithIdDto)) {
-            throw new ApiResponseException("Entity Level Exception (Candidate)");
+            return new ResponseEntity<>("Cannot create candidate. Internal error.", HttpStatus.OK);
         }
         return new ResponseEntity<>(candidateWithIdDto, HttpStatus.CREATED);
     }

@@ -25,20 +25,24 @@ public class UserServiceImpl implements UserService {
     private final RoleEntityRepository roleEntityRepository;
     private final PasswordEncoder passwordEncoder;
 
-    @Transactional
+//    @Transactional
     public Boolean saveUser(RegistrationRequest registrationRequest) {
         boolean result = false;
         if (userEntityRepository.findByLogin(registrationRequest.getLogin()) == null) {
             Role userRole;
-            if (registrationRequest.getRole().toLowerCase().trim().equals("tech")) {
-                userRole = roleEntityRepository.findByName("ROLE_TECH");
-            } else if (registrationRequest.getRole().toLowerCase().trim().equals("admin")) {
-                userRole = roleEntityRepository.findByName("ROLE_ADMIN");
-            } else if (registrationRequest.getRole().toLowerCase().trim().equals("superadmin")) {
-                userRole = roleEntityRepository.findByName("ROLE_SUPERADMIN");
-            } else {
-                log.info("User not created. Role specified incorrectly.");
-                return false;
+            switch (registrationRequest.getRole().toLowerCase().trim()) {
+                case "tech":
+                    userRole = roleEntityRepository.findByName("ROLE_TECH");
+                    break;
+                case "admin":
+                    userRole = roleEntityRepository.findByName("ROLE_ADMIN");
+                    break;
+                case "superadmin":
+                    userRole = roleEntityRepository.findByName("ROLE_SUPERADMIN");
+                    break;
+                default:
+                    log.info("User not created. Role specified incorrectly.");
+                    return false;
             }
             User user = new User();
             user.setLogin(registrationRequest.getLogin());
@@ -53,7 +57,7 @@ public class UserServiceImpl implements UserService {
         return result;
     }
 
-    private static List<UserDtoWithId> modifyUserEntityToUserDtoWithId(List<User> userList){
+    private static List<UserDtoWithId> modifyUserEntityToUserDtoWithId(List<User> userList) {
         return userList.stream()
                 .map(elem -> new UserDtoWithId(elem.getId(), elem.getFio(), elem.getRoleEntity().getName().substring(5), elem.getEmail()))
                 .collect(Collectors.toList());
@@ -76,7 +80,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDtoWithId> getAllUsers(){
+    public List<UserDtoWithId> getAllUsers() {
         return modifyUserEntityToUserDtoWithId(userEntityRepository.findAll());
     }
 
