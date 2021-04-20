@@ -19,9 +19,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class LocationControllerTest extends AbstractTestConfig {
 
     @Autowired
-    LocationController locationController;
-
-    @Autowired
     MockMvc mockMvc;
 
     @Test

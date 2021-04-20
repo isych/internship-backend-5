@@ -20,9 +20,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class UserControllerTest extends AbstractTestConfig {
 
     @Autowired
-    UserController userController;
-
-    @Autowired
     MockMvc mockMvc;
 
     @Test

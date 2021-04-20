@@ -19,9 +19,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class TechControllerTest extends AbstractTestConfig {
 
     @Autowired
-    TechController techController;
-
-    @Autowired
     MockMvc mockMvc;
 
     @Test

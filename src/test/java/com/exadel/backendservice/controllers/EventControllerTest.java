@@ -21,9 +21,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class EventControllerTest extends AbstractTestConfig {
 
     @Autowired
-    EventController eventController;
-
-    @Autowired
     MockMvc mockMvc;
 
     @Test
