@@ -11,4 +11,8 @@ public interface TechRepository extends JpaRepository<Tech, Integer> {
     Optional<Tech> findByName(String name);
 
     Set<Tech> findAllByNameIn(List<String> name);
+
+    boolean existsByName(String name);
+
+    boolean existsAllByNameIn(List<String> name);
 }

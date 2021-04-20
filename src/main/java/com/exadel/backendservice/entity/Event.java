@@ -24,10 +24,10 @@ public class Event extends AbstractEntity {
     @Column(length = 256, nullable = false)
     private String description;
 
-    @Column(name = "picture_name",length = 256)
+    @Column(name = "picture_name", length = 256)
     private String pictureName;
 
-    @Column(name = "picture_path",length = 256)
+    @Column(name = "picture_path", length = 256)
     private String picturePath;
 
     @Column(name = "start_date")
@@ -39,6 +39,9 @@ public class Event extends AbstractEntity {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private EventType type;
+
+    @Column(name = "is_published")
+    private boolean isPublished = false;
 
     @ManyToMany(cascade = CascadeType.ALL)
     @EqualsAndHashCode.Exclude
@@ -65,4 +68,8 @@ public class Event extends AbstractEntity {
     )
     private Set<City> cities = new HashSet<>();
 
+    @OneToMany(mappedBy = "candidate")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    private Set<Interview> interviews = new HashSet<>();
 }

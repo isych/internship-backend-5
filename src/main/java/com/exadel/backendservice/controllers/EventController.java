@@ -2,7 +2,7 @@ package com.exadel.backendservice.controllers;
 
 import com.exadel.backendservice.dto.req.CreateEventDto;
 import com.exadel.backendservice.dto.resp.DetailedEventDto;
-import com.exadel.backendservice.dto.resp.EventWithIdDto;
+import com.exadel.backendservice.dto.resp.EventRespDto;
 import com.exadel.backendservice.dto.resp.SearchEventDto;
 import com.exadel.backendservice.exception.ApiRequestException;
 import com.exadel.backendservice.exception.ApiResponseException;
@@ -20,7 +20,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -30,25 +29,25 @@ public class EventController {
 
     private final EventService eventService;
 
-    @ApiOperation(value = "Метод для получения списка всех типов событий")
+    @ApiOperation(value = "Метод для получения списка всех типов событий(INTERNSHIP | MEETUP | TRAINING)")
     @GetMapping("/types")
     public ResponseEntity<List<String>> getEventTypes() {
         return new ResponseEntity<>(eventService.getEventTypes(), HttpStatus.OK);
     }
 
-    @ApiOperation(value = "Метод для частичного извлечения списка событий")
+    @ApiOperation(value = "Метод для постраничного получения списка событий")
     @GetMapping
     public ResponseEntity<Page<SearchEventDto>> getPageOfEvents(Pageable pageable) {
         return new ResponseEntity<>(eventService.getEventsPage(pageable), HttpStatus.OK);
     }
 
-    @ApiOperation(value = "Метод для получения события по имени")
-    @GetMapping("/{name}")
-    public ResponseEntity<DetailedEventDto> getEvent(@PathVariable(name = "name") String name) {
-        return new ResponseEntity<>(eventService.getEvent(name), HttpStatus.OK);
+    @ApiOperation(value = "Метод для получения подробной информации о событии по id")
+    @GetMapping("/{id}")
+    public ResponseEntity<DetailedEventDto> getEvent(@PathVariable(name = "id") Integer id) {
+        return new ResponseEntity<>(eventService.getEvent(id), HttpStatus.OK);
     }
 
-    @ApiOperation(value = "Метод проверки уникальности имени события")
+    @ApiOperation(value = "Метод проверки уникальности имени события в системе")
     @GetMapping("/uniqueness/{name}")
     public ResponseEntity<Boolean> checkUniqueness(@PathVariable(name = "name") String name) {
         return new ResponseEntity<>(eventService.isUnique(name), HttpStatus.OK);
@@ -57,29 +56,31 @@ public class EventController {
     @ApiOperation("Метод для создания события")
     @PostMapping("/create")
     public ResponseEntity<?> createEvent(@RequestBody @Valid CreateEventDto eventDto) {
-        if (Objects.isNull(eventDto) || !eventService.isUnique(eventDto.getName())) {
-            return new ResponseEntity<>("Cannot create event. Invalid input data.", HttpStatus.OK);
+        if (Objects.isNull(eventDto)) {
+            throw new ApiRequestException("Event is null");
         }
-        EventWithIdDto eventWithId = eventService.saveEvent(eventDto);
+        EventRespDto eventWithId = eventService.saveEvent(eventDto);
         if (Objects.isNull(eventWithId)) {
-            return new ResponseEntity<>("Cannot create event. Internal error.", HttpStatus.OK);
+            throw new ApiResponseException("Cannot create event. Internal error.");
         }
         return new ResponseEntity<>(eventWithId, HttpStatus.OK);
     }
 
-    @ApiOperation("Метод для загрузки изображения события на сервер")
+    @ApiOperation("Метод для загрузки изображения события на сервер. Доступные форматы: jpeg, png, gif, bmp Принимает id события которое возвращается после создания события")
     @PostMapping("/{id}/image/upload")
-    public ResponseEntity<EventWithIdDto> uploadImage(@RequestParam("id") Integer id, @RequestPart("file") MultipartFile file) {
-        Optional<EventWithIdDto> eventWithIdDtoOptional = eventService.uploadCv(id, file);
-        if (eventWithIdDtoOptional.isPresent()) {
-            return new ResponseEntity<>(eventWithIdDtoOptional.get(), HttpStatus.OK);
-        }
-        throw new ApiResponseException("Internal error");
+    public ResponseEntity<EventRespDto> uploadImage(@RequestParam("id") Integer id, @RequestPart("file") MultipartFile file) {
+        return new ResponseEntity<>(eventService.uploadImage(id, file), HttpStatus.OK);
     }
 
     @ApiOperation("Метод для скачивания изображения")
     @GetMapping(value = "{id}/image/download")
     public byte[] downloadImage(@PathVariable("id") Integer id) {
         return eventService.downloadImage(id);
+    }
+
+    @ApiOperation("Метод для проверки наличия картинки у события")
+    @GetMapping(value = "{id}/image/exists")
+    public ResponseEntity<Boolean> checkImage(@PathVariable("id") Integer id) {
+        return new ResponseEntity<>(eventService.hasPicture(id), HttpStatus.OK);
     }
 }

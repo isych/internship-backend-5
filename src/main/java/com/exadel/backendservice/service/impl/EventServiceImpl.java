@@ -2,9 +2,13 @@ package com.exadel.backendservice.service.impl;
 
 import com.exadel.backendservice.dto.req.CreateEventDto;
 import com.exadel.backendservice.dto.resp.DetailedEventDto;
-import com.exadel.backendservice.dto.resp.EventWithIdDto;
+import com.exadel.backendservice.dto.resp.EventRespDto;
 import com.exadel.backendservice.dto.resp.SearchEventDto;
 import com.exadel.backendservice.entity.Event;
+import com.exadel.backendservice.exception.CannotUploadFileException;
+import com.exadel.backendservice.exception.DBNotFoundException;
+import com.exadel.backendservice.exception.DBNotUniqueValueForUniqueFieldException;
+import com.exadel.backendservice.exception.UnsupportedMediaFormatException;
 import com.exadel.backendservice.mapper.converter.CreateEventMapper;
 import com.exadel.backendservice.mapper.converter.DetailedEventMapper;
 import com.exadel.backendservice.mapper.converter.EventWithIdMapper;
@@ -12,7 +16,9 @@ import com.exadel.backendservice.mapper.converter.SearchEventMapper;
 import com.exadel.backendservice.model.BucketName;
 import com.exadel.backendservice.model.EventType;
 import com.exadel.backendservice.model.MimeTypes;
+import com.exadel.backendservice.repository.CityRepository;
 import com.exadel.backendservice.repository.EventRepository;
+import com.exadel.backendservice.repository.TechRepository;
 import com.exadel.backendservice.service.EventService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,8 +36,11 @@ import java.util.stream.Collectors;
 @Slf4j
 @RequiredArgsConstructor
 public class EventServiceImpl implements EventService {
+    private final String UNABLE_TO_FIND_EVENT = "Unable to find event";
 
     private final EventRepository eventRepository;
+    private final CityRepository cityRepository;
+    private final TechRepository techRepository;
 
     private final DetailedEventMapper detailedEventMapper;
     private final SearchEventMapper searchEventMapper;
@@ -41,12 +50,22 @@ public class EventServiceImpl implements EventService {
 
 
     @Override
-    public EventWithIdDto saveEvent(CreateEventDto dto) {
+    public EventRespDto saveEvent(CreateEventDto dto) {
+        if(!isUnique(dto.getName())) {
+            throw new DBNotUniqueValueForUniqueFieldException("This name for events is used");
+        }
+        if (!cityRepository.existsAllByNameIn(dto.getCities())) {
+            throw new DBNotFoundException("One or more cities is not exists");
+        }
+        if (!techRepository.existsAllByNameIn(dto.getTechs())) {
+            throw new DBNotFoundException("One or more technologies is not exists");
+        }
         Event entity = createEventMapper.toEntity(dto);
         log.debug("Create entity -> {}", entity);
-        EventWithIdDto eventWithIdDto = eventWithIdMapper.toDto(eventRepository.save(entity));
-        log.debug("Event with id dto -> {}", eventWithIdDto);
-        return eventWithIdDto;
+        EventRespDto eventRespDto = eventWithIdMapper.toDto(eventRepository.save(entity));
+        log.debug("Event with id dto -> {}", eventRespDto);
+        return eventRespDto;
+
     }
 
     @Override
@@ -65,11 +84,16 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public DetailedEventDto getEvent(String name) {
-        Event event = eventRepository.findByName(name).stream().findAny().orElse(null);
-        DetailedEventDto detailedEventDto = detailedEventMapper.toDto(event);
-        log.debug("DetailedEventFto -> {}", detailedEventDto);
-        return detailedEventDto;
+    public DetailedEventDto getEvent(Integer id) {
+        Optional<Event> eventOptional = eventRepository.findById(id);
+        if (eventOptional.isPresent()) {
+            Event event = eventOptional.get();
+            DetailedEventDto detailedEventDto = detailedEventMapper.toDto(event);
+            log.debug("DetailedEventFto -> {}", detailedEventDto);
+            return detailedEventDto;
+        } else {
+            throw new DBNotFoundException(UNABLE_TO_FIND_EVENT);
+        }
     }
 
     @Override
@@ -82,18 +106,19 @@ public class EventServiceImpl implements EventService {
         Optional<Event> eventOptional = eventRepository.findById(id);
         if (eventOptional.isPresent()) {
             Event event = eventOptional.get();
-            return fileStoreService.download(event.getPicturePath(), event.getPictureName());
+            return hasPicture(event) ? fileStoreService.download(event.getPicturePath(), event.getPictureName()) : null;
+        } else {
+            throw new DBNotFoundException(UNABLE_TO_FIND_EVENT);
         }
-        return new byte[0];
     }
 
     @Override
-    public Optional<EventWithIdDto> uploadCv(Integer id, MultipartFile file) {
+    public EventRespDto uploadImage(Integer id, MultipartFile file) {
         if (file.isEmpty()) {
             throw new IllegalStateException("Cannot upload empty file");
         }
         if (!MimeTypes.isImage(Objects.requireNonNull(file.getContentType()))) {
-            throw new IllegalStateException("FIle uploaded is not image");
+            throw new UnsupportedMediaFormatException("Uploaded file is not image");
         }
         Optional<Event> eventOptional = eventRepository.findById(id);
         if (eventOptional.isPresent()) {
@@ -102,14 +127,31 @@ public class EventServiceImpl implements EventService {
             try {
                 fileStoreService.upload(path, fileName, Optional.of(fileStoreService.addMetadata(file)), file.getInputStream());
             } catch (IOException e) {
-                throw new IllegalStateException("Failed to upload file", e);
+                throw new CannotUploadFileException("Failed to upload image", e);
             }
             Event event = eventOptional.get();
             event.setPictureName(fileName);
             event.setPicturePath(path);
             eventRepository.save(event);
-            return Optional.of(eventWithIdMapper.toDto(event));
+            return eventWithIdMapper.toDto(event);
+        } else {
+            throw new DBNotFoundException(UNABLE_TO_FIND_EVENT);
         }
-        return Optional.empty();
+    }
+
+    @Override
+    public boolean hasPicture(Integer id) {
+        Optional<Event> eventOptional = eventRepository.findById(id);
+        if (eventOptional.isPresent()) {
+            return hasPicture(eventOptional.get());
+        }
+        throw new DBNotFoundException(UNABLE_TO_FIND_EVENT);
+    }
+
+    private boolean hasPicture(Event event) {
+        if (Objects.isNull(event.getPicturePath()) || Objects.isNull(event.getPictureName())) {
+            return false;
+        }
+        return !event.getPicturePath().isEmpty() && !event.getPictureName().isEmpty();
     }
 }
