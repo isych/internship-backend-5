@@ -27,10 +27,10 @@ class EventControllerTest extends AbstractTestConfig {
 
     @Test
     void getEventTypes() throws Exception {
-        this.mockMvc.perform(get("/api/events/JavaScript"))
+        this.mockMvc.perform(get("/api/events/types"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("{\"id\":1004,\"name\":\"JavaScript\",\"description\":\"description\",\"startDate\":\"2003-01-01T00:00:00\",\"type\":\"MEETUP\",\"pictureUrl\":\"pic_url\",\"location\":[{\"city\":\"Kharkov\",\"country\":\"Ukraine\"},{\"city\":\"Kyiv\",\"country\":\"Ukraine\"}]}")));
+                .andExpect(content().string(containsString("[\"MEETUP\",\"INTERNSHIP\",\"TRAINING\"]")));
 
     }
 
@@ -39,7 +39,7 @@ class EventControllerTest extends AbstractTestConfig {
         this.mockMvc.perform(get("/api/events/JavaScript"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("{\"id\":1004,\"name\":\"JavaScript\",\"description\":\"description\",\"startDate\":\"2003-01-01T00:00:00\",\"type\":\"MEETUP\",\"pictureUrl\":\"pic_url\",\"location\":[{\"city\":\"Kharkov\",\"country\":\"Ukraine\"},{\"city\":\"Kyiv\",\"country\":\"Ukraine\"}]}")));
+                .andExpect(content().string(containsString("{\"id\":1004,\"name\":\"JavaScript\",\"description\":\"description\",\"startDate\":\"2003-01-01T00:00:00\",\"type\":\"MEETUP\",\"location\":[{\"city\":\"Kharkov\",\"country\":\"Ukraine\"},{\"city\":\"Kyiv\",\"country\":\"Ukraine\"}]}")));
 
     }
 
