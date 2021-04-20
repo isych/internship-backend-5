@@ -1,9 +1,9 @@
-create table candidate (id int4 not null, cv varchar(255) not null, email varchar(255) not null, full_name varchar(255) not null, interview_process varchar(255), phone varchar(255) not null, preferred_time varchar(255), skype varchar(255) not null, status varchar(255) not null, summary varchar(100), city_id int4 not null, event_id int4 not null, tech_id int4 not null, primary key (id));
+create table candidate (id int4 not null, cv varchar(255), cv_path varchar(255), email varchar(255) not null, full_name varchar(255) not null, interview_process varchar(255), phone varchar(255) not null, preferred_time varchar(255), skype varchar(255) not null, status varchar(255) not null, summary varchar(100), city_id int4 not null, event_id int4 not null, tech_id int4 not null, primary key (id));
 create table city (id int4 not null, name varchar(255) not null, country_id int4 not null, primary key (id));
 create table country (id int4 not null, name varchar(255) not null, primary key (id));
 create table event_city (event_id int4 not null, city_id int4 not null, primary key (event_id, city_id));
 create table event_tech (event_id int4 not null, tech_id int4 not null, primary key (event_id, tech_id));
-create table events (id int4 not null, description varchar(256) not null, end_date timestamp, name varchar(64) not null, picture_url varchar(256), start_date timestamp, type varchar(255) not null, primary key (id));
+create table events (id int4 not null, description varchar(256) not null, end_date timestamp, name varchar(64) not null, picture_name varchar(256), picture_path varchar(256), start_date timestamp, type varchar(255) not null, primary key (id));
 create table roles (id  serial not null, name varchar(255), primary key (id));
 create table tech (id int4 not null, name varchar(64) not null, primary key (id));
 create table users (id  serial not null, email varchar(255), fio varchar(255), login varchar(255), password varchar(255), role_id int4, primary key (id));

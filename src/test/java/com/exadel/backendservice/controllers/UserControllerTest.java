@@ -9,6 +9,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.matchesRegex;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -50,5 +51,16 @@ class UserControllerTest extends AbstractTestConfig {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("User not created")));
+    }
+
+    @Test
+    void auth() throws Exception {
+        this.mockMvc.perform(post("/api/users/auth")
+                .contentType("application/json")
+                .content( "{ \"login\": \"test-admin\", \"password\": \"1\"}")
+        )
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().string(matchesRegex("[\\W]{2}+token+[\\W]{3}+[A-Za-z0-9_\\-=]+\\.[A-Za-z0-9_\\-=]+\\.[A-Za-z0-9_\\-=]+[\\W]{2}")));
     }
 }
