@@ -44,9 +44,10 @@ class UserControllerTest extends AbstractTestConfig {
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("User created")));
 
+        // проверка для не существующей роли
         this.mockMvc.perform(post("/api/users/register")
                     .contentType("application/json")
-                    .content( "{ \"email\": \"afasfadfad@asfasdasdf.ty\", \"fio\": \"adsfasdfadf\", \"login\": \"adfadfadfafadfad\", \"password\": \"adfafafafasd\", \"role\": \"sdfadsfadsf\"}")
+                    .content( "{ \"email\": \"fasfaadfdfad@asfasdasdf.ty\", \"fio\": \"dsfddffasdfadf\", \"login\": \"dfadfadfadfdfdffadfad\", \"password\": \"dfafdfdfdfafafasd\", \"role\": \"sdfadsfadsf\"}")
                 )
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -61,6 +62,6 @@ class UserControllerTest extends AbstractTestConfig {
                 )
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().string(matchesRegex("\\{\\\"token\\\"\\:\\\"[\\w_\\-]{20}\\.[\\w_\\-]{72}\\.[\\w_\\-]{43}\\\"\\}")));
+                .andExpect(content().string(matchesRegex("\\{\"token\":\"[\\w_\\-]{20}\\.[\\w_\\-]{72}\\.[\\w_\\-]{43}\"}")));
     }
 }
