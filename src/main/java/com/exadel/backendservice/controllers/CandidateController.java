@@ -50,6 +50,11 @@ public class CandidateController {
         return new ResponseEntity<>(candidateWithIdDto, HttpStatus.CREATED);
     }
 
+    /**
+     * Метод для частичного извлечения кандидатов
+     *
+     * @param pageable - объект, хранящий информацию о параметрах (page, size, name)
+     */
     @ApiOperation(value = "Метод для частичного извлечения кандидатов")
     @GetMapping
     public ResponseEntity<Page<SearchCandidateDto>> getCandidatePage(Pageable pageable) {
@@ -57,7 +62,7 @@ public class CandidateController {
     }
 
     /**
-     * Метод регистрации нового кандидата
+     * Метод извлечения кандидата по id
      *
      * @param id - объект, передаваемый из формы юзера для поиска кандидата по id
      */
@@ -67,24 +72,38 @@ public class CandidateController {
         return new ResponseEntity<>(candidateService.getDetailedCandidateDto(id), HttpStatus.OK);
     }
 
+    /**
+     * Метод для получения всех статусов кандидата
+     */
     @ApiOperation(value = "Метод для получения всех статусов кандидата")
     @GetMapping("/statuses")
     public ResponseEntity<List<String>> getStatuses() {
         return new ResponseEntity<>(candidateService.getAllStatuses(), HttpStatus.OK);
     }
 
+    /**
+     * Метод для получения всех статусов интервью кандидата
+     */
     @ApiOperation(value = "Метод для получения всех статусов интервью кандидата")
     @GetMapping("/interview-statuses")
     public ResponseEntity<List<String>> getInterviewStatuses() {
         return new ResponseEntity<>(candidateService.getInterviewStatuses(), HttpStatus.OK);
     }
 
+    /**
+     * Метод для получения всех значений предпочитаемого времени кандидата
+     */
     @ApiOperation(value = "Метод для получения всех значений предпочитаемого времени кандидата ")
     @GetMapping("/preferred-times")
     public ResponseEntity<List<String>> getPreferredTime() {
         return new ResponseEntity<>(candidateService.getAllPreferredTime(), HttpStatus.OK);
     }
 
+    /**
+     * Метод для загрузки резюме на сервер. Принимает doc, docx, pdf
+     *
+     * @param id, multipartFile -
+     */
     @ApiOperation(value = "Метод для загрузки резюме на сервер. Принимает doc, docx, pdf")
     @PostMapping("/{id}/cv/upload")
     public ResponseEntity<CandidateWithIdDto> uploadCv(@PathVariable("id") Integer id, @RequestPart(value = "file") MultipartFile multipartFile) {
@@ -95,6 +114,11 @@ public class CandidateController {
         throw new ApiResponseException("Internal error");
     }
 
+    /**
+     * Метод для скачивания резюме
+     *
+     * @param id -
+     */
     @ApiOperation(value = "Метод для скачивания резюме")
     @GetMapping("/{id}/cv/download")
     public ResponseEntity<ByteArrayResource> downloadCv(@PathVariable("id") Integer id) throws IOException {
