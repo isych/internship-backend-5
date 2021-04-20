@@ -9,6 +9,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.equalTo;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -30,7 +31,7 @@ class EventControllerTest extends AbstractTestConfig {
         this.mockMvc.perform(get("/api/events/types"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("[\"MEETUP\",\"INTERNSHIP\",\"TRAINING\"]")));
+                .andExpect(content().string(equalTo("[\"MEETUP\",\"INTERNSHIP\",\"TRAINING\"]")));
 
     }
 
@@ -39,7 +40,7 @@ class EventControllerTest extends AbstractTestConfig {
         this.mockMvc.perform(get("/api/events/JavaScript"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("{\"id\":1004,\"name\":\"JavaScript\",\"description\":\"description\",\"startDate\":\"2003-01-01T00:00:00\",\"type\":\"MEETUP\",\"location\":[{\"city\":\"Kharkov\",\"country\":\"Ukraine\"},{\"city\":\"Kyiv\",\"country\":\"Ukraine\"}]}")));
+                .andExpect(content().string(equalTo("{\"id\":1004,\"name\":\"JavaScript\",\"description\":\"description\",\"startDate\":\"2003-01-01T00:00:00\",\"type\":\"MEETUP\",\"location\":[{\"city\":\"Kharkov\",\"country\":\"Ukraine\"},{\"city\":\"Kyiv\",\"country\":\"Ukraine\"}]}")));
 
     }
 
@@ -48,12 +49,12 @@ class EventControllerTest extends AbstractTestConfig {
         this.mockMvc.perform(get("/api/events/uniqueness/JavaScript"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("false")));
+                .andExpect(content().string(equalTo("false")));
 
         this.mockMvc.perform(get("/api/events/uniqueness/qwe"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("true")));
+                .andExpect(content().string(equalTo("true")));
     }
 
     @Test
@@ -64,7 +65,7 @@ class EventControllerTest extends AbstractTestConfig {
         )
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("{\"id\":1,\"name\":\"Java 2021\",\"description\":\"string\",\"type\":\"INTERNSHIP\"}")));
+                .andExpect(content().string(containsString("\"name\":\"Java 2021\",\"description\":\"string\",\"type\":\"INTERNSHIP\"")));
 
     }
 }
