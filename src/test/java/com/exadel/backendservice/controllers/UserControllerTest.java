@@ -45,9 +45,9 @@ class UserControllerTest extends AbstractTestConfig {
                 .andExpect(content().string(containsString("User created")));
 
         this.mockMvc.perform(post("/api/users/register")
-                .contentType("application/json")
-                .content( "{ \"email\": \"afasfadfad@asfasdasdf.ty\", \"fio\": \"adsfasdfadf\", \"login\": \"adfadfadfafadfad\", \"password\": \"adfafafafasd\", \"role\": \"sdfadsfadsf\"}")
-        )
+                    .contentType("application/json")
+                    .content( "{ \"email\": \"afasfadfad@asfasdasdf.ty\", \"fio\": \"adsfasdfadf\", \"login\": \"adfadfadfafadfad\", \"password\": \"adfafafafasd\", \"role\": \"sdfadsfadsf\"}")
+                )
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("User not created")));
@@ -56,11 +56,11 @@ class UserControllerTest extends AbstractTestConfig {
     @Test
     void auth() throws Exception {
         this.mockMvc.perform(post("/api/users/auth")
-                .contentType("application/json")
-                .content( "{ \"login\": \"test-admin\", \"password\": \"1\"}")
-        )
+                    .contentType("application/json")
+                    .content( "{ \"login\": \"test-admin\", \"password\": \"1\"}")
+                )
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().string(matchesRegex("[\\W]{2}+token+[\\W]{3}+[\\w\\W]+\\.[\\w\\W]+\\.[\\w\\W]+[\\W]{2}")));
+                .andExpect(content().string(matchesRegex("\\{\\\"token\\\"\\:\\\"[\\w_\\-]{20}\\.[\\w_\\-]{72}\\.[\\w_\\-]{43}\\\"\\}")));
     }
 }
