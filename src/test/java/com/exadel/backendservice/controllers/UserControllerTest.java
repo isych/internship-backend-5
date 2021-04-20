@@ -61,6 +61,6 @@ class UserControllerTest extends AbstractTestConfig {
         )
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().string(matchesRegex("\\{\\\"token\\\"\\:\\\"[A-Za-z0-9_\\-]+\\.[A-Za-z0-9_\\-]+\\.[A-Za-z0-9_\\-]+\\\"\\}")));
+                .andExpect(content().string(matchesRegex("[\\W]{2}+token+[\\W]{3}+[A-Za-z0-9_\\-=]+\\.[A-Za-z0-9_\\-=]+\\.[A-Za-z0-9_\\-=]+[\\W]{2}")));
     }
 }
