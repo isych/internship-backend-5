@@ -5,6 +5,7 @@ import com.exadel.backendservice.dto.resp.CandidateWithIdDto;
 import com.exadel.backendservice.dto.resp.DetailedCandidateDto;
 import com.exadel.backendservice.dto.resp.SearchCandidateDto;
 import com.exadel.backendservice.entity.Candidate;
+import com.exadel.backendservice.exception.ApiResponseException;
 import com.exadel.backendservice.mapper.converter.CandidateWithIdMapper;
 import com.exadel.backendservice.mapper.converter.DetailedCandidateMapper;
 import com.exadel.backendservice.mapper.converter.RegisterCandidateMapper;
@@ -12,11 +13,14 @@ import com.exadel.backendservice.mapper.converter.SearchCandidateMapper;
 import com.exadel.backendservice.model.*;
 import com.exadel.backendservice.repository.CandidateRepository;
 import com.exadel.backendservice.service.CandidateService;
+import com.exadel.backendservice.service.utils.MailSender;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.mail.MailException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -34,6 +38,9 @@ import java.util.stream.Stream;
 @RequiredArgsConstructor
 public class CandidateServiceImpl implements CandidateService {
 
+    @Autowired
+    private MailSender mailSender;
+
     private final CandidateRepository candidateRepository;
     private final RegisterCandidateMapper registerCandidateMapper;
     private final SearchCandidateMapper searchCandidateMapper;
@@ -48,6 +55,15 @@ public class CandidateServiceImpl implements CandidateService {
         Candidate savedCandidate = candidateRepository.save(candidate);
         CandidateWithIdDto candidateWithIdDto = candidateMapper.toDto(savedCandidate);
         log.debug("Candidate with ID: {}", candidateWithIdDto.getId());
+        if(candidateWithIdDto.getEmail()!=null){
+            String message = String.format("%s,\nyour registration completed successfully!\nWait for the recruiter's call soon.", candidateWithIdDto.getFullName());
+           try {
+               mailSender.send(candidateWithIdDto.getEmail(), "Registration for Exadel event", message);
+           }catch (MailException ex){
+               throw new ApiResponseException("Internal error: mail can't be send to candidate");
+           }
+
+        }
         return candidateWithIdDto;
     }
 
