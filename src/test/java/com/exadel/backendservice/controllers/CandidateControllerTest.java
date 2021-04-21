@@ -44,8 +44,8 @@ class CandidateControllerTest extends AbstractTestConfig {
     }
 
     @Test
-    void getDetailedCandidateDtoBy() throws Exception {
-        this.mockMvc.perform(get("/api/candidates/1001"))
+    void getDetailedCandidateDtoById() throws Exception {
+        this.mockMvc.perform(get("/api/candidates/?id=1001"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().string("{\"id\":\"1001\",\"fullName\":\"Nick Nikolaev\",\"summary\":\"\",\"status\":\"RED\",\"phone\":\"+964493431\",\"email\":\"test@testtest.com\",\"skype\":\"live:.cid.60e0d1dadfe72c0e96f4\",\"city\":\"Minsk\",\"country\":\"Belarus\",\"preferredTime\":\"FOUR_SIX\",\"eventName\":\"Java & Js 2021\",\"interviewProcess\":\"WAITING\",\"interviews\":null}"));
