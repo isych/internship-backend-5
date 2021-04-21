@@ -8,7 +8,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -32,7 +31,7 @@ class CandidateControllerTest extends AbstractTestConfig {
                         "  \"event\": \"Java & Js 2021\",\n" +
                         "  \"fullName\": \"Test User\",\n" +
                         "  \"phone\": \"+123456789\",\n" +
-                        "  \"preferredTime\": \"FOUR_SIX\",\n" +
+                        "  \"preferredTime\": \"FROM_FOUR_TO_SIX\",\n" +
                         "  \"primaryTech\": \"Java\",\n" +
                         "  \"skype\": \"live:.cid.60e00e96f4\",\n" +
                         "  \"summary\": \"\"\n" +
@@ -40,7 +39,7 @@ class CandidateControllerTest extends AbstractTestConfig {
         )
                 .andDo(print())
                 .andExpect(status().isCreated())
-                .andExpect(content().string("{\"id\":\"1\",\"fullName\":\"Test User\",\"status\":\"YELLOW\",\"email\":\"test@fortest.com\",\"city\":\"Minsk\",\"preferredTime\":\"FOUR_SIX\"}"));
+                .andExpect(content().string("{\"id\":\"1\",\"fullName\":\"Test User\",\"email\":\"test@fortest.com\",\"cv\":null,\"cvPath\":null}"));
     }
 
     @Test
@@ -48,7 +47,7 @@ class CandidateControllerTest extends AbstractTestConfig {
         this.mockMvc.perform(get("/api/candidates/?id=1001"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().string("{\"id\":\"1001\",\"fullName\":\"Nick Nikolaev\",\"summary\":\"\",\"status\":\"RED\",\"phone\":\"+964493431\",\"email\":\"test@testtest.com\",\"skype\":\"live:.cid.60e0d1dadfe72c0e96f4\",\"city\":\"Minsk\",\"country\":\"Belarus\",\"preferredTime\":\"FOUR_SIX\",\"eventName\":\"Java & Js 2021\",\"interviewProcess\":\"WAITING\",\"interviews\":null}"));
+                .andExpect(content().string("{\"id\":\"1001\",\"fullName\":\"Nick Nikolaev\",\"summary\":\"\",\"status\":\"RED\",\"phone\":\"+964493431\",\"email\":\"test@testtest.com\",\"skype\":\"live:.cid.60e0d1dadfe72c0e96f4\",\"city\":\"Minsk\",\"country\":\"Belarus\",\"preferredTime\":\"FROM_FOUR_TO_SIX\",\"eventName\":\"Java & Js 2021\",\"interviewProcess\":\"WAITING\",\"interviews\":null}"));
     }
 
 
@@ -73,6 +72,6 @@ class CandidateControllerTest extends AbstractTestConfig {
         this.mockMvc.perform(get("/api/candidates/preferred-times"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().string("[\"NONE\",\"TEN_TWELVE\",\"TWELVE_TWO\",\"TWO_FOUR\",\"FOUR_SIX\"]"));
+                .andExpect(content().string("[\"NONE\",\"FROM_TEN_TO_TWELVE\",\"FROM_TWELVE_TO_TWO\",\"FROM_TWO_TO_FOUR\",\"FROM_FOUR_TO_SIX\"]"));
     }
 }
