@@ -8,17 +8,10 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class CandidateWithIdDto extends AbstractDto {
+public class CandidateRespDto extends AbstractDto {
     private String id;
-
     private String fullName;
-
-    private CandidateStatus status;
-
     private String email;
-
-    private String city;
-
-    private PreferredTime preferredTime;
-
+    private String cv;
+    private String cvPath;
 }

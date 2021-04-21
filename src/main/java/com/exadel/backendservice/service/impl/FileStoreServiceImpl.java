@@ -9,7 +9,6 @@ import com.amazonaws.util.IOUtils;
 import com.exadel.backendservice.service.FileStoreService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -41,10 +40,9 @@ public class FileStoreServiceImpl implements FileStoreService {
     }
 
     @Override
-    @Async
     public byte[] download(String filepath, String filename) {
         byte[] content = null;
-        log.info("Downloading an object with key = " + filename);
+        log.info("Downloading an object with key = {}", filename);
         S3Object s3Object = amazonS3.getObject(filepath, filename);
         S3ObjectInputStream stream = s3Object.getObjectContent();
         try {
@@ -52,7 +50,7 @@ public class FileStoreServiceImpl implements FileStoreService {
             log.info("File downloaded successfully.");
             s3Object.close();
         } catch (IOException ex) {
-            log.info("IO Error Message= " + ex.getMessage());
+            log.info("IO Error Message= {}", ex.getMessage());
         }
         return content;
     }

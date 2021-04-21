@@ -1,5 +1,5 @@
 package com.exadel.backendservice.model;
 
 public enum PreferredTime {
-    NONE, TEN_TWELVE, TWELVE_TWO, TWO_FOUR, FOUR_SIX
+    NONE, FROM_TEN_TO_TWELVE, FROM_TWELVE_TO_TWO, FROM_TWO_TO_FOUR, FROM_FOUR_TO_SIX
 }

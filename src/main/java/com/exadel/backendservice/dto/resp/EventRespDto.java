@@ -7,12 +7,9 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class EventWithIdDto extends AbstractDto {
+public class EventRespDto extends AbstractDto {
     private Integer id;
-
     private String name;
-
-    private String description;
-
-    private EventType type;
+    private String pictureName;
+    private String picturePath;
 }

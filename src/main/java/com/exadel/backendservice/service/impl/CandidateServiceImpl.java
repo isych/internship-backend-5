@@ -1,16 +1,22 @@
 package com.exadel.backendservice.service.impl;
 
 import com.exadel.backendservice.dto.req.RegisterCandidateDto;
-import com.exadel.backendservice.dto.resp.CandidateWithIdDto;
+import com.exadel.backendservice.dto.resp.CandidateRespDto;
 import com.exadel.backendservice.dto.resp.DetailedCandidateDto;
 import com.exadel.backendservice.dto.resp.SearchCandidateDto;
 import com.exadel.backendservice.entity.Candidate;
-import com.exadel.backendservice.mapper.converter.CandidateWithIdMapper;
+import com.exadel.backendservice.exception.CannotUploadFileException;
+import com.exadel.backendservice.exception.DBNotFoundException;
+import com.exadel.backendservice.exception.UnsupportedMediaFormatException;
+import com.exadel.backendservice.mapper.converter.CandidateResponseMapper;
 import com.exadel.backendservice.mapper.converter.DetailedCandidateMapper;
 import com.exadel.backendservice.mapper.converter.RegisterCandidateMapper;
 import com.exadel.backendservice.mapper.converter.SearchCandidateMapper;
 import com.exadel.backendservice.model.*;
 import com.exadel.backendservice.repository.CandidateRepository;
+import com.exadel.backendservice.repository.CityRepository;
+import com.exadel.backendservice.repository.EventRepository;
+import com.exadel.backendservice.repository.TechRepository;
 import com.exadel.backendservice.service.CandidateService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,22 +39,38 @@ import java.util.stream.Stream;
 @Service
 @RequiredArgsConstructor
 public class CandidateServiceImpl implements CandidateService {
+    private final String UNABLE_TO_FIND_CANDIDATE = "Unable to find candidate";
+    public static final String MORE_THAN_ONE_CHAR_REGEX = "( )+";
 
     private final CandidateRepository candidateRepository;
+    private final CityRepository cityRepository;
+    private final TechRepository techRepository;
+    private final EventRepository eventRepository;
+
     private final RegisterCandidateMapper registerCandidateMapper;
     private final SearchCandidateMapper searchCandidateMapper;
     private final DetailedCandidateMapper detailedCandidateMapper;
-    private final CandidateWithIdMapper candidateMapper;
+    private final CandidateResponseMapper candidateMapper;
+
     private final FileStoreServiceImpl fileStoreService;
 
     @Override
-    public CandidateWithIdDto registerCandidate(RegisterCandidateDto registerCandidateDto) {
-        log.debug("CandidateDto ready to convert: {}", registerCandidateDto);
-        Candidate candidate = registerCandidateMapper.toEntity(registerCandidateDto);
+    public CandidateRespDto registerCandidate(RegisterCandidateDto dto) {
+        if (!eventRepository.existsByName(dto.getEvent())) {
+            throw new DBNotFoundException("Event with this name does not exist");
+        }
+        if (!cityRepository.existsByName(dto.getCity())) {
+            throw new DBNotFoundException("City with this name does not exists");
+        }
+        if (!techRepository.existsByName(dto.getPrimaryTech())) {
+            throw new DBNotFoundException("Tech with this name does not exists");
+        }
+        log.debug("CandidateDto ready to convert: {}", dto);
+        Candidate candidate = registerCandidateMapper.toEntity(dto);
         Candidate savedCandidate = candidateRepository.save(candidate);
-        CandidateWithIdDto candidateWithIdDto = candidateMapper.toDto(savedCandidate);
-        log.debug("Candidate with ID: {}", candidateWithIdDto.getId());
-        return candidateWithIdDto;
+        CandidateRespDto candidateRespDto = candidateMapper.toDto(savedCandidate);
+        log.debug("Candidate with ID: {}", candidateRespDto.getId());
+        return candidateRespDto;
     }
 
     @Override
@@ -60,8 +82,12 @@ public class CandidateServiceImpl implements CandidateService {
 
     @Override
     public DetailedCandidateDto getDetailedCandidateDto(Integer id) {
-        Candidate candidate = candidateRepository.getOne(id);
-        return detailedCandidateMapper.toDto(candidate);
+        Optional<Candidate> candidateOptional = candidateRepository.findById(id);
+        if (candidateOptional.isPresent()) {
+            Candidate candidate = candidateOptional.get();
+            return detailedCandidateMapper.toDto(candidate);
+        }
+        throw new DBNotFoundException(UNABLE_TO_FIND_CANDIDATE);
     }
 
     @Override
@@ -85,30 +111,39 @@ public class CandidateServiceImpl implements CandidateService {
                 .collect(Collectors.toList());
     }
 
+    public boolean hasCv(Candidate candidate) {
+        if (Objects.isNull(candidate.getCvPath()) || Objects.isNull(candidate.getCv())) {
+            return false;
+        }
+        return !candidate.getCvPath().isEmpty() && !candidate.getCv().isEmpty();
+    }
+
     @Override
-    public Optional<CandidateWithIdDto> uploadCv(Integer id, MultipartFile file) {
+    public CandidateRespDto uploadCv(Integer id, MultipartFile file) {
         if (file.isEmpty()) {
             throw new IllegalStateException("Cannot upload empty file");
         }
         if (!MimeTypes.isCvFile(Objects.requireNonNull(file.getContentType()))) {
-            throw new IllegalStateException("FIle uploaded is not doc or pdf");
+            throw new UnsupportedMediaFormatException("FIle uploaded is not doc or pdf");
         }
         Optional<Candidate> candidateOptional = candidateRepository.findById(id);
         if (candidateOptional.isPresent()) {
+            Candidate candidate = candidateOptional.get();
+
             String path = String.format("%s/%s", BucketName.CV.getBucketName(), UUID.randomUUID());
-            String fileName = String.format("%s", file.getOriginalFilename());
+            String fileName = buildCvName(candidate);
             try {
                 fileStoreService.upload(path, fileName, Optional.of(fileStoreService.addMetadata(file)), file.getInputStream());
             } catch (IOException e) {
-                throw new IllegalStateException("Failed to upload file", e);
+                throw new CannotUploadFileException("Failed to upload file", e);
             }
-            Candidate candidate = candidateOptional.get();
             candidate.setCv(fileName);
             candidate.setCvPath(path);
             candidateRepository.save(candidate);
-            return Optional.of(candidateMapper.toDto(candidate));
+            return candidateMapper.toDto(candidate);
+        } else {
+            throw new DBNotFoundException(UNABLE_TO_FIND_CANDIDATE);
         }
-        return Optional.empty();
     }
 
     @Override
@@ -116,8 +151,42 @@ public class CandidateServiceImpl implements CandidateService {
         Optional<Candidate> candidateOptional = candidateRepository.findById(id);
         if (candidateOptional.isPresent()) {
             Candidate candidate = candidateOptional.get();
-            return fileStoreService.download(candidate.getCvPath(), candidate.getCv());
+            if (hasCv(candidate)) {
+                return fileStoreService.download(candidate.getCvPath(), candidate.getCv());
+            }
+            throw new DBNotFoundException("Candidate does not have an cv");
+        } else {
+            throw new DBNotFoundException(UNABLE_TO_FIND_CANDIDATE);
         }
-        return new byte[0];
     }
+
+    @Override
+    public Boolean hasCv(Integer id) {
+        Optional<Candidate> candidateOptional = candidateRepository.findById(id);
+        if (candidateOptional.isPresent()) {
+            return hasCv(candidateOptional.get());
+        }
+        throw new DBNotFoundException(UNABLE_TO_FIND_CANDIDATE);
+    }
+
+    @Override
+    public String getCvName(Integer id) {
+        Optional<Candidate> candidateOptional = candidateRepository.findById(id);
+        if (candidateOptional.isPresent()) {
+            Candidate candidate = candidateOptional.get();
+            if (hasCv(candidate)) {
+                return candidate.getCv();
+            }
+            throw new DBNotFoundException("Candidate don't have cv");
+        }
+        throw new DBNotFoundException(UNABLE_TO_FIND_CANDIDATE);
+    }
+
+    private String buildCvName(Candidate candidate) {
+        String result = candidate.getPrimaryTech().getName() + "_" +
+                candidate.getFullName() + "_" +
+                candidate.getEvent().getName();
+        return result.replaceAll(MORE_THAN_ONE_CHAR_REGEX, "_");
+    }
+
 }
