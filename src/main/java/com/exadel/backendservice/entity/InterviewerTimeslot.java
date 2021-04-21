@@ -14,10 +14,10 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode(callSuper = true)
 public class InterviewerTimeslot extends AbstractEntity {
     @Column(name = "start_time", nullable = false)
-    private LocalDateTime startTime;
+    private Integer startTime;
 
     @Column(name = "end_time", nullable = false)
-    private LocalDateTime endTime;
+    private Integer endTime;
 
     @ManyToOne
     @JoinColumn(name = "interviewer_id", nullable = false)

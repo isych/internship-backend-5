@@ -1,7 +1,7 @@
 package com.exadel.backendservice.dto.req;
 
 import com.exadel.backendservice.dto.AbstractDto;
-import com.exadel.backendservice.model.PreferredTime;
+import com.exadel.backendservice.model.PreferredCandidateTime;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -14,7 +14,7 @@ public class RegisterCandidateDto extends AbstractDto {
     private String email;
     private String phone;
     private String skype;
-    private PreferredTime preferredTime;
+    private PreferredCandidateTime preferredTime;
     private String primaryTech;
     private String city;
     private String event;

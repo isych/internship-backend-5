@@ -3,18 +3,14 @@ create table city (id int4 not null, name varchar(255) not null, country_id int4
 create table country (id int4 not null, name varchar(255) not null, primary key (id));
 create table event_city (event_id int4 not null, city_id int4 not null, primary key (event_id, city_id));
 create table event_tech (event_id int4 not null, tech_id int4 not null, primary key (event_id, tech_id));
-create table events (id int4 not null, description varchar(256) not null, end_date timestamp, name varchar(64) not null, picture_name varchar(256), picture_path varchar(256), start_date timestamp, type varchar(255) not null, is_published boolean, primary key (id));
+create table events (id int4 not null, description varchar(256) not null, end_date timestamp, name varchar(64) not null, picture_name varchar(256), picture_path varchar(256), start_date timestamp, type varchar(255) not null, status varchar(255), primary key (id));
 create table roles (id  serial not null, name varchar(255), primary key (id));
 create table tech (id int4 not null, name varchar(64) not null, primary key (id));
 create table users (id  serial not null, email varchar(255), fio varchar(255), login varchar(255), password varchar(255), role_id int4, primary key (id));
 
-create table checklist_item (id int4 not null, name varchar(20) not null, type varchar(255) not null, primary key (id));
-create table checklist_item_grade (id int4 not null, grade varchar(20) not null, checklist_item_id int4 not null, interview_id int4 not null, primary key (id));
 create table interview (id int4 not null, end_time timestamp, feedback varchar(100), start_time timestamp, candidate_id int4 not null, interviewer_id int4 not null, primary key (id));
 create table interviewer (id int4 not null, name varchar(20) not null, type varchar(255) not null, primary key (id));
-create table interviewer_timeslot (id int4 not null, end_time timestamp not null, start_time timestamp not null, interviewer_id int4 not null, primary key (id));
-alter table checklist_item_grade add constraint FKhpwewqxsyc92cmovwlslvit2y foreign key (checklist_item_id) references checklist_item;
-alter table checklist_item_grade add constraint FKkm54ja3khpp567k2ge4ivodaw foreign key (interview_id) references interview;
+create table interviewer_timeslot (id int4 not null, end_time int4 not null, start_time int4 not null, interviewer_id int4 not null, primary key (id));
 alter table interview add constraint FKjod0wwyxvbi7qyx9cmlnt8xq4 foreign key (candidate_id) references candidate;
 alter table interview add constraint FK5amdvskvlsj31qxv5aceawoye foreign key (interviewer_id) references interviewer;
 alter table interviewer_timeslot add constraint FKclg70w7gqslwgjo279a0qqg68 foreign key (interviewer_id) references interviewer;

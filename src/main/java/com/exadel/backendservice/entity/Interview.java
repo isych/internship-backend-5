@@ -31,11 +31,6 @@ public class Interview extends AbstractEntity {
     @JoinColumn(name = "interviewer_id", nullable = false)
     private Interviewer interviewer;
 
-    @OneToMany(mappedBy = "interview")
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
-    private Set<ChecklistItemGrade> grade = new HashSet<>();
-
     @ManyToOne
     @JoinColumn(name = "candidate_id", nullable = false)
     private Candidate candidate;

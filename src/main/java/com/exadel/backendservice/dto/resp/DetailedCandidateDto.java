@@ -4,7 +4,7 @@ import com.exadel.backendservice.dto.AbstractDto;
 import com.exadel.backendservice.dto.InterviewDto;
 import com.exadel.backendservice.model.CandidateStatus;
 import com.exadel.backendservice.model.InterviewProcess;
-import com.exadel.backendservice.model.PreferredTime;
+import com.exadel.backendservice.model.PreferredCandidateTime;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -31,7 +31,7 @@ public class DetailedCandidateDto extends AbstractDto {
 
     private String country;
 
-    private PreferredTime preferredTime;
+    private PreferredCandidateTime preferredTime;
 
     private String eventName;
 
