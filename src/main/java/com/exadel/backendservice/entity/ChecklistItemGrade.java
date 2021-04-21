@@ -12,10 +12,10 @@ import javax.persistence.*;
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class ChecklistItemGrade extends AbstractEntity{
+public class ChecklistItemGrade extends AbstractEntity {
     @ManyToOne
     @JoinColumn(name = "interview_id", nullable = false)
-    private Interviewer interview;
+    private Interview interview;
 
     @ManyToOne
     @JoinColumn(name = "checklist_item_id", nullable = false)
