@@ -63,8 +63,9 @@ public class CandidateController {
      *
      * @param id - объект, передаваемый из формы юзера для поиска кандидата по id
      */
-    @ApiOperation(value = "Метод для получения подробной информации о кандидате по id")
-    @GetMapping(value = "/{id}")
+
+    @ApiOperation(value = "Метод для извлечения кандидата по id")
+    @GetMapping(value = "/")
     public ResponseEntity<DetailedCandidateDto> getDetailedCandidateDtoBy(@RequestParam(name = "id") Integer id) {
         return new ResponseEntity<>(candidateService.getDetailedCandidateDto(id), HttpStatus.OK);
     }
