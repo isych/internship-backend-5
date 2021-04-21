@@ -30,4 +30,6 @@ public interface CandidateService {
     byte[] downloadCv(Integer id) throws IOException;
 
     Boolean hasCv(Integer id);
+
+    String getCvName(Integer id);
 }

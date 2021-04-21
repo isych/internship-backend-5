@@ -106,7 +106,10 @@ public class EventServiceImpl implements EventService {
         Optional<Event> eventOptional = eventRepository.findById(id);
         if (eventOptional.isPresent()) {
             Event event = eventOptional.get();
-            return hasPicture(event) ? fileStoreService.download(event.getPicturePath(), event.getPictureName()) : null;
+            if (hasPicture(event)){
+                return fileStoreService.download(event.getPicturePath(), event.getPictureName());
+            }
+            throw new DBNotFoundException("Event does not have an image");
         } else {
             throw new DBNotFoundException(UNABLE_TO_FIND_EVENT);
         }

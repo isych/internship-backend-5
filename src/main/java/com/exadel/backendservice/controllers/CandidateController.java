@@ -117,12 +117,13 @@ public class CandidateController {
     @GetMapping("/{id}/cv/download")
     public ResponseEntity<ByteArrayResource> downloadCv(@PathVariable("id") Integer id) throws IOException {
         byte[] data = candidateService.downloadCv(id);
+        String filename = candidateService.getCvName(id);
         ByteArrayResource resource = new ByteArrayResource(data);
         return ResponseEntity
                 .ok()
                 .contentLength(data.length)
                 .header("Content-type", "application/octet-stream")
-                .header("Content-disposition", "attachment; filename=\"" + "newFile" + "\"")
+                .header("Content-disposition", "attachment; filename=\"" + filename + "\"")
                 .body(resource);
     }
 
