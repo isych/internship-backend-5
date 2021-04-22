@@ -34,7 +34,7 @@ class EventControllerTest extends AbstractTestConfig {
 
     @Test
     void getEvent() throws Exception {
-        this.mockMvc.perform(get("/api/events/JavaScript"))
+        this.mockMvc.perform(get("/api/events/1004"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().string(equalTo("{\"id\":1004,\"name\":\"JavaScript\",\"description\":\"description\",\"startDate\":\"2003-01-01T00:00:00\",\"type\":\"MEETUP\",\"location\":[{\"city\":\"Kharkov\",\"country\":\"Ukraine\"},{\"city\":\"Kyiv\",\"country\":\"Ukraine\"}]}")));
@@ -62,7 +62,7 @@ class EventControllerTest extends AbstractTestConfig {
         )
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("\"name\":\"Java 2021\",\"description\":\"string\",\"type\":\"INTERNSHIP\"")));
+                .andExpect(content().string(("{\"id\":1,\"name\":\"Java 2021\",\"pictureName\":null,\"picturePath\":null}")));
 
     }
 }

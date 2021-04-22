@@ -8,4 +8,7 @@ import java.util.List;
 public interface CountryRepository extends JpaRepository<Country, Integer> {
     @Override
     List<Country> findAll();
+
+    boolean existsByName(String name);
+
 }

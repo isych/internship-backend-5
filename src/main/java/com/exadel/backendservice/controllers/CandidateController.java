@@ -1,11 +1,9 @@
 package com.exadel.backendservice.controllers;
 
 import com.exadel.backendservice.dto.req.RegisterCandidateDto;
-import com.exadel.backendservice.dto.resp.CandidateWithIdDto;
+import com.exadel.backendservice.dto.resp.CandidateRespDto;
 import com.exadel.backendservice.dto.resp.DetailedCandidateDto;
 import com.exadel.backendservice.dto.resp.SearchCandidateDto;
-import com.exadel.backendservice.exception.ApiRequestException;
-import com.exadel.backendservice.exception.ApiResponseException;
 import com.exadel.backendservice.service.CandidateService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -22,7 +20,6 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/candidates")
@@ -36,18 +33,18 @@ public class CandidateController {
      *
      * @param registerCandidateDto - объект, передаваемый из формы регистрации кандидатов
      */
-    @ApiOperation(value = "Метод для регистрации нового кандидата")
+    @ApiOperation(value = "Метод для регистрации нового кандидата на событие")
     @PostMapping
     public ResponseEntity<?> registerCandidate(@RequestBody @Valid RegisterCandidateDto registerCandidateDto) {
-        CandidateWithIdDto candidateWithIdDto;
+        CandidateRespDto candidateRespDto;
         if (Objects.isNull(registerCandidateDto)) {
             return new ResponseEntity<>("Cannot create candidate. Invalid input data.", HttpStatus.OK);
         }
-        candidateWithIdDto = candidateService.registerCandidate(registerCandidateDto);
-        if (Objects.isNull(candidateWithIdDto)) {
+        candidateRespDto = candidateService.registerCandidate(registerCandidateDto);
+        if (Objects.isNull(candidateRespDto)) {
             return new ResponseEntity<>("Cannot create candidate. Internal error.", HttpStatus.OK);
         }
-        return new ResponseEntity<>(candidateWithIdDto, HttpStatus.CREATED);
+        return new ResponseEntity<>(candidateRespDto, HttpStatus.CREATED);
     }
 
     /**
@@ -55,7 +52,7 @@ public class CandidateController {
      *
      * @param pageable - объект, хранящий информацию о параметрах (page, size, name)
      */
-    @ApiOperation(value = "Метод для частичного извлечения кандидатов")
+    @ApiOperation(value = "Метод для постраничного предоставления кандидатов")
     @GetMapping
     public ResponseEntity<Page<SearchCandidateDto>> getCandidatePage(Pageable pageable) {
         return new ResponseEntity<>(candidateService.getPageOfCandidates(pageable), HttpStatus.OK);
@@ -66,8 +63,9 @@ public class CandidateController {
      *
      * @param id - объект, передаваемый из формы юзера для поиска кандидата по id
      */
+
     @ApiOperation(value = "Метод для извлечения кандидата по id")
-    @GetMapping(value = "/{id}")
+    @GetMapping(value = "/")
     public ResponseEntity<DetailedCandidateDto> getDetailedCandidateDtoBy(@RequestParam(name = "id") Integer id) {
         return new ResponseEntity<>(candidateService.getDetailedCandidateDto(id), HttpStatus.OK);
     }
@@ -75,7 +73,7 @@ public class CandidateController {
     /**
      * Метод для получения всех статусов кандидата
      */
-    @ApiOperation(value = "Метод для получения всех статусов кандидата")
+    @ApiOperation(value = "Метод для получения всех статусов кандидата(GREEN|YELLOW|RED)")
     @GetMapping("/statuses")
     public ResponseEntity<List<String>> getStatuses() {
         return new ResponseEntity<>(candidateService.getAllStatuses(), HttpStatus.OK);
@@ -84,7 +82,7 @@ public class CandidateController {
     /**
      * Метод для получения всех статусов интервью кандидата
      */
-    @ApiOperation(value = "Метод для получения всех статусов интервью кандидата")
+    @ApiOperation(value = "Метод для получения всех статусов интервью кандидата(Ожидает звонка|Прошел первое интервью|Прошел второе)")
     @GetMapping("/interview-statuses")
     public ResponseEntity<List<String>> getInterviewStatuses() {
         return new ResponseEntity<>(candidateService.getInterviewStatuses(), HttpStatus.OK);
@@ -93,7 +91,7 @@ public class CandidateController {
     /**
      * Метод для получения всех значений предпочитаемого времени кандидата
      */
-    @ApiOperation(value = "Метод для получения всех значений предпочитаемого времени кандидата ")
+    @ApiOperation(value = "Метод для получения всех значений предпочитаемого времени для собеседования кандидата(10-12, 12-14, 14-16, 16-18 часов)")
     @GetMapping("/preferred-times")
     public ResponseEntity<List<String>> getPreferredTime() {
         return new ResponseEntity<>(candidateService.getAllPreferredTime(), HttpStatus.OK);
@@ -104,14 +102,10 @@ public class CandidateController {
      *
      * @param id, multipartFile -
      */
-    @ApiOperation(value = "Метод для загрузки резюме на сервер. Принимает doc, docx, pdf")
+    @ApiOperation(value = "Метод для загрузки резюме в систему. Принимает doc, docx, pdf. Принимает id кандидата которое возвращается после создания кандидата")
     @PostMapping("/{id}/cv/upload")
-    public ResponseEntity<CandidateWithIdDto> uploadCv(@PathVariable("id") Integer id, @RequestPart(value = "file") MultipartFile multipartFile) {
-        Optional<CandidateWithIdDto> candidateWithIdDtoOptional = candidateService.uploadCv(id, multipartFile);
-        if (candidateWithIdDtoOptional.isPresent()) {
-            return new ResponseEntity<>(candidateWithIdDtoOptional.get(), HttpStatus.OK);
-        }
-        throw new ApiResponseException("Internal error");
+    public ResponseEntity<CandidateRespDto> uploadCv(@PathVariable("id") Integer id, @RequestPart(value = "file") MultipartFile multipartFile) {
+        return new ResponseEntity<>(candidateService.uploadCv(id, multipartFile), HttpStatus.OK);
     }
 
     /**
@@ -119,17 +113,24 @@ public class CandidateController {
      *
      * @param id -
      */
-    @ApiOperation(value = "Метод для скачивания резюме")
+    @ApiOperation(value = "Метод для скачивания резюме кандидата")
     @GetMapping("/{id}/cv/download")
     public ResponseEntity<ByteArrayResource> downloadCv(@PathVariable("id") Integer id) throws IOException {
         byte[] data = candidateService.downloadCv(id);
+        String filename = candidateService.getCvName(id);
         ByteArrayResource resource = new ByteArrayResource(data);
         return ResponseEntity
                 .ok()
                 .contentLength(data.length)
                 .header("Content-type", "application/octet-stream")
-                .header("Content-disposition", "attachment; filename=\"" + "newFile" + "\"")
+                .header("Content-disposition", "attachment; filename=\"" + filename + "\"")
                 .body(resource);
+    }
+
+    @ApiOperation(value = "Метод для проверки прикрепил ли кандидат резюме")
+    @GetMapping("/{id}/cv/exists")
+    public ResponseEntity<Boolean> checkCv(@PathVariable("id") Integer id) {
+        return new ResponseEntity<>(candidateService.hasCv(id), HttpStatus.OK);
     }
 
 }

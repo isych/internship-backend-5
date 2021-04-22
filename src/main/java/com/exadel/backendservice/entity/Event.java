@@ -1,5 +1,6 @@
 package com.exadel.backendservice.entity;
 
+import com.exadel.backendservice.model.EventStatus;
 import com.exadel.backendservice.model.EventType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -24,10 +25,10 @@ public class Event extends AbstractEntity {
     @Column(length = 256, nullable = false)
     private String description;
 
-    @Column(name = "picture_name",length = 256)
+    @Column(name = "picture_name", length = 256)
     private String pictureName;
 
-    @Column(name = "picture_path",length = 256)
+    @Column(name = "picture_path", length = 256)
     private String picturePath;
 
     @Column(name = "start_date")
@@ -39,6 +40,10 @@ public class Event extends AbstractEntity {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private EventType type;
+
+    @Column(name = "status")
+    @Enumerated(EnumType.STRING)
+    private EventStatus eventStatus = EventStatus.NOT_PUBLISHED;
 
     @ManyToMany(cascade = CascadeType.ALL)
     @EqualsAndHashCode.Exclude
@@ -65,4 +70,8 @@ public class Event extends AbstractEntity {
     )
     private Set<City> cities = new HashSet<>();
 
+    @OneToMany(mappedBy = "candidate")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    private Set<Interview> interviews = new HashSet<>();
 }
