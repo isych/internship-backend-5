@@ -185,4 +185,24 @@ public class EventServiceImpl implements EventService {
             throw new DBNotFoundException(UNABLE_TO_FIND_EVENT);
         }
     }
+
+    @Override
+    public DetailedEventDto moveToArchive(Integer id) {
+        Optional<Event> eventOptional = eventRepository.findById(id);
+
+        if (eventOptional.isPresent()) {
+            Event event = eventOptional.get();
+            if(!event.getEventStatus().equals(EventStatus.ARCHIVED)) {
+                event.setEventStatus(EventStatus.ARCHIVED);
+                eventRepository.save(event);
+                DetailedEventDto detailedEventDto = detailedEventMapper.toDto(event);
+                log.debug("DetailedEventDto -> {}", detailedEventDto);
+                return detailedEventDto;
+            } else {
+                throw new SameEventStatusException("Event is already in the archive");
+            }
+        } else {
+            throw new DBNotFoundException(UNABLE_TO_FIND_EVENT);
+        }
+    }
 }
