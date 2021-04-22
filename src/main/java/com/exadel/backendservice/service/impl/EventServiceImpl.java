@@ -14,6 +14,7 @@ import com.exadel.backendservice.mapper.converter.DetailedEventMapper;
 import com.exadel.backendservice.mapper.converter.EventWithIdMapper;
 import com.exadel.backendservice.mapper.converter.SearchEventMapper;
 import com.exadel.backendservice.model.BucketName;
+import com.exadel.backendservice.model.EventStatus;
 import com.exadel.backendservice.model.EventType;
 import com.exadel.backendservice.model.MimeTypes;
 import com.exadel.backendservice.repository.CityRepository;
@@ -156,5 +157,15 @@ public class EventServiceImpl implements EventService {
             return false;
         }
         return !event.getPicturePath().isEmpty() && !event.getPictureName().isEmpty();
+    }
+
+    @Override
+    public Page<SearchEventDto> getPublishedEvents(Pageable pageable) {
+        Page<Event> events = eventRepository.findAll(pageable);
+        List<SearchEventDto> publishedEvents = events.get()
+                .filter(event -> event.getEventStatus().equals(EventStatus.PUBLISHED))
+                .map(searchEventMapper::toDto)
+                .collect(Collectors.toList());
+        return new PageImpl<>(publishedEvents);
     }
 }

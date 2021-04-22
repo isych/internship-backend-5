@@ -26,4 +26,6 @@ public interface EventService {
     EventRespDto uploadImage(Integer id, MultipartFile file);
 
     boolean hasPicture(Integer id);
+
+    Page<SearchEventDto> getPublishedEvents(Pageable pageable);
 }
