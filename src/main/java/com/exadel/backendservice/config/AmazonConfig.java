@@ -11,8 +11,8 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class AmazonConfig {
-    public static String ACCESS_KEY_ID = "";
-    public static String ACCESS_SECRET_KEY = "";
+    public static String ACCESS_KEY_ID= "AKIA46S5JXWCHOOA2R5G";
+    public static String ACCESS_SECRET_KEY= "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";
 
 
     @Bean

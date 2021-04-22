@@ -5,6 +5,7 @@ import com.exadel.backendservice.dto.resp.CandidateRespDto;
 import com.exadel.backendservice.dto.resp.DetailedCandidateDto;
 import com.exadel.backendservice.dto.resp.SearchCandidateDto;
 import com.exadel.backendservice.entity.Candidate;
+import com.exadel.backendservice.exception.ApiResponseException;
 import com.exadel.backendservice.exception.CannotUploadFileException;
 import com.exadel.backendservice.exception.DBNotFoundException;
 import com.exadel.backendservice.exception.UnsupportedMediaFormatException;
@@ -18,15 +19,20 @@ import com.exadel.backendservice.repository.CityRepository;
 import com.exadel.backendservice.repository.EventRepository;
 import com.exadel.backendservice.repository.TechRepository;
 import com.exadel.backendservice.service.CandidateService;
+import com.exadel.backendservice.service.utils.MailSender;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.mail.MailException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -42,6 +48,7 @@ public class CandidateServiceImpl implements CandidateService {
     private final String UNABLE_TO_FIND_CANDIDATE = "Unable to find candidate";
     public static final String MORE_THAN_ONE_CHAR_REGEX = "( )+";
 
+    private final MailSender mailSender;
     private final CandidateRepository candidateRepository;
     private final CityRepository cityRepository;
     private final TechRepository techRepository;
@@ -70,6 +77,7 @@ public class CandidateServiceImpl implements CandidateService {
         Candidate savedCandidate = candidateRepository.save(candidate);
         CandidateRespDto candidateRespDto = candidateMapper.toDto(savedCandidate);
         log.debug("Candidate with ID: {}", candidateRespDto.getId());
+        sendMailToCandidate(candidateRespDto.getEmail(), candidateRespDto.getFullName());
         return candidateRespDto;
     }
 
@@ -187,6 +195,15 @@ public class CandidateServiceImpl implements CandidateService {
                 candidate.getFullName() + "_" +
                 candidate.getEvent().getName();
         return result.replaceAll(MORE_THAN_ONE_CHAR_REGEX, "_");
+    }
+
+    private void sendMailToCandidate(String email, String name) {
+        String message = String.format("%s,\nyour registration completed successfully!\nWait for the recruiter's call soon.", name);
+        try {
+            mailSender.send(email, "Registration for Exadel event", message);
+        } catch (MailException ex) {
+            throw new ApiResponseException("Internal error: mail can't be send to candidate");
+        }
     }
 
 }
