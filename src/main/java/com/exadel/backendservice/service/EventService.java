@@ -30,4 +30,6 @@ public interface EventService {
     Page<SearchEventDto> getPublishedEvents(Pageable pageable);
 
     DetailedEventDto publishEvent(Integer id);
+
+    DetailedEventDto moveToArchive(Integer id);
 }

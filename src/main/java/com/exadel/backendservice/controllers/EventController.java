@@ -90,9 +90,15 @@ public class EventController {
         return new ResponseEntity<>(eventService.getPublishedEvents(pageable), HttpStatus.OK);
     }
 
-    @ApiOperation("Метод для публикации ивента")
+    @ApiOperation("Метод для публикации события")
     @GetMapping("{id}/publish")
     public ResponseEntity<DetailedEventDto> publishEvent(@PathVariable("id") Integer id) {
         return new ResponseEntity<>(eventService.publishEvent(id) , HttpStatus.OK);
+    }
+
+    @ApiOperation("Метод для перемещения события в архив")
+    @GetMapping("{id}/toarchive")
+    public ResponseEntity<DetailedEventDto> eventToArchive(@PathVariable("id") Integer id) {
+        return new ResponseEntity<>(eventService.moveToArchive(id) , HttpStatus.OK);
     }
 }
