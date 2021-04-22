@@ -106,7 +106,7 @@ public class CandidateServiceImpl implements CandidateService {
 
     @Override
     public List<String> getAllPreferredTime() {
-        return Stream.of(PreferredTime.values())
+        return Stream.of(PreferredCandidateTime.values())
                 .map(Enum::name)
                 .collect(Collectors.toList());
     }

@@ -27,11 +27,11 @@ insert into tech values (2,'Spring Stack');
 insert into tech values (3,'JS');
 insert into tech values (4,'React');
 
-insert into events values (1001, 'description','2003-2-1','Java & Js 2021',null,null,'2003-1-1','MEETUP',false);
-insert into events values (1002, 'description','2003-2-1','Java 2017',null,null,'2003-1-1','INTERNSHIP',false);
-insert into events values (1003, 'description','2003-2-1','Spring 2020',null,null,'2003-1-1','TRAINING',false);
-insert into events values (1004, 'description','2003-2-1','JavaScript',null,null,'2003-1-1','MEETUP',false);
-insert into events values (1005, 'description','2003-2-1','React JS 2021',null,null,'2003-1-1','INTERNSHIP',false);
+insert into events values (1001, 'description','2003-2-1','Java & Js 2021',null,null,'2003-1-1','MEETUP','PUBLISHED');
+insert into events values (1002, 'description','2003-2-1','Java 2017',null,null,'2003-1-1','INTERNSHIP','PUBLISHED');
+insert into events values (1003, 'description','2003-2-1','Spring 2020',null,null,'2003-1-1','TRAINING','NOT_PUBLISHED');
+insert into events values (1004, 'description','2003-2-1','JavaScript',null,null,'2003-1-1','MEETUP','PUBLISHED');
+insert into events values (1005, 'description','2003-2-1','React JS 2021',null,null,'2003-1-1','INTERNSHIP','ARCHIVED');
 
 insert into event_tech values (1001, 1);
 insert into event_tech values (1001, 3);

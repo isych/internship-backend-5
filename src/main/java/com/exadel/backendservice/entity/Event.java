@@ -1,5 +1,6 @@
 package com.exadel.backendservice.entity;
 
+import com.exadel.backendservice.model.EventStatus;
 import com.exadel.backendservice.model.EventType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -40,8 +41,9 @@ public class Event extends AbstractEntity {
     @Enumerated(EnumType.STRING)
     private EventType type;
 
-    @Column(name = "is_published")
-    private boolean isPublished = false;
+    @Column(name = "status")
+    @Enumerated(EnumType.STRING)
+    private EventStatus eventStatus = EventStatus.NOT_PUBLISHED;
 
     @ManyToMany(cascade = CascadeType.ALL)
     @EqualsAndHashCode.Exclude
