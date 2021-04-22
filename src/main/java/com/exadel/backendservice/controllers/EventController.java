@@ -83,4 +83,10 @@ public class EventController {
     public ResponseEntity<Boolean> checkImage(@PathVariable("id") Integer id) {
         return new ResponseEntity<>(eventService.hasPicture(id), HttpStatus.OK);
     }
+
+    @ApiOperation("Метод для получения опубликованных событий постранично")
+    @GetMapping("/published")
+    public ResponseEntity<Page<SearchEventDto>> getPublishedEvents(Pageable pageable) {
+        return new ResponseEntity<>(eventService.getPublishedEvents(pageable), HttpStatus.OK);
+    }
 }
