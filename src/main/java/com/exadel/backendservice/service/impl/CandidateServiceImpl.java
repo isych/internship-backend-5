@@ -190,6 +190,19 @@ public class CandidateServiceImpl implements CandidateService {
         throw new DBNotFoundException(UNABLE_TO_FIND_CANDIDATE);
     }
 
+    @Override
+    public CandidateRespDto updateStatus(Integer id, CandidateStatus status) {
+        Candidate candidate;
+        Optional<Candidate> candidateOptional = candidateRepository.findById(id);
+        if (candidateOptional.isPresent()) {
+            candidate = candidateOptional.get();
+            candidate.setStatus(status);
+            candidateRepository.save(candidate);
+            return candidateMapper.toDto(candidate);
+        }
+        throw new DBNotFoundException("Candidate with this id does not found");
+    }
+
     private String buildCvName(Candidate candidate) {
         String result = candidate.getPrimaryTech().getName() + "_" +
                 candidate.getFullName() + "_" +

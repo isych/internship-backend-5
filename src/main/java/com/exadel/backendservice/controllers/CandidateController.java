@@ -3,7 +3,9 @@ package com.exadel.backendservice.controllers;
 import com.exadel.backendservice.dto.req.RegisterCandidateDto;
 import com.exadel.backendservice.dto.resp.CandidateRespDto;
 import com.exadel.backendservice.dto.resp.DetailedCandidateDto;
+import com.exadel.backendservice.dto.resp.DetailedEventDto;
 import com.exadel.backendservice.dto.resp.SearchCandidateDto;
+import com.exadel.backendservice.model.CandidateStatus;
 import com.exadel.backendservice.service.CandidateService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -133,4 +135,15 @@ public class CandidateController {
         return new ResponseEntity<>(candidateService.hasCv(id), HttpStatus.OK);
     }
 
+    /**
+     * Метод для изменения статуса кандидата
+     *
+     * @param id - идентификационный номер кандидата, которому требуется установить новое значение статуса
+     * @param status - значение статуса для установки кандидату
+     */
+    @ApiOperation(value = "Метод для изменения статуса кандидата")
+    @PutMapping(value = "/{id}/{status}")
+    public ResponseEntity<CandidateRespDto> updateStatus(@PathVariable("id") Integer id, @PathVariable("status") CandidateStatus status) {
+        return new ResponseEntity<CandidateRespDto>(candidateService.updateStatus(id, status) , HttpStatus.OK);
+    }
 }
