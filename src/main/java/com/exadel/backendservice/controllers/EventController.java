@@ -89,4 +89,10 @@ public class EventController {
     public ResponseEntity<Page<SearchEventDto>> getPublishedEvents(Pageable pageable) {
         return new ResponseEntity<>(eventService.getPublishedEvents(pageable), HttpStatus.OK);
     }
+
+    @ApiOperation("Метод для публикации ивента")
+    @GetMapping("{id}/publish")
+    public ResponseEntity<DetailedEventDto> publishEvent(@PathVariable("id") Integer id) {
+        return new ResponseEntity<>(eventService.publishEvent(id) , HttpStatus.OK);
+    }
 }

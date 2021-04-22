@@ -70,4 +70,14 @@ public class ApiExceptionHandler {
         );
         return new ResponseEntity<>(exceptionDto, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(value = {SameEventStatusException.class})
+    public ResponseEntity<Object> handleEventsIsPublishedException(SameEventStatusException e) {
+        ExceptionDto exceptionDto = new ExceptionDto(
+                e.getMessage(),
+                e, HttpStatus.BAD_REQUEST,
+                LocalDateTime.now()
+        );
+        return new ResponseEntity<>(exceptionDto, HttpStatus.BAD_REQUEST);
+    }
 }
