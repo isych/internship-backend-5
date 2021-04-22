@@ -5,10 +5,7 @@ import com.exadel.backendservice.dto.resp.DetailedEventDto;
 import com.exadel.backendservice.dto.resp.EventRespDto;
 import com.exadel.backendservice.dto.resp.SearchEventDto;
 import com.exadel.backendservice.entity.Event;
-import com.exadel.backendservice.exception.CannotUploadFileException;
-import com.exadel.backendservice.exception.DBNotFoundException;
-import com.exadel.backendservice.exception.DBNotUniqueValueForUniqueFieldException;
-import com.exadel.backendservice.exception.UnsupportedMediaFormatException;
+import com.exadel.backendservice.exception.*;
 import com.exadel.backendservice.mapper.converter.CreateEventMapper;
 import com.exadel.backendservice.mapper.converter.DetailedEventMapper;
 import com.exadel.backendservice.mapper.converter.EventWithIdMapper;
@@ -167,5 +164,25 @@ public class EventServiceImpl implements EventService {
                 .map(searchEventMapper::toDto)
                 .collect(Collectors.toList());
         return new PageImpl<>(publishedEvents);
+    }
+
+    @Override
+    public DetailedEventDto publishEvent(Integer id) {
+        Optional<Event> eventOptional = eventRepository.findById(id);
+
+        if (eventOptional.isPresent()) {
+            Event event = eventOptional.get();
+            if(!event.getEventStatus().equals(EventStatus.PUBLISHED)) {
+                event.setEventStatus(EventStatus.PUBLISHED);
+                eventRepository.save(event);
+                DetailedEventDto detailedEventDto = detailedEventMapper.toDto(event);
+                log.debug("DetailedEventDto -> {}", detailedEventDto);
+                return detailedEventDto;
+            } else {
+                throw new SameEventStatusException("Event is already published");
+            }
+        } else {
+            throw new DBNotFoundException(UNABLE_TO_FIND_EVENT);
+        }
     }
 }
