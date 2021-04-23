@@ -158,11 +158,11 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public Page<SearchEventDto> getPublishedEvents(Pageable pageable) {
-        Page<Event> events = eventRepository.findAll(pageable);
-        List<SearchEventDto> publishedEvents = events.get()
-                .filter(event -> event.getEventStatus().equals(EventStatus.PUBLISHED))
+        List<Event> eventsList = eventRepository.findByEventStatus(EventStatus.PUBLISHED,  pageable);
+        List<SearchEventDto> publishedEvents = eventsList.stream()
                 .map(searchEventMapper::toDto)
                 .collect(Collectors.toList());
+        log.debug("SearchEventDto -> {}", publishedEvents);
         return new PageImpl<>(publishedEvents);
     }
 
