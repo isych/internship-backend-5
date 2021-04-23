@@ -136,14 +136,24 @@ public class CandidateController {
     }
 
     /**
-     * Метод для изменения статуса кандидата
+     * Метод для изменения статуса кандидата (не принят)
      *
-     * @param id - идентификационный номер кандидата, которому требуется установить новое значение статуса
-     * @param status - значение статуса для установки кандидату
+     * @param id - идентификационный номер кандидата, которому требуется установить значение статуса "не принят"
      */
-    @ApiOperation(value = "Метод для изменения статуса кандидата")
-    @PutMapping(value = "/{id}/{status}")
-    public ResponseEntity<CandidateRespDto> updateStatus(@PathVariable("id") Integer id, @PathVariable("status") CandidateStatus status) {
-        return new ResponseEntity<CandidateRespDto>(candidateService.updateStatus(id, status) , HttpStatus.OK);
+    @ApiOperation(value = "Метод для изменения статуса кандидата (не принят)")
+    @PutMapping(value = "/{id}/reject")
+    public ResponseEntity<CandidateRespDto> updateStatusOfRejectedCandidate(@PathVariable("id") Integer id) {
+        return new ResponseEntity<CandidateRespDto>(candidateService.updateStatus(id, CandidateStatus.RED), HttpStatus.OK);
+    }
+
+    /**
+     * Метод для изменения статуса кандидата (принят)
+     *
+     * @param id - идентификационный номер кандидата, которому требуется установить значение статуса "принят"
+     */
+    @ApiOperation(value = "Метод для изменения статуса кандидата (принят)")
+    @PutMapping(value = "/{id}/accept")
+    public ResponseEntity<CandidateRespDto> updateStatusOfAcceptedCandidate(@PathVariable("id") Integer id) {
+        return new ResponseEntity<CandidateRespDto>(candidateService.updateStatus(id, CandidateStatus.GREEN) , HttpStatus.OK);
     }
 }
