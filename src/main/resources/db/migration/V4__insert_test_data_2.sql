@@ -1,0 +1,3 @@
+insert into candidate values (1001,null,null,'test@testtest.com','Nick Nikolaev','REGISTERED','+964493431','FROM_FOUR_TO_SIX','live:.cid.60e0d1dadfe72c0e96f4','RED','','3','1001','1');
+insert into candidate values (1002,null,null,'test2@afadfadfgmail.com','Vasya Pupkin','REGISTERED','+156940949','FROM_TWO_TO_FOUR','live:.cid.zxasdf2342323424','GREEN','','2','1003','1');
+insert into candidate values (1003,null,null,'test3@afadfadfgmail.com','Alex Aleksandrov','REGISTERED','+123456789','FROM_TEN_TO_TWELVE','live:.cid.123de23aw3e2342e2','YELLOW','','1','1005','3');
