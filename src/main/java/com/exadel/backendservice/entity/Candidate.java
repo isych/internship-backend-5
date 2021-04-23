@@ -26,6 +26,7 @@ public class Candidate extends AbstractEntity {
     @Enumerated(EnumType.STRING)
     private PreferredCandidateTime preferredTime = PreferredCandidateTime.ANY;
 
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private InterviewProcess interviewProcess = InterviewProcess.REGISTERED;
 

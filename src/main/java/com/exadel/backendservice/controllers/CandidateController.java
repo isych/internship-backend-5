@@ -5,6 +5,7 @@ import com.exadel.backendservice.dto.resp.CandidateRespDto;
 import com.exadel.backendservice.dto.resp.DetailedCandidateDto;
 import com.exadel.backendservice.dto.resp.SearchCandidateDto;
 import com.exadel.backendservice.model.CandidateStatus;
+import com.exadel.backendservice.model.InterviewProcess;
 import com.exadel.backendservice.service.CandidateService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -154,5 +155,38 @@ public class CandidateController {
     @PutMapping(value = "/{id}/accept")
     public ResponseEntity<CandidateRespDto> updateStatusOfAcceptedCandidate(@PathVariable("id") Integer id) {
         return new ResponseEntity<CandidateRespDto>(candidateService.updateStatus(id, CandidateStatus.GREEN) , HttpStatus.OK);
+    }
+
+    /**
+     * Метод для изменения статуса этапа интервью кандидата (ожидает интервью с hr)
+     *
+     * @param id - идентификационный номер кандидата, которому требуется установить значение статуса этапа интервью  "ожидает интервью с hr"
+     */
+    @ApiOperation(value = "Метод для изменения статуса интервью кандидата (ожидает интервью с hr)")
+    @PutMapping(value = "/{id}/awaiting_hr")
+    public ResponseEntity<CandidateRespDto> updateInterviewStatusToAwaitingHr(@PathVariable("id") Integer id) {
+        return new ResponseEntity<CandidateRespDto>(candidateService.updateInterviewStatus(id, InterviewProcess.AWAITING_HR) , HttpStatus.OK);
+    }
+
+    /**
+     * Метод для изменения статуса этапа интервью кандидата (ожидает интерввью с техническим специалистом)
+     *
+     * @param id - идентификационный номер кандидата, которому требуется установить значение статуса этапа интервью  "ожидает интервью с техническим специалистом"
+     */
+    @ApiOperation(value = "Метод для изменения статуса этапа интервью кандидата (ожидает интервью с техническим специалистом)")
+    @PutMapping(value = "/{id}/awaiting_tс")
+    public ResponseEntity<CandidateRespDto> updateInterviewStatusToAwaitingTech(@PathVariable("id") Integer id) {
+        return new ResponseEntity<CandidateRespDto>(candidateService.updateInterviewStatus(id, InterviewProcess.AWAITING_TS) , HttpStatus.OK);
+    }
+
+    /**
+     * Метод для изменения статуса этапа интервью кандидата (ожидает решение по результатам интервью)
+     *
+     * @param id - идентификационный номер кандидата, которому требуется установить значение статуса этапа интервью  "ожидает решение по результатам интервью"
+     */
+    @ApiOperation(value = "Метод для изменения статуса этапа интервью кандидата (ожидает решение по результатам интервью)")
+    @PutMapping(value = "/{id}/awaiting_decision")
+    public ResponseEntity<CandidateRespDto> updateInterviewStatusToAwaitingDecision(@PathVariable("id") Integer id) {
+        return new ResponseEntity<CandidateRespDto>(candidateService.updateInterviewStatus(id, InterviewProcess.WAITING_DECISION) , HttpStatus.OK);
     }
 }
