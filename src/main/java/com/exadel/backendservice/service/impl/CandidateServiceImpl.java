@@ -216,4 +216,17 @@ public class CandidateServiceImpl implements CandidateService {
         }
         throw new DBNotFoundException("Candidate with this id does not found");
     }
+
+    @Override
+    public CandidateRespDto updateInterviewStatus(Integer id, InterviewProcess awaitingHr) {
+        Candidate candidate;
+        Optional<Candidate> candidateOptional = candidateRepository.findById(id);
+        if (candidateOptional.isPresent()) {
+            candidate = candidateOptional.get();
+            candidate.setInterviewProcess(awaitingHr);
+            candidateRepository.save(candidate);
+            return candidateMapper.toDto(candidate);
+        }
+        throw new DBNotFoundException("Candidate with this id does not found");
+    }
 }

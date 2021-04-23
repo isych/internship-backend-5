@@ -6,6 +6,7 @@ import com.exadel.backendservice.dto.resp.CandidateRespDto;
 import com.exadel.backendservice.dto.resp.DetailedCandidateDto;
 import com.exadel.backendservice.dto.resp.SearchCandidateDto;
 import com.exadel.backendservice.model.CandidateStatus;
+import com.exadel.backendservice.model.InterviewProcess;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
@@ -35,4 +36,6 @@ public interface CandidateService {
     String getCvName(Integer id);
 
     CandidateRespDto updateStatus(Integer id, CandidateStatus status);
+
+    CandidateRespDto updateInterviewStatus(Integer id, InterviewProcess awaitingHr);
 }
