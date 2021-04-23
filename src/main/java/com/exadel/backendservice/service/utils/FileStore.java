@@ -1,4 +1,4 @@
-package com.exadel.backendservice.service.impl;
+package com.exadel.backendservice.service.utils;
 
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.AmazonS3;
@@ -21,7 +21,7 @@ import java.util.Optional;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class FileStoreServiceImpl implements FileStoreService {
+public class FileStore implements FileStoreService {
     private final AmazonS3 amazonS3;
 
     @Override

@@ -13,7 +13,7 @@ import java.util.List;
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class DetailedCandidateDto extends AbstractDto {
-    private String id;
+    private Integer id;
 
     private String fullName;
 
@@ -30,6 +30,8 @@ public class DetailedCandidateDto extends AbstractDto {
     private String city;
 
     private String country;
+
+    private String primaryTech;
 
     private PreferredCandidateTime preferredTime;
 

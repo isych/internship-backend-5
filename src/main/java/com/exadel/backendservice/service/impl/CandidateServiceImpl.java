@@ -19,10 +19,10 @@ import com.exadel.backendservice.repository.CityRepository;
 import com.exadel.backendservice.repository.EventRepository;
 import com.exadel.backendservice.repository.TechRepository;
 import com.exadel.backendservice.service.CandidateService;
+import com.exadel.backendservice.service.utils.FileStore;
 import com.exadel.backendservice.service.utils.MailSender;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -31,8 +31,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -59,7 +57,7 @@ public class CandidateServiceImpl implements CandidateService {
     private final DetailedCandidateMapper detailedCandidateMapper;
     private final CandidateResponseMapper candidateMapper;
 
-    private final FileStoreServiceImpl fileStoreService;
+    private final FileStore fileStoreService;
 
     @Override
     public CandidateRespDto registerCandidate(RegisterCandidateDto dto) {

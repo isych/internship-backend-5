@@ -18,6 +18,7 @@ import com.exadel.backendservice.repository.CityRepository;
 import com.exadel.backendservice.repository.EventRepository;
 import com.exadel.backendservice.repository.TechRepository;
 import com.exadel.backendservice.service.EventService;
+import com.exadel.backendservice.service.utils.FileStore;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -44,7 +45,7 @@ public class EventServiceImpl implements EventService {
     private final SearchEventMapper searchEventMapper;
     private final CreateEventMapper createEventMapper;
     private final EventWithIdMapper eventWithIdMapper;
-    private final FileStoreServiceImpl fileStoreService;
+    private final FileStore fileStoreService;
 
 
     @Override

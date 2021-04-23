@@ -4,12 +4,9 @@ package com.exadel.backendservice.entity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
 
 @Data
 @Entity
@@ -28,8 +25,8 @@ public class Interview extends AbstractEntity {
     private String feedback;
 
     @ManyToOne
-    @JoinColumn(name = "interviewer_id", nullable = false)
-    private Interviewer interviewer;
+    @JoinColumn(name = "employee_id", nullable = false)
+    private Employee employee;
 
     @ManyToOne
     @JoinColumn(name = "candidate_id", nullable = false)

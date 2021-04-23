@@ -72,6 +72,6 @@ class CandidateControllerTest extends AbstractTestConfig {
         this.mockMvc.perform(get("/api/candidates/preferred-times"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().string("[\"NONE\",\"FROM_TEN_TO_TWELVE\",\"FROM_TWELVE_TO_TWO\",\"FROM_TWO_TO_FOUR\",\"FROM_FOUR_TO_SIX\"]"));
+                .andExpect(content().string("[\"ANY\",\"FROM_TEN_TO_TWELVE\",\"FROM_TWELVE_TO_TWO\",\"FROM_TWO_TO_FOUR\",\"FROM_FOUR_TO_SIX\"]"));
     }
 }

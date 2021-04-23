@@ -5,14 +5,13 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "interviewer_timeslot")
+@Table(name = "employee_timeslot")
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class InterviewerTimeslot extends AbstractEntity {
+public class EmployeeTimeslot extends AbstractEntity {
     @Column(name = "start_time", nullable = false)
     private Integer startTime;
 
@@ -20,6 +19,6 @@ public class InterviewerTimeslot extends AbstractEntity {
     private Integer endTime;
 
     @ManyToOne
-    @JoinColumn(name = "interviewer_id", nullable = false)
-    private Interviewer interviewer;
+    @JoinColumn(name = "employee_id", nullable = false)
+    private Employee employee;
 }

@@ -20,6 +20,7 @@ public class DetailedCandidateMapper extends AbstractMapper<Candidate, DetailedC
                 .addMappings(m -> m.skip(DetailedCandidateDto::setCountry))
                 .addMappings(m -> m.skip(DetailedCandidateDto::setEventName))
                 .addMappings(m -> m.skip(DetailedCandidateDto::setInterviews))
+                .addMappings(m -> m.skip(DetailedCandidateDto::setPrimaryTech))
                 .setPostConverter(toDtoConverter());
     }
 
@@ -28,9 +29,11 @@ public class DetailedCandidateMapper extends AbstractMapper<Candidate, DetailedC
         String city = source.getCity().getName();
         String country = source.getCity().getCountry().getName();
         String eventName = source.getEvent().getName();
+        String primaryTech = source.getPrimaryTech().getName();
         //TODO InterviewDto
         destination.setCity(city);
         destination.setCountry(country);
         destination.setEventName(eventName);
+        destination.setPrimaryTech(primaryTech);
     }
 }

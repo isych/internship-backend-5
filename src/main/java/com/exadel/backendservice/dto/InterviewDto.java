@@ -1,6 +1,5 @@
 package com.exadel.backendservice.dto;
 
-import com.exadel.backendservice.model.InterviewerType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -11,6 +10,5 @@ import java.time.LocalDateTime;
 public class InterviewDto extends AbstractDto {
     private String feedback;
     private String interviewerName;
-    private InterviewerType interviewerType;
     private LocalDateTime time;
 }
