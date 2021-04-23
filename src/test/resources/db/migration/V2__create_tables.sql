@@ -11,6 +11,7 @@ create table users (id  serial not null, email varchar(255), fio varchar(255), l
 create table interview (id int4 not null, end_time timestamp, feedback varchar(100), start_time timestamp, candidate_id int4 not null, employee_id int4 not null, primary key (id));
 create table employee (id int4 not null, full_name varchar(20) not null, email varchar(255) not null, password varchar(255) not null, role_id int4 not null, primary key (id));
 create table employee_timeslot (id int4 not null, end_time int4 not null, start_time int4 not null, employee_id int4 not null, primary key (id));
+create table dynamic_interview_link (id int4 not null, code varchar(255) not null, created_time timestamp not null, interview_id int4 not null, primary key (id));
 alter table employee add constraint FKjod0wwyxabi7qyx9fmlntsxq4 foreign key (role_id) references roles;
 alter table interview add constraint FKjod0wwyxvbi7qyx9cmlnt8xq4 foreign key (candidate_id) references candidate;
 alter table interview add constraint FK5amdvskvlsj31qxv5aceawoye foreign key (employee_id) references employee;
