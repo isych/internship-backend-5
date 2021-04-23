@@ -1,5 +1,5 @@
 package com.exadel.backendservice.model;
 
 public enum InterviewProcess {
-    WAITING, FIRST_INTERVIEW_PASSED, SECOND_INTERVIEW_PASSED
+    REGISTERED, AWAITING_HR, AWAITING_TS, WAITING_DECISION;
 }

@@ -24,10 +24,10 @@ public class Candidate extends AbstractEntity {
     private String summary;
 
     @Enumerated(EnumType.STRING)
-    private PreferredCandidateTime preferredTime = PreferredCandidateTime.NONE;
+    private PreferredCandidateTime preferredTime = PreferredCandidateTime.ANY;
 
     @Enumerated(EnumType.STRING)
-    private InterviewProcess interviewProcess = InterviewProcess.WAITING;
+    private InterviewProcess interviewProcess = InterviewProcess.REGISTERED;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)

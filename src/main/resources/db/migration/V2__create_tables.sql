@@ -8,12 +8,13 @@ create table roles (id  serial not null, name varchar(255), primary key (id));
 create table tech (id int4 not null, name varchar(64) not null, primary key (id));
 create table users (id  serial not null, email varchar(255), fio varchar(255), login varchar(255), password varchar(255), role_id int4, primary key (id));
 
-create table interview (id int4 not null, end_time timestamp, feedback varchar(100), start_time timestamp, candidate_id int4 not null, interviewer_id int4 not null, primary key (id));
-create table interviewer (id int4 not null, name varchar(20) not null, type varchar(255) not null, primary key (id));
-create table interviewer_timeslot (id int4 not null, end_time int4 not null, start_time int4 not null, interviewer_id int4 not null, primary key (id));
+create table interview (id int4 not null, end_time timestamp, feedback varchar(100), start_time timestamp, candidate_id int4 not null, employee_id int4 not null, primary key (id));
+create table employee (id int4 not null, full_name varchar(20) not null, email varchar(255) not null, password varchar(255) not null, role_id int4 not null, primary key (id));
+create table employee_timeslot (id int4 not null, end_time int4 not null, start_time int4 not null, employee_id int4 not null, primary key (id));
+alter table employee add constraint FKjod0wwyxabi7qyx9fmlntsxq4 foreign key (role_id) references roles;
 alter table interview add constraint FKjod0wwyxvbi7qyx9cmlnt8xq4 foreign key (candidate_id) references candidate;
-alter table interview add constraint FK5amdvskvlsj31qxv5aceawoye foreign key (interviewer_id) references interviewer;
-alter table interviewer_timeslot add constraint FKclg70w7gqslwgjo279a0qqg68 foreign key (interviewer_id) references interviewer;
+alter table interview add constraint FK5amdvskvlsj31qxv5aceawoye foreign key (employee_id) references employee;
+alter table employee_timeslot add constraint FKclg70w7gqslwgjo279a0qqg68 foreign key (employee_id) references employee;
 
 alter table city add constraint UK_qsstlki7ni5ovaariyy9u8y79 unique (name);
 alter table country add constraint UK_llidyp77h6xkeokpbmoy710d4 unique (name);
