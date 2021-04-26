@@ -1,7 +1,7 @@
 package com.exadel.backendservice.dto.resp;
 
 import com.exadel.backendservice.dto.AbstractDto;
-import com.exadel.backendservice.dto.InterviewDto;
+import com.exadel.backendservice.dto.DetailedCandidateInterviewDto;
 import com.exadel.backendservice.model.CandidateStatus;
 import com.exadel.backendservice.model.InterviewProcess;
 import com.exadel.backendservice.model.PreferredCandidateTime;
@@ -39,6 +39,6 @@ public class DetailedCandidateDto extends AbstractDto {
 
     private InterviewProcess interviewProcess;
 
-    private List<InterviewDto> interviews;
+    private List<DetailedCandidateInterviewDto> interviews;
 
 }

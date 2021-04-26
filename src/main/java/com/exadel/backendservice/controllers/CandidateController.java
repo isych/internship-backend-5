@@ -67,8 +67,8 @@ public class CandidateController {
      */
 
     @ApiOperation(value = "Метод для извлечения кандидата по id")
-    @GetMapping(value = "/")
-    public ResponseEntity<DetailedCandidateDto> getDetailedCandidateDtoBy(@RequestParam(name = "id") Integer id) {
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<DetailedCandidateDto> getDetailedCandidateDtoBy(@PathVariable(name = "id") Integer id) {
         return new ResponseEntity<>(candidateService.getDetailedCandidateDto(id), HttpStatus.OK);
     }
 

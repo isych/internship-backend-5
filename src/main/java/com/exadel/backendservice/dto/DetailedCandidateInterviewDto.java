@@ -7,8 +7,10 @@ import java.time.LocalDateTime;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class InterviewDto extends AbstractDto {
+public class DetailedCandidateInterviewDto extends AbstractDto {
+    private Integer id;
     private String feedback;
     private String interviewerName;
-    private LocalDateTime time;
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
 }
