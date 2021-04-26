@@ -12,16 +12,10 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = false)
 public class CreateEventDto extends AbstractDto {
     private String name;
-
     private String description;
-
     private LocalDateTime startDate;
-
     private LocalDateTime endDate;
-
     private EventType type;
-
     private List<String> techs;
-
     private List<String> cities;
 }

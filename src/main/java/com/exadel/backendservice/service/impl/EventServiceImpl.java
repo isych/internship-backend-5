@@ -3,13 +3,11 @@ package com.exadel.backendservice.service.impl;
 import com.exadel.backendservice.dto.req.CreateEventDto;
 import com.exadel.backendservice.dto.resp.DetailedEventDto;
 import com.exadel.backendservice.dto.resp.EventRespDto;
-import com.exadel.backendservice.dto.resp.SearchEventDto;
 import com.exadel.backendservice.entity.Event;
 import com.exadel.backendservice.exception.*;
 import com.exadel.backendservice.mapper.converter.CreateEventMapper;
 import com.exadel.backendservice.mapper.converter.DetailedEventMapper;
 import com.exadel.backendservice.mapper.converter.EventWithIdMapper;
-import com.exadel.backendservice.mapper.converter.SearchEventMapper;
 import com.exadel.backendservice.model.BucketName;
 import com.exadel.backendservice.model.EventStatus;
 import com.exadel.backendservice.model.EventType;
@@ -42,7 +40,6 @@ public class EventServiceImpl implements EventService {
     private final TechRepository techRepository;
 
     private final DetailedEventMapper detailedEventMapper;
-    private final SearchEventMapper searchEventMapper;
     private final CreateEventMapper createEventMapper;
     private final EventWithIdMapper eventWithIdMapper;
     private final FileStore fileStoreService;
@@ -75,9 +72,9 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public Page<SearchEventDto> getEventsPage(Pageable pageable) {
+    public Page<DetailedEventDto> getEventsPage(Pageable pageable) {
         Page<Event> page = eventRepository.findAll(pageable);
-        List<SearchEventDto> eventList = page.get().map(searchEventMapper::toDto).collect(Collectors.toList());
+        List<DetailedEventDto> eventList = page.get().map(detailedEventMapper::toDto).collect(Collectors.toList());
         log.debug("SearchEventDto -> {}", eventList);
         return new PageImpl<>(eventList);
     }
@@ -158,10 +155,10 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public Page<SearchEventDto> getPublishedEvents(Pageable pageable) {
+    public Page<DetailedEventDto> getPublishedEvents(Pageable pageable) {
         List<Event> eventsList = eventRepository.findByEventStatus(EventStatus.PUBLISHED,  pageable);
-        List<SearchEventDto> publishedEvents = eventsList.stream()
-                .map(searchEventMapper::toDto)
+        List<DetailedEventDto> publishedEvents = eventsList.stream()
+                .map(detailedEventMapper::toDto)
                 .collect(Collectors.toList());
         log.debug("SearchEventDto -> {}", publishedEvents);
         return new PageImpl<>(publishedEvents);

@@ -2,6 +2,7 @@ package com.exadel.backendservice.dto.resp;
 
 import com.exadel.backendservice.dto.AbstractDto;
 import com.exadel.backendservice.dto.LocationDto;
+import com.exadel.backendservice.model.EventType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -13,8 +14,8 @@ import java.util.List;
 public class DetailedEventDto extends AbstractDto {
     private Integer id;
     private String name;
-    private String description;
     private LocalDateTime startDate;
-    private String type;
-    private List<LocationDto> location;
+    private String description;
+    private EventType type;
+    private List<LocationDto> locations;
 }

@@ -3,7 +3,6 @@ package com.exadel.backendservice.service;
 import com.exadel.backendservice.dto.req.CreateEventDto;
 import com.exadel.backendservice.dto.resp.DetailedEventDto;
 import com.exadel.backendservice.dto.resp.EventRespDto;
-import com.exadel.backendservice.dto.resp.SearchEventDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,7 +14,7 @@ public interface EventService {
 
     List<String> getEventTypes();
 
-    Page<SearchEventDto> getEventsPage(Pageable pageable);
+    Page<DetailedEventDto> getEventsPage(Pageable pageable);
 
     DetailedEventDto getEvent(Integer name);
 
@@ -27,7 +26,7 @@ public interface EventService {
 
     boolean hasPicture(Integer id);
 
-    Page<SearchEventDto> getPublishedEvents(Pageable pageable);
+    Page<DetailedEventDto> getPublishedEvents(Pageable pageable);
 
     DetailedEventDto publishEvent(Integer id);
 
