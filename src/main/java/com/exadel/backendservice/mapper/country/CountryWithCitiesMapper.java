@@ -1,4 +1,4 @@
-package com.exadel.backendservice.mapper.converter;
+package com.exadel.backendservice.mapper.country;
 
 import com.exadel.backendservice.dto.resp.CountryWithCityDto;
 import com.exadel.backendservice.entity.City;

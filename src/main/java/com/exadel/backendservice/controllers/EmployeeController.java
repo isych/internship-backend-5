@@ -1,5 +1,7 @@
 package com.exadel.backendservice.controllers;
 
+import com.exadel.backendservice.dto.resp.InterviewersByRoleDto;
+import com.exadel.backendservice.dto.resp.RoleRespDto;
 import com.exadel.backendservice.entity.Employee;
 import com.exadel.backendservice.model.AuthRequest;
 import com.exadel.backendservice.model.AuthResponse;
@@ -8,13 +10,15 @@ import com.exadel.backendservice.service.EmployeeService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/employee/")
+@RequestMapping("/api/employee")
 @Api(tags = "Контроллер для работы с пользователями")
 public class EmployeeController {
 
@@ -46,8 +50,20 @@ public class EmployeeController {
      * @author Dmitry Karachun
      */
     @ApiOperation(value = "Метод для получения списка ролей")
-    @GetMapping("getAllRoles")
+    @GetMapping("/roles")
     public List<String> getAllRoles() {
         return employeeService.getListRoles();
+    }
+
+    @ApiOperation(value = "Метод для получения списка ролей только интервьюеров")
+    @GetMapping("/interviewers/roles")
+    public ResponseEntity<List<RoleRespDto>> getInterviewersRoles() {
+        return new ResponseEntity<>(employeeService.getInterviewersRoles(), HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "Метод для получения списка ролей только интервьюеров")
+    @GetMapping("/interviewers/list/")
+    public ResponseEntity<List<InterviewersByRoleDto>> getInterviewersByRole() {
+        return new ResponseEntity<>(employeeService.getInterviewersForCandidate(), HttpStatus.OK);
     }
 }

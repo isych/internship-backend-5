@@ -15,13 +15,12 @@ import java.util.Set;
 @EqualsAndHashCode(callSuper = true)
 public class Employee extends AbstractEntity {
 
-    @NonNull
-    @Size(min = 1, max = 60)
+    @Column(nullable = false, length = 60)
     private String password;
 
-    @OneToOne
-    @JoinColumn(name = "role_id")
-    private Role roleEntity;
+    @ManyToOne
+    @JoinColumn(name = "role_id", nullable = false)
+    private Role role;
 
     @Column(name = "full_name", length = 100, nullable = false)
     private String fullName;

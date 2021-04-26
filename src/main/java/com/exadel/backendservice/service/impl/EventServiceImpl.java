@@ -6,10 +6,10 @@ import com.exadel.backendservice.dto.resp.EventRespDto;
 import com.exadel.backendservice.dto.resp.SearchEventDto;
 import com.exadel.backendservice.entity.Event;
 import com.exadel.backendservice.exception.*;
-import com.exadel.backendservice.mapper.converter.CreateEventMapper;
-import com.exadel.backendservice.mapper.converter.DetailedEventMapper;
-import com.exadel.backendservice.mapper.converter.EventWithIdMapper;
-import com.exadel.backendservice.mapper.converter.SearchEventMapper;
+import com.exadel.backendservice.mapper.event.CreateEventMapper;
+import com.exadel.backendservice.mapper.event.DetailedEventMapper;
+import com.exadel.backendservice.mapper.event.EventResponseMapper;
+import com.exadel.backendservice.mapper.event.SearchEventMapper;
 import com.exadel.backendservice.model.BucketName;
 import com.exadel.backendservice.model.EventStatus;
 import com.exadel.backendservice.model.EventType;
@@ -44,7 +44,7 @@ public class EventServiceImpl implements EventService {
     private final DetailedEventMapper detailedEventMapper;
     private final SearchEventMapper searchEventMapper;
     private final CreateEventMapper createEventMapper;
-    private final EventWithIdMapper eventWithIdMapper;
+    private final EventResponseMapper eventResponseMapper;
     private final FileStore fileStoreService;
 
 
@@ -61,7 +61,7 @@ public class EventServiceImpl implements EventService {
         }
         Event entity = createEventMapper.toEntity(dto);
         log.debug("Create entity -> {}", entity);
-        EventRespDto eventRespDto = eventWithIdMapper.toDto(eventRepository.save(entity));
+        EventRespDto eventRespDto = eventResponseMapper.toDto(eventRepository.save(entity));
         log.debug("Event with id dto -> {}", eventRespDto);
         return eventRespDto;
 
@@ -135,7 +135,7 @@ public class EventServiceImpl implements EventService {
             event.setPictureName(fileName);
             event.setPicturePath(path);
             eventRepository.save(event);
-            return eventWithIdMapper.toDto(event);
+            return eventResponseMapper.toDto(event);
         } else {
             throw new DBNotFoundException(UNABLE_TO_FIND_EVENT);
         }
