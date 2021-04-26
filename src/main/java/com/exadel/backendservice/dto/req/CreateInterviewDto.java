@@ -10,9 +10,9 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode(callSuper = false)
 public class CreateInterviewDto extends AbstractDto {
 
-    private Integer interviewerId;
+    private Integer employee;
 
-    private Integer candidateId;
+    private Integer candidate;
 
     private LocalDateTime startTime;
 }

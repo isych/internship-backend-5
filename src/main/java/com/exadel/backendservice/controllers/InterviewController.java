@@ -1,6 +1,5 @@
 package com.exadel.backendservice.controllers;
 
-import com.exadel.backendservice.dto.InterviewDto;
 import com.exadel.backendservice.dto.req.CreateInterviewDto;
 import com.exadel.backendservice.exception.ApiRequestException;
 import com.exadel.backendservice.exception.ApiResponseException;

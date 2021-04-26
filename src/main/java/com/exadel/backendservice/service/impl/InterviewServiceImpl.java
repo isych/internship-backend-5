@@ -1,6 +1,5 @@
 package com.exadel.backendservice.service.impl;
 
-import com.exadel.backendservice.dto.InterviewDto;
 import com.exadel.backendservice.dto.req.CreateInterviewDto;
 import com.exadel.backendservice.entity.Interview;
 import com.exadel.backendservice.mapper.converter.CreateInterviewMapper;
