@@ -12,7 +12,8 @@ public enum PreferredCandidateTime {
     FROM_FOUR_TO_SIX(16, 18);
 
     @Getter
-    private final Integer start_time;
+    private final Integer startTime;
     @Getter
-    private final Integer end_time;
+    private final Integer endTime;
+
 }

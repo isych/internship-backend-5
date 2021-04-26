@@ -1,4 +1,4 @@
-package com.exadel.backendservice.mapper.converter;
+package com.exadel.backendservice.mapper.candidate;
 
 import com.exadel.backendservice.dto.resp.SearchCandidateDto;
 import com.exadel.backendservice.entity.Candidate;

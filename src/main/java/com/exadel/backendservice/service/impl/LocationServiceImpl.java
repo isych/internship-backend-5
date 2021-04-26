@@ -1,12 +1,11 @@
 package com.exadel.backendservice.service.impl;
 
 import com.exadel.backendservice.dto.resp.CountryWithCityDto;
-import com.exadel.backendservice.mapper.converter.CountryWithCitiesMapper;
+import com.exadel.backendservice.mapper.country.CountryWithCitiesMapper;
 import com.exadel.backendservice.repository.CountryRepository;
 import com.exadel.backendservice.service.LocationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

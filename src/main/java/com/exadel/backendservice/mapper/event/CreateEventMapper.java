@@ -1,4 +1,4 @@
-package com.exadel.backendservice.mapper.converter;
+package com.exadel.backendservice.mapper.event;
 
 import com.exadel.backendservice.dto.req.CreateEventDto;
 import com.exadel.backendservice.entity.City;

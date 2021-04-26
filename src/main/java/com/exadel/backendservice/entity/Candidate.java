@@ -6,9 +6,12 @@ import com.exadel.backendservice.model.PreferredCandidateTime;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @Entity
@@ -59,4 +62,9 @@ public class Candidate extends AbstractEntity {
     @ManyToOne
     @JoinColumn(name = "tech_id", nullable = false)
     private Tech primaryTech;
+
+    @OneToMany(mappedBy = "candidate")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    private Set<Interview> interviews = new HashSet<>();
 }
