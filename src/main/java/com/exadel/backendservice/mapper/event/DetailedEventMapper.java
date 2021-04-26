@@ -20,7 +20,7 @@ public class DetailedEventMapper extends AbstractMapper<Event, DetailedEventDto>
     @PostConstruct
     public void setupMapper() {
         mapper.createTypeMap(Event.class, DetailedEventDto.class)
-                .addMappings(m -> m.skip(DetailedEventDto::setLocation))
+                .addMappings(m -> m.skip(DetailedEventDto::setLocations))
                 .setPostConverter(toDtoConverter());
     }
 
@@ -29,6 +29,6 @@ public class DetailedEventMapper extends AbstractMapper<Event, DetailedEventDto>
         List<LocationDto> locationDtoList = source.getCities().stream()
                 .map(city -> new LocationDto(city.getName(), city.getCountry().getName()))
                 .collect(Collectors.toList());
-        destination.setLocation(locationDtoList);
+        destination.setLocations(locationDtoList);
     }
 }

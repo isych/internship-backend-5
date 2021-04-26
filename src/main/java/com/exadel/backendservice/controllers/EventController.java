@@ -3,7 +3,6 @@ package com.exadel.backendservice.controllers;
 import com.exadel.backendservice.dto.req.CreateEventDto;
 import com.exadel.backendservice.dto.resp.DetailedEventDto;
 import com.exadel.backendservice.dto.resp.EventRespDto;
-import com.exadel.backendservice.dto.resp.SearchEventDto;
 import com.exadel.backendservice.exception.ApiRequestException;
 import com.exadel.backendservice.exception.ApiResponseException;
 import com.exadel.backendservice.service.EventService;
@@ -37,7 +36,7 @@ public class EventController {
 
     @ApiOperation(value = "Метод для постраничного получения списка событий")
     @GetMapping
-    public ResponseEntity<Page<SearchEventDto>> getPageOfEvents(Pageable pageable) {
+    public ResponseEntity<Page<DetailedEventDto>> getPageOfEvents(Pageable pageable) {
         return new ResponseEntity<>(eventService.getEventsPage(pageable), HttpStatus.OK);
     }
 
@@ -86,7 +85,7 @@ public class EventController {
 
     @ApiOperation("Метод для получения опубликованных событий постранично")
     @GetMapping("/published")
-    public ResponseEntity<Page<SearchEventDto>> getPublishedEvents(Pageable pageable) {
+    public ResponseEntity<Page<DetailedEventDto>> getPublishedEvents(Pageable pageable) {
         return new ResponseEntity<>(eventService.getPublishedEvents(pageable), HttpStatus.OK);
     }
 
