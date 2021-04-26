@@ -12,4 +12,6 @@ public class CandidateRespDto extends AbstractDto {
     private String email;
     private String cv;
     private String cvPath;
+    private String status;
+    private String interviewProcess;
 }

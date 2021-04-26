@@ -17,56 +17,54 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringRunner.class)
 @AutoConfigureMockMvc
-class UserControllerTest extends AbstractTestConfig {
+class EmployeeControllerTest extends AbstractTestConfig {
 
     @Autowired
     MockMvc mockMvc;
 
     @Test
-    void getAllRoles() throws Exception {
-        this.mockMvc.perform(get("/api/users/getAllRoles"))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content().string(equalTo("[\"ADMIN\",\"TECH\",\"SUPERADMIN\"]")));
-    }
-
-    @Test
-    void registerUser() throws Exception {
-        this.mockMvc.perform(post("/api/users/register")
+    void auth() throws Exception {
+        this.mockMvc.perform(post("/api/employee/auth")
                     .contentType("application/json")
-                    .content( "{ \"email\": \"afasfadfad@asfasdasdf.ty\", \"fio\": \"adsfasdfadf\", \"login\": \"adfadfadfafadfad\", \"password\": \"adfafafafasd\", \"role\": \"admin\"}")
+                    .content( "{ \"email\": \"tech-2@fortest.ru\", \"password\": \"1\"}")
                  )
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("User created")));
+                .andExpect(content().string(matchesRegex("\\{\"token\":\"[\\w_\\-]{20}\\.[\\w_\\-]{82}\\.[\\w_\\-]{43}\"}")));
 
-        // проверка для не существующей роли
-        this.mockMvc.perform(post("/api/users/register")
+        this.mockMvc.perform(post("/api/employee/auth")
+                     .contentType("application/json")
+                     .content( "{ \"email\": \"admin-1@fortest.ru\", \"password\": \"1\"}")
+                 )
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().string(matchesRegex("\\{\"token\":\"[\\w_\\-]{20}\\.[\\w_\\-]{83}\\.[\\w_\\-]{43}\"}")));
+
+        this.mockMvc.perform(post("/api/employee/auth")
                     .contentType("application/json")
-                    .content( "{ \"email\": \"fasfaadfdfad@asfasdasdf.ty\", \"fio\": \"dsfddffasdfadf\", \"login\": \"dfadfadfadfdfdffadfad\", \"password\": \"dfafdfdfdfafafasd\", \"role\": \"sdfadsfadsf\"}")
+                    .content( "{ \"email\": \"superadmin-1@fortest.ru\", \"password\": \"1\"}")
                 )
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("User not created")));
-    }
-
-    @Test
-    void auth() throws Exception {
-        this.mockMvc.perform(post("/api/users/auth")
-                    .contentType("application/json")
-                    .content( "{ \"login\": \"test-admin\", \"password\": \"1\"}")
-                )
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content().string(matchesRegex("\\{\"token\":\"[\\w_\\-]{20}\\.[\\w_\\-]{72}\\.[\\w_\\-]{43}\"}")));
+                .andExpect(content().string(matchesRegex("\\{\"token\":\"[\\w_\\-]{20}\\.[\\w_\\-]{90}\\.[\\w_\\-]{43}\"}")));
 
         // проверка при введении не правильных данных для аутентификации
-        this.mockMvc.perform(post("/api/users/auth")
+        this.mockMvc.perform(post("/api/employee/auth")
                     .contentType("application/json")
-                    .content( "{ \"login\": \"test\", \"password\": \"test123\"}")
+                    .content( "{ \"email\": \"superadmin-1@fortest.ru\", \"password\": \"test123\"}")
                 )
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().string(equalTo("{\"token\":\"null\"}")));
     }
+
+    @Test
+    void getAllRoles() throws Exception {
+        this.mockMvc.perform(get("/api/employee/getAllRoles"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().string(equalTo("[\"ADMIN\",\"TECH\",\"SUPERADMIN\"]")));
+    }
+
+
 }
