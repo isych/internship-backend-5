@@ -6,10 +6,9 @@ create table event_tech (event_id int4 not null, tech_id int4 not null, primary 
 create table events (id int4 not null, description varchar(256) not null, end_date timestamp, name varchar(64) not null, picture_name varchar(256), picture_path varchar(256), start_date timestamp, type varchar(255) not null, status varchar(255), primary key (id));
 create table roles (id  serial not null, name varchar(255), primary key (id));
 create table tech (id int4 not null, name varchar(64) not null, primary key (id));
-create table users (id  serial not null, email varchar(255), fio varchar(255), login varchar(255), password varchar(255), role_id int4, primary key (id));
 
 create table interview (id int4 not null, end_time timestamp, feedback varchar(100), start_time timestamp, candidate_id int4 not null, employee_id int4 not null, primary key (id));
-create table employee (id int4 not null, full_name varchar(20) not null, email varchar(255) not null, password varchar(255) not null, role_id int4 not null, primary key (id));
+create table employee (id int4 not null, full_name varchar(100) not null, email varchar(255) not null, password varchar(255) not null, role_id int4 not null, primary key (id));
 create table employee_timeslot (id int4 not null, end_time int4 not null, start_time int4 not null, employee_id int4 not null, primary key (id));
 create table dynamic_interview_link (id int4 not null, code varchar(255) not null, created_time timestamp not null, interview_id int4 not null, primary key (id));
 alter table employee add constraint FKjod0wwyxabi7qyx9fmlntsxq4 foreign key (role_id) references roles;
@@ -30,4 +29,3 @@ alter table event_city add constraint FKjnaaecnahb2hwkn6lmrfi40ml foreign key (c
 alter table event_city add constraint FK1i41i67vcs56ibl4uu2s3o6fw foreign key (event_id) references events;
 alter table event_tech add constraint FK8dedk0dsrwr014gjryanipo6a foreign key (tech_id) references tech;
 alter table event_tech add constraint FKgn9qh4d9xbmb7bocomed33vpw foreign key (event_id) references events;
-alter table users add constraint FKp56c1712k691lhsyewcssf40f foreign key (role_id) references roles;
