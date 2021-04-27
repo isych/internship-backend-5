@@ -1,8 +1,10 @@
 package com.exadel.backendservice.service.impl;
 
 import com.exadel.backendservice.dto.req.CreateInterviewDto;
+import com.exadel.backendservice.dto.resp.InterviewRespDto;
 import com.exadel.backendservice.entity.Interview;
 import com.exadel.backendservice.mapper.converter.CreateInterviewMapper;
+import com.exadel.backendservice.mapper.converter.InterviewRespMapper;
 import com.exadel.backendservice.repository.InterviewRepository;
 import com.exadel.backendservice.service.InterviewService;
 import lombok.RequiredArgsConstructor;
@@ -16,14 +18,13 @@ public class InterviewServiceImpl implements InterviewService {
 
     private final InterviewRepository interviewRepository;
     private final CreateInterviewMapper createInterviewMapper;
+    private final InterviewRespMapper interviewRespMapper;
 
     @Override
-    public CreateInterviewDto saveInterview(CreateInterviewDto createInterviewDto) {
+    public InterviewRespDto saveInterview(CreateInterviewDto createInterviewDto) {
         Interview interview = createInterviewMapper.toEntity(createInterviewDto);
-        System.out.println(interview);
         log.debug("Create interview -> {}", interview);
-        CreateInterviewDto createdInterview = createInterviewMapper.toDto(interviewRepository.save(interview));
-        System.out.println(createdInterview);
+        InterviewRespDto createdInterview = interviewRespMapper.toDto(interviewRepository.save(interview));
         log.debug("Created interview -> {}", createdInterview);
         return createdInterview;
     }

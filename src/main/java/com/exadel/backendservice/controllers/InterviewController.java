@@ -1,6 +1,7 @@
 package com.exadel.backendservice.controllers;
 
 import com.exadel.backendservice.dto.req.CreateInterviewDto;
+import com.exadel.backendservice.dto.resp.InterviewRespDto;
 import com.exadel.backendservice.exception.ApiRequestException;
 import com.exadel.backendservice.exception.ApiResponseException;
 import com.exadel.backendservice.service.InterviewService;
@@ -27,14 +28,13 @@ public class InterviewController {
     @ApiOperation(value = "Метод для создания интервью")
     @PostMapping("/create")
     public ResponseEntity<?> createInterview(@RequestBody CreateInterviewDto createInterviewDto) {
-        System.out.println(createInterviewDto);
         if(Objects.isNull(createInterviewDto)) {
             throw new ApiRequestException("Interview is null");
         }
-        CreateInterviewDto interviewDto = interviewService.saveInterview(createInterviewDto);
-        if (Objects.isNull(interviewDto)) {
+        InterviewRespDto interviewRespDto = interviewService.saveInterview(createInterviewDto);
+        if (Objects.isNull(interviewRespDto)) {
             throw new ApiResponseException("Cannot create interview. Internal error.");
         }
-        return new ResponseEntity<>(interviewDto , HttpStatus.CREATED);
+        return new ResponseEntity<>(interviewRespDto , HttpStatus.CREATED);
     }
 }

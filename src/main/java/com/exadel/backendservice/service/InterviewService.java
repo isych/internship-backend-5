@@ -1,7 +1,8 @@
 package com.exadel.backendservice.service;
 
 import com.exadel.backendservice.dto.req.CreateInterviewDto;
+import com.exadel.backendservice.dto.resp.InterviewRespDto;
 
 public interface InterviewService {
-    CreateInterviewDto saveInterview(CreateInterviewDto createInterviewDto);
+    InterviewRespDto saveInterview(CreateInterviewDto createInterviewDto);
 }
