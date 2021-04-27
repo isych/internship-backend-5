@@ -9,5 +9,7 @@ public interface InterviewService {
     InterviewRespDto updateInterviewer(Integer interviewId, Integer employeeId);
 
     InterviewRespDto saveFeedback(Integer id, String feedback);
+
+    boolean deleteById(Integer id);
 }
 

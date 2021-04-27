@@ -54,4 +54,17 @@ public class InterviewController {
         return new ResponseEntity<>(interviewService.saveFeedback(id, feedback) , HttpStatus.OK);
     }
 
+    /**
+     * Метод для удаления интервью
+     *
+     * @param id - идентификационный номер интервью, которое подлежит удалению
+     */
+    @DeleteMapping("/{id}/delete")
+    public ResponseEntity<Integer> deleteById(@PathVariable (value="id") Integer id){
+        if(!interviewService.deleteById(id)){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 }
