@@ -69,4 +69,13 @@ public class InterviewServiceImpl implements InterviewService {
             }
             throw new DBNotFoundException("Interview with this id doesn't found");
         }
+
+    @Override
+    public boolean deleteById(Integer id) {
+        if (!interviewRepository.existsById(id)) {
+            return false;
+        }
+        interviewRepository.deleteById(id);
+        return true;
+    }
 }
