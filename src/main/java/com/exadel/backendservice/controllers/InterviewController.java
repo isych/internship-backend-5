@@ -42,4 +42,16 @@ public class InterviewController {
         return new ResponseEntity<>(interviewService.updateInterviewer(interviewId, employeeId), HttpStatus.OK);
     }
 
+    /**
+     * Метод сохранения нового фидбэка
+     *
+     * @param id - идентификационный номер интервью, для которого необходимо сохранить новый фидбэк по резульиатам этого интервью
+     * @param feedback - строка для хранения фидбэка
+     */
+    @ApiOperation(value = "Метод сохранения нового фидбэка")
+    @PutMapping(value = "/{id}/feedbacks/save")
+    public ResponseEntity<?> setFeedback(@PathVariable("id") Integer id, String feedback) {
+        return new ResponseEntity<>(interviewService.saveFeedback(id, feedback) , HttpStatus.OK);
+    }
+
 }

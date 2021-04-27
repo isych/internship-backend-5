@@ -56,4 +56,17 @@ public class InterviewServiceImpl implements InterviewService {
         }
         return interviewRespMapper.toDto(interviewRepository.save(interview));
     }
+
+     @Override
+        public InterviewRespDto saveFeedback(Integer id, String feedback) {
+            Interview interview;
+            Optional<Interview> interviewOptional = interviewRepository.findById(id);
+            if (interviewOptional.isPresent()) {
+                interview = interviewOptional.get();
+                interview.setFeedback(feedback);
+                interviewRepository.save(interview);
+                return interviewRespMapper.toDto(interview);
+            }
+            throw new DBNotFoundException("Interview with this id doesn't found");
+        }
 }
