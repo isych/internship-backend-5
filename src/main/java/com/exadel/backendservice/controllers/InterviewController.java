@@ -10,10 +10,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Objects;
 
@@ -37,4 +34,12 @@ public class InterviewController {
         }
         return new ResponseEntity<>(interviewRespDto , HttpStatus.CREATED);
     }
+
+    @ApiOperation(value = "Метод для изменения интервьюера для интервью")
+    @PutMapping("/{interviewId}/employee/{employeeId}")
+    public ResponseEntity<?> changeInterviewer(@PathVariable("interviewId") Integer interviewId,
+                                               @PathVariable("employeeId") Integer employeeId) {
+        return new ResponseEntity<>(interviewService.updateInterviewer(interviewId, employeeId), HttpStatus.OK);
+    }
+
 }
