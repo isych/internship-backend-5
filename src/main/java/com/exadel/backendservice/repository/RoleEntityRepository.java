@@ -8,4 +8,5 @@ import java.util.List;
 public interface RoleEntityRepository extends JpaRepository<Role, Integer> {
     Role findByName(String name);
     List<Role> findAll();
+    List<Role> findAllByNameIsNot(String  name);
 }

@@ -1,6 +1,6 @@
 package com.exadel.backendservice.security;
 
-import com.exadel.backendservice.entity.User;
+import com.exadel.backendservice.entity.Employee;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,11 +14,11 @@ public class CustomUserDetails implements UserDetails {
     private String password;
     private Collection<? extends GrantedAuthority> grantedAuthorities;
 
-    public static CustomUserDetails fromUserEntityToCustomUserDetails(User user) {
+    public static CustomUserDetails fromUserEntityToCustomUserDetails(Employee user) {
         CustomUserDetails c = new CustomUserDetails();
-        c.login = user.getLogin();
+        c.login = user.getEmail();
         c.password = user.getPassword();
-        c.grantedAuthorities = Collections.singletonList(new SimpleGrantedAuthority(user.getRoleEntity().getName()));
+        c.grantedAuthorities = Collections.singletonList(new SimpleGrantedAuthority(user.getRole().getName()));
         return c;
     }
 
