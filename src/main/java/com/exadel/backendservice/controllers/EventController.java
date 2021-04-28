@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -42,7 +43,7 @@ public class EventController {
 
     @ApiOperation(value = "Метод для получения подробной информации о событии по id")
     @GetMapping("/{id}")
-    public ResponseEntity<DetailedEventDto> getEvent(@PathVariable(name = "id") Integer id) {
+    public ResponseEntity<DetailedEventDto> getEvent(@PathVariable(name = "id") UUID id) {
         return new ResponseEntity<>(eventService.getEvent(id), HttpStatus.OK);
     }
 
@@ -67,19 +68,19 @@ public class EventController {
 
     @ApiOperation("Метод для загрузки изображения события на сервер. Доступные форматы: jpeg, png, gif, bmp Принимает id события которое возвращается после создания события")
     @PostMapping("/{id}/image/upload")
-    public ResponseEntity<EventRespDto> uploadImage(@RequestParam("id") Integer id, @RequestPart("file") MultipartFile file) {
+    public ResponseEntity<EventRespDto> uploadImage(@RequestParam("id") UUID id, @RequestPart("file") MultipartFile file) {
         return new ResponseEntity<>(eventService.uploadImage(id, file), HttpStatus.OK);
     }
 
     @ApiOperation("Метод для скачивания изображения")
     @GetMapping(value = "{id}/image/download")
-    public byte[] downloadImage(@PathVariable("id") Integer id) {
+    public byte[] downloadImage(@PathVariable("id") UUID id) {
         return eventService.downloadImage(id);
     }
 
     @ApiOperation("Метод для проверки наличия картинки у события")
     @GetMapping(value = "{id}/image/exists")
-    public ResponseEntity<Boolean> checkImage(@PathVariable("id") Integer id) {
+    public ResponseEntity<Boolean> checkImage(@PathVariable("id") UUID id) {
         return new ResponseEntity<>(eventService.hasPicture(id), HttpStatus.OK);
     }
 
@@ -91,13 +92,13 @@ public class EventController {
 
     @ApiOperation("Метод для публикации события")
     @GetMapping("{id}/publish")
-    public ResponseEntity<DetailedEventDto> publishEvent(@PathVariable("id") Integer id) {
+    public ResponseEntity<DetailedEventDto> publishEvent(@PathVariable("id") UUID id) {
         return new ResponseEntity<>(eventService.publishEvent(id) , HttpStatus.OK);
     }
 
     @ApiOperation("Метод для перемещения события в архив")
     @GetMapping("{id}/toarchive")
-    public ResponseEntity<DetailedEventDto> eventToArchive(@PathVariable("id") Integer id) {
+    public ResponseEntity<DetailedEventDto> eventToArchive(@PathVariable("id") UUID id) {
         return new ResponseEntity<>(eventService.moveToArchive(id) , HttpStatus.OK);
     }
 }

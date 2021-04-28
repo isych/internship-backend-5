@@ -9,6 +9,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Data
@@ -25,5 +26,5 @@ public class DynamicInterviewLink extends AbstractEntity {
     private LocalDateTime createdTime;
 
     @Column(name = "interview_id", nullable = false)
-    private Integer interviewId;
+    private UUID interviewId;
 }

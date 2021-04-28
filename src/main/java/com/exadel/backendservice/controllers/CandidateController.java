@@ -22,6 +22,7 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/candidates")
@@ -68,7 +69,7 @@ public class CandidateController {
 
     @ApiOperation(value = "Метод для извлечения кандидата по id")
     @GetMapping(value = "/{id}")
-    public ResponseEntity<DetailedCandidateDto> getDetailedCandidateDtoBy(@PathVariable(name = "id") Integer id) {
+    public ResponseEntity<DetailedCandidateDto> getDetailedCandidateDtoBy(@PathVariable(name = "id") UUID id) {
         return new ResponseEntity<>(candidateService.getDetailedCandidateDto(id), HttpStatus.OK);
     }
 
@@ -106,7 +107,7 @@ public class CandidateController {
      */
     @ApiOperation(value = "Метод для загрузки резюме в систему. Принимает doc, docx, pdf. Принимает id кандидата которое возвращается после создания кандидата")
     @PostMapping("/{id}/cv/upload")
-    public ResponseEntity<CandidateRespDto> uploadCv(@PathVariable("id") Integer id, @RequestPart(value = "file") MultipartFile multipartFile) {
+    public ResponseEntity<CandidateRespDto> uploadCv(@PathVariable("id") UUID id, @RequestPart(value = "file") MultipartFile multipartFile) {
         return new ResponseEntity<>(candidateService.uploadCv(id, multipartFile), HttpStatus.OK);
     }
 
@@ -117,7 +118,7 @@ public class CandidateController {
      */
     @ApiOperation(value = "Метод для скачивания резюме кандидата")
     @GetMapping("/{id}/cv/download")
-    public ResponseEntity<ByteArrayResource> downloadCv(@PathVariable("id") Integer id) throws IOException {
+    public ResponseEntity<ByteArrayResource> downloadCv(@PathVariable("id") UUID id) throws IOException {
         byte[] data = candidateService.downloadCv(id);
         String filename = candidateService.getCvName(id);
         ByteArrayResource resource = new ByteArrayResource(data);
@@ -131,7 +132,7 @@ public class CandidateController {
 
     @ApiOperation(value = "Метод для проверки прикрепил ли кандидат резюме")
     @GetMapping("/{id}/cv/exists")
-    public ResponseEntity<Boolean> checkCv(@PathVariable("id") Integer id) {
+    public ResponseEntity<Boolean> checkCv(@PathVariable("id") UUID id) {
         return new ResponseEntity<>(candidateService.hasCv(id), HttpStatus.OK);
     }
 
@@ -142,7 +143,7 @@ public class CandidateController {
      */
     @ApiOperation(value = "Метод для изменения статуса кандидата (не принят)")
     @PutMapping(value = "/{id}/reject")
-    public ResponseEntity<CandidateRespDto> updateStatusOfRejectedCandidate(@PathVariable("id") Integer id) {
+    public ResponseEntity<CandidateRespDto> updateStatusOfRejectedCandidate(@PathVariable("id") UUID id) {
         return new ResponseEntity<CandidateRespDto>(candidateService.updateStatus(id, CandidateStatus.RED), HttpStatus.OK);
     }
 
@@ -153,7 +154,7 @@ public class CandidateController {
      */
     @ApiOperation(value = "Метод для изменения статуса кандидата (принят)")
     @PutMapping(value = "/{id}/accept")
-    public ResponseEntity<CandidateRespDto> updateStatusOfAcceptedCandidate(@PathVariable("id") Integer id) {
+    public ResponseEntity<CandidateRespDto> updateStatusOfAcceptedCandidate(@PathVariable("id") UUID id) {
         return new ResponseEntity<CandidateRespDto>(candidateService.updateStatus(id, CandidateStatus.GREEN) , HttpStatus.OK);
     }
 
@@ -164,7 +165,7 @@ public class CandidateController {
      */
     @ApiOperation(value = "Метод для изменения статуса интервью кандидата (ожидает интервью с hr)")
     @PutMapping(value = "/{id}/awaiting_hr")
-    public ResponseEntity<CandidateRespDto> updateInterviewStatusToAwaitingHr(@PathVariable("id") Integer id) {
+    public ResponseEntity<CandidateRespDto> updateInterviewStatusToAwaitingHr(@PathVariable("id") UUID id) {
         return new ResponseEntity<CandidateRespDto>(candidateService.updateInterviewStatus(id, InterviewProcess.AWAITING_HR) , HttpStatus.OK);
     }
 
@@ -175,7 +176,7 @@ public class CandidateController {
      */
     @ApiOperation(value = "Метод для изменения статуса этапа интервью кандидата (ожидает интервью с техническим специалистом)")
     @PutMapping(value = "/{id}/awaiting_tс")
-    public ResponseEntity<CandidateRespDto> updateInterviewStatusToAwaitingTech(@PathVariable("id") Integer id) {
+    public ResponseEntity<CandidateRespDto> updateInterviewStatusToAwaitingTech(@PathVariable("id") UUID id) {
         return new ResponseEntity<CandidateRespDto>(candidateService.updateInterviewStatus(id, InterviewProcess.AWAITING_TS) , HttpStatus.OK);
     }
 
@@ -186,7 +187,7 @@ public class CandidateController {
      */
     @ApiOperation(value = "Метод для изменения статуса этапа интервью кандидата (ожидает решение по результатам интервью)")
     @PutMapping(value = "/{id}/awaiting_decision")
-    public ResponseEntity<CandidateRespDto> updateInterviewStatusToAwaitingDecision(@PathVariable("id") Integer id) {
+    public ResponseEntity<CandidateRespDto> updateInterviewStatusToAwaitingDecision(@PathVariable("id") UUID id) {
         return new ResponseEntity<CandidateRespDto>(candidateService.updateInterviewStatus(id, InterviewProcess.WAITING_DECISION) , HttpStatus.OK);
     }
 }

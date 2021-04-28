@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Objects;
+import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -37,8 +38,8 @@ public class InterviewController {
 
     @ApiOperation(value = "Метод для изменения интервьюера для интервью")
     @PutMapping("/{interviewId}/employee/{employeeId}")
-    public ResponseEntity<?> changeInterviewer(@PathVariable("interviewId") Integer interviewId,
-                                               @PathVariable("employeeId") Integer employeeId) {
+    public ResponseEntity<?> changeInterviewer(@PathVariable("interviewId") UUID interviewId,
+                                               @PathVariable("employeeId") UUID employeeId) {
         return new ResponseEntity<>(interviewService.updateInterviewer(interviewId, employeeId), HttpStatus.OK);
     }
 
@@ -50,7 +51,7 @@ public class InterviewController {
      */
     @ApiOperation(value = "Метод сохранения нового фидбэка")
     @PutMapping(value = "/{id}/feedbacks/save")
-    public ResponseEntity<?> setFeedback(@PathVariable("id") Integer id, String feedback) {
+    public ResponseEntity<?> setFeedback(@PathVariable("id") UUID id, String feedback) {
         return new ResponseEntity<>(interviewService.saveFeedback(id, feedback) , HttpStatus.OK);
     }
 
@@ -60,7 +61,7 @@ public class InterviewController {
      * @param id - идентификационный номер интервью, которое подлежит удалению
      */
     @DeleteMapping("/{id}/delete")
-    public ResponseEntity<Integer> deleteById(@PathVariable (value="id") Integer id){
+    public ResponseEntity<Integer> deleteById(@PathVariable (value="id") UUID id){
         if(!interviewService.deleteById(id)){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

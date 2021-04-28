@@ -87,7 +87,7 @@ public class CandidateServiceImpl implements CandidateService {
     }
 
     @Override
-    public DetailedCandidateDto getDetailedCandidateDto(Integer id) {
+    public DetailedCandidateDto getDetailedCandidateDto(UUID id) {
         Optional<Candidate> candidateOptional = candidateRepository.findById(id);
         if (candidateOptional.isPresent()) {
             Candidate candidate = candidateOptional.get();
@@ -125,7 +125,7 @@ public class CandidateServiceImpl implements CandidateService {
     }
 
     @Override
-    public CandidateRespDto uploadCv(Integer id, MultipartFile file) {
+    public CandidateRespDto uploadCv(UUID id, MultipartFile file) {
         if (file.isEmpty()) {
             throw new IllegalStateException("Cannot upload empty file");
         }
@@ -153,7 +153,7 @@ public class CandidateServiceImpl implements CandidateService {
     }
 
     @Override
-    public byte[] downloadCv(Integer id) {
+    public byte[] downloadCv(UUID id) {
         Optional<Candidate> candidateOptional = candidateRepository.findById(id);
         if (candidateOptional.isPresent()) {
             Candidate candidate = candidateOptional.get();
@@ -167,7 +167,7 @@ public class CandidateServiceImpl implements CandidateService {
     }
 
     @Override
-    public Boolean hasCv(Integer id) {
+    public Boolean hasCv(UUID id) {
         Optional<Candidate> candidateOptional = candidateRepository.findById(id);
         if (candidateOptional.isPresent()) {
             return hasCv(candidateOptional.get());
@@ -176,7 +176,7 @@ public class CandidateServiceImpl implements CandidateService {
     }
 
     @Override
-    public String getCvName(Integer id) {
+    public String getCvName(UUID id) {
         Optional<Candidate> candidateOptional = candidateRepository.findById(id);
         if (candidateOptional.isPresent()) {
             Candidate candidate = candidateOptional.get();
@@ -205,7 +205,7 @@ public class CandidateServiceImpl implements CandidateService {
     }
 
     @Override
-    public CandidateRespDto updateStatus(Integer id, CandidateStatus status) {
+    public CandidateRespDto updateStatus(UUID id, CandidateStatus status) {
         Candidate candidate;
         Optional<Candidate> candidateOptional = candidateRepository.findById(id);
         if (candidateOptional.isPresent()) {
@@ -218,7 +218,7 @@ public class CandidateServiceImpl implements CandidateService {
     }
 
     @Override
-    public CandidateRespDto updateInterviewStatus(Integer id, InterviewProcess awaitingHr) {
+    public CandidateRespDto updateInterviewStatus(UUID id, InterviewProcess awaitingHr) {
         Candidate candidate;
         Optional<Candidate> candidateOptional = candidateRepository.findById(id);
         if (candidateOptional.isPresent()) {

@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @Slf4j
@@ -37,7 +38,7 @@ public class InterviewServiceImpl implements InterviewService {
     }
 
     @Override
-    public InterviewRespDto updateInterviewer(Integer interviewId, Integer employeeId) {
+    public InterviewRespDto updateInterviewer(UUID interviewId, UUID employeeId) {
         Optional<Interview> optionalInterview = interviewRepository.findById(interviewId);
         Interview interview;
         if(optionalInterview.isEmpty()) {
@@ -58,7 +59,7 @@ public class InterviewServiceImpl implements InterviewService {
     }
 
      @Override
-        public InterviewRespDto saveFeedback(Integer id, String feedback) {
+        public InterviewRespDto saveFeedback(UUID id, String feedback) {
             Interview interview;
             Optional<Interview> interviewOptional = interviewRepository.findById(id);
             if (interviewOptional.isPresent()) {
@@ -71,7 +72,7 @@ public class InterviewServiceImpl implements InterviewService {
         }
 
     @Override
-    public boolean deleteById(Integer id) {
+    public boolean deleteById(UUID id) {
         if (!interviewRepository.existsById(id)) {
             return false;
         }

@@ -7,8 +7,9 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
-public interface EventRepository extends PagingAndSortingRepository<Event, Integer> {
+public interface EventRepository extends PagingAndSortingRepository<Event, UUID> {
 
     Optional<Event> findByName(String name);
 

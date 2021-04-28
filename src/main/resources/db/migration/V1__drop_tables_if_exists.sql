@@ -8,9 +8,9 @@ drop table if exists events cascade;
 drop table if exists city cascade;
 drop table if exists country cascade;
 drop table if exists employee cascade;
-drop sequence if exists roles_id_seq cascade;
-drop sequence if exists users_id_seq cascade;
-drop sequence if exists hibernate_sequence cascade;
+-- drop sequence if exists roles_id_seq cascade;
+-- drop sequence if exists users_id_seq cascade;
+-- drop sequence if exists hibernate_sequence cascade;
 
 
 

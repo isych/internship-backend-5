@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface EventService {
     EventRespDto saveEvent(CreateEventDto event);
@@ -16,19 +17,19 @@ public interface EventService {
 
     Page<DetailedEventDto> getEventsPage(Pageable pageable);
 
-    DetailedEventDto getEvent(Integer name);
+    DetailedEventDto getEvent(UUID id);
 
     Boolean isUnique(String name);
 
-    byte[] downloadImage(Integer id);
+    byte[] downloadImage(UUID id);
 
-    EventRespDto uploadImage(Integer id, MultipartFile file);
+    EventRespDto uploadImage(UUID id, MultipartFile file);
 
-    boolean hasPicture(Integer id);
+    boolean hasPicture(UUID id);
 
     Page<DetailedEventDto> getPublishedEvents(Pageable pageable);
 
-    DetailedEventDto publishEvent(Integer id);
+    DetailedEventDto publishEvent(UUID id);
 
-    DetailedEventDto moveToArchive(Integer id);
+    DetailedEventDto moveToArchive(UUID id);
 }

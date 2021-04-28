@@ -5,11 +5,12 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.util.List;
+import java.util.UUID;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class InterviewersByRoleDto extends AbstractDto {
-    private Integer id;
+    private UUID id;
     private String name;
     private List<RecommendedEmployeeDto> employees;
 }
