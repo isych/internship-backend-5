@@ -4,9 +4,9 @@ insert into roles(name) values ('ROLE_SUPERADMIN');
 
 insert into employee values (999990, 'Валентин Эдуардович Мамонтов', 'superadmin-1@fortest.ru', '$2a$10$dvup/KVkxe/puUu6q8xh8OI2noobcb1dQ1bCjcRVI/P1ovDBlVT4e', 3);
 insert into employee values (999991, 'Меркушева Валерия Евгеньевна', 'superadmin-2@fortest.ru', '$2a$10$dvup/KVkxe/puUu6q8xh8OI2noobcb1dQ1bCjcRVI/P1ovDBlVT4e', 3);
-insert into employee values (999992, 'Кулакова Регина Аркадьевна', 'tech-1@fortest.ru', '$2a$10$dvup/KVkxe/puUu6q8xh8OI2noobcb1dQ1bCjcRVI/P1ovDBlVT4e', 2);
+insert into employee values (999992, 'Кулакова Регина Аркадьевна', 'van123_321@mail.ru', '$2a$10$dvup/KVkxe/puUu6q8xh8OI2noobcb1dQ1bCjcRVI/P1ovDBlVT4e', 2);
 insert into employee values (999993, 'Георгий Арсеньевич Козлов', 'tech-2@fortest.ru', '$2a$10$dvup/KVkxe/puUu6q8xh8OI2noobcb1dQ1bCjcRVI/P1ovDBlVT4e', 2);
-insert into employee values (999994, 'Иванов Иван Иванович', 'admin-1@fortest.ru', '$2a$10$dvup/KVkxe/puUu6q8xh8OI2noobcb1dQ1bCjcRVI/P1ovDBlVT4e', 1);
+insert into employee values (999994, 'Иванов Иван Иванович', 'van123_321@mail.ru', '$2a$10$dvup/KVkxe/puUu6q8xh8OI2noobcb1dQ1bCjcRVI/P1ovDBlVT4e', 1);
 insert into employee values (999995, 'Надежда Юрьевна Суханов', 'admin-2@fortest.ru', '$2a$10$dvup/KVkxe/puUu6q8xh8OI2noobcb1dQ1bCjcRVI/P1ovDBlVT4e', 1);
 
 insert into country values (1,'Ukraine');
