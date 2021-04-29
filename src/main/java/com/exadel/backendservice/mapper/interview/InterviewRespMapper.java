@@ -1,4 +1,4 @@
-package com.exadel.backendservice.mapper.converter;
+package com.exadel.backendservice.mapper.interview;
 
 import com.exadel.backendservice.dto.resp.InterviewRespDto;
 import com.exadel.backendservice.entity.Candidate;
