@@ -50,18 +50,6 @@ public class InterviewController {
     /**
      * Метод сохранения нового фидбэка
      *
-     * @param id - идентификационный номер интервью, для которого необходимо сохранить новый фидбэк по резульиатам этого интервью
-     * @param feedback - строка для хранения фидбэка
-     */
-//    @ApiOperation(value = "Метод сохранения нового фидбэка")
-//    @PutMapping(value = "/{id}/feedbacks/save")
-//    public ResponseEntity<?> setFeedback(@PathVariable("id") UUID id, String feedback) {
-//        return new ResponseEntity<>(interviewService.saveFeedback(id, feedback) , HttpStatus.OK);
-//    }
-
-    /**
-     * Метод сохранения нового фидбэка
-     *
      * @param hash - hash для идентификации интервью
      * @param feedback - строка для хранения фидбэка
      */
@@ -82,7 +70,6 @@ public class InterviewController {
         ObjectForFeedbackPage objectForFeedbackPage = interviewService.getObjectForFeedbackPage(hash);
         return restAnswer.doResultAjax(objectForFeedbackPage);
     }
-
 
 
     /**
