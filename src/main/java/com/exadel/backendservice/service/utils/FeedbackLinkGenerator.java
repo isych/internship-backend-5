@@ -76,57 +76,57 @@ public class FeedbackLinkGenerator {
         return key.toString();
     }
 
-    public void sendMessageWithLinkForFeedback(Candidate candidate, InterviewProcess awaitingHr, HttpServletRequest request) {
-        String link = generateLink(request);
-        String message = new StringBuilder()
-                .append("Please write feedback on the results of the interview with the candidate is ")
-                .append(candidate.getFullName()).append(".<br>")
-                .append("To continue, follow the link: ")
-                .append(link)
-                .toString();
-        try {
-            Interview interview = getInterview(awaitingHr, candidate);
-            if (interview != null) {
-                saveHashToDb(hash, interview.getId());
+//    public void sendMessageWithLinkForFeedback(Candidate candidate, InterviewProcess awaitingHr, HttpServletRequest request) {
+//        String link = generateLink(request);
+//        String message = new StringBuilder()
+//                .append("Please write feedback on the results of the interview with the candidate is ")
+//                .append(candidate.getFullName()).append(".<br>")
+//                .append("To continue, follow the link: ")
+//                .append(link)
+//                .toString();
+//        try {
+//            Interview interview = getInterview(awaitingHr, candidate);
+//            if (interview != null) {
+//                saveHashToDb(hash, interview.getId());
+//
+//
+//
+//                mailSender.sendLetterWithLink(interview.getEmployee().getEmail(), "Feedback on the results of the interview", message);
+//            }
+//        } catch (Exception ex) {
+//            throw new ApiResponseException("Internal error: mail can't be send.");
+//        }
+//    }
+//
+//    private Interview getInterview(InterviewProcess awaitingHr, Candidate candidate) {
+//        List<Interview> interviewList = interviewRepository.findAllByCandidate_Id(candidate.getId());
+//        Interview interview = null;
+//        try {
+//            if (awaitingHr.equals(InterviewProcess.AWAITING_TS)) {
+//                interview = interviewList.stream()
+//                        .filter(elem -> elem.getEmployee().getRole().getName().equals("ROLE_ADMIN"))
+//                        .findFirst()
+//                        .get();
+//            }
+//            if (awaitingHr.equals(InterviewProcess.WAITING_DECISION)) {
+//                interview = interviewList.stream()
+//                        .filter(elem -> elem.getEmployee().getRole().getName().equals("ROLE_TECH"))
+//                        .findFirst()
+//                        .get();
+//            }
+//        }catch (Exception e){
+//            return null;
+//        }
+//        return interview;
+//    }
 
-
-
-                mailSender.sendLetterWithLink(interview.getEmployee().getEmail(), "Feedback on the results of the interview", message);
-            }
-        } catch (Exception ex) {
-            throw new ApiResponseException("Internal error: mail can't be send.");
-        }
-    }
-
-    private Interview getInterview(InterviewProcess awaitingHr, Candidate candidate) {
-        List<Interview> interviewList = interviewRepository.findAllByCandidate_Id(candidate.getId());
-        Interview interview = null;
-        try {
-            if (awaitingHr.equals(InterviewProcess.AWAITING_TS)) {
-                interview = interviewList.stream()
-                        .filter(elem -> elem.getEmployee().getRole().getName().equals("ROLE_ADMIN"))
-                        .findFirst()
-                        .get();
-            }
-            if (awaitingHr.equals(InterviewProcess.WAITING_DECISION)) {
-                interview = interviewList.stream()
-                        .filter(elem -> elem.getEmployee().getRole().getName().equals("ROLE_TECH"))
-                        .findFirst()
-                        .get();
-            }
-        }catch (Exception e){
-            return null;
-        }
-        return interview;
-    }
-
-    private void saveHashToDb(String key, Integer idInterview) {
-        DynamicInterviewLink link = new DynamicInterviewLink();
-        link.setCode(key);
-        link.setCreatedTime(LocalDateTime.now());
-        link.setInterviewId(idInterview);
-        dynamicInterviewLinkRepository.save(link);
-    }
+//    private void saveHashToDb(String key, Integer idInterview) {
+//        DynamicInterviewLink link = new DynamicInterviewLink();
+//        link.setCode(key);
+//        link.setCreatedTime(LocalDateTime.now());
+//        link.setInterviewId(idInterview);
+//        dynamicInterviewLinkRepository.save(link);
+//    }
 
     public void removeHashFromDb(String key) {
         dynamicInterviewLinkRepository.delete(dynamicInterviewLinkRepository.findByCode(key));
