@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
 
@@ -37,5 +38,5 @@ public interface CandidateService {
 
     CandidateRespDto updateStatus(Integer id, CandidateStatus status);
 
-    CandidateRespDto updateInterviewStatus(Integer id, InterviewProcess awaitingHr);
+    CandidateRespDto updateInterviewStatus(Integer id, InterviewProcess awaitingHr, HttpServletRequest request);
 }
