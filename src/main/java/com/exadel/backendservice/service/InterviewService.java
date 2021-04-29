@@ -4,14 +4,16 @@ import com.exadel.backendservice.dto.req.CreateInterviewDto;
 import com.exadel.backendservice.dto.resp.InterviewRespDto;
 import com.exadel.backendservice.model.ObjectForFeedbackPage;
 
+import java.util.UUID;
+
 public interface InterviewService {
     InterviewRespDto saveInterview(CreateInterviewDto createInterviewDto);
 
-    InterviewRespDto updateInterviewer(Integer interviewId, Integer employeeId);
+    InterviewRespDto updateInterviewer(UUID interviewId, UUID employeeId);
 
     InterviewRespDto saveFeedback(String hash, String feedback);
 
-    boolean deleteById(Integer id);
+    boolean deleteById(UUID id);
 
     ObjectForFeedbackPage getObjectForFeedbackPage(String hash);
 }

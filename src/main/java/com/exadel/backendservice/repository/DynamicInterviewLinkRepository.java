@@ -6,7 +6,9 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
-public interface DynamicInterviewLinkRepository extends JpaRepository<DynamicInterviewLink, Integer> {
+import java.util.UUID;
+
+public interface DynamicInterviewLinkRepository extends JpaRepository<DynamicInterviewLink, UUID> {
 
     DynamicInterviewLink findByCode(String code);
 

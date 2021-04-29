@@ -3,12 +3,12 @@ package com.exadel.backendservice.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.*;
 import java.io.Serializable;
+import java.util.UUID;
 
 @MappedSuperclass
 @NoArgsConstructor
@@ -16,6 +16,7 @@ import java.io.Serializable;
 @Data
 public abstract class AbstractEntity implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    public Integer id;
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    public UUID id;
 }

@@ -5,14 +5,15 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class CreateInterviewDto extends AbstractDto {
 
-    private Integer employee;
+    private UUID employee;
 
-    private Integer candidate;
+    private UUID candidate;
 
     private LocalDateTime startTime;
 }

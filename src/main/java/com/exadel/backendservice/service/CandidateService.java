@@ -14,13 +14,14 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 
 public interface CandidateService {
     CandidateRespDto registerCandidate(RegisterCandidateDto candidateDto);
 
     Page<SearchCandidateDto> getPageOfCandidates(Pageable pageable);
 
-    DetailedCandidateDto getDetailedCandidateDto(Integer id);
+    DetailedCandidateDto getDetailedCandidateDto(UUID id);
 
     List<String> getAllStatuses();
 
@@ -28,15 +29,15 @@ public interface CandidateService {
 
     List<String> getAllPreferredTime();
 
-    CandidateRespDto uploadCv(Integer id, MultipartFile file);
+    CandidateRespDto uploadCv(UUID id, MultipartFile file);
 
-    byte[] downloadCv(Integer id) throws IOException;
+    byte[] downloadCv(UUID id) throws IOException;
 
-    Boolean hasCv(Integer id);
+    Boolean hasCv(UUID id);
 
-    String getCvName(Integer id);
+    String getCvName(UUID id);
 
-    CandidateRespDto updateStatus(Integer id, CandidateStatus status);
+    CandidateRespDto updateStatus(UUID id, CandidateStatus status);
 
-    CandidateRespDto updateInterviewStatus(Integer id, InterviewProcess awaitingHr, HttpServletRequest request);
+    CandidateRespDto updateInterviewStatus(UUID id, InterviewProcess awaitingHr, HttpServletRequest request);
 }

@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -120,7 +121,7 @@ public class FeedbackLinkGenerator {
         return interview;
     }
 
-    private void saveHashToDb(String key, Integer idInterview) {
+    private void saveHashToDb(String key, UUID idInterview) {
         DynamicInterviewLink link = new DynamicInterviewLink();
         link.setCode(key);
         link.setCreatedTime(LocalDateTime.now());

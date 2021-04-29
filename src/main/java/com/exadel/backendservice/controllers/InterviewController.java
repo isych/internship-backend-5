@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Objects;
+import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -24,6 +25,7 @@ public class InterviewController {
 
     private final InterviewService interviewService;
     private final RestAnswer restAnswer;
+
 
     @ApiOperation(value = "Метод для создания интервью")
     @PostMapping("/create")
@@ -40,8 +42,8 @@ public class InterviewController {
 
     @ApiOperation(value = "Метод для изменения интервьюера для интервью")
     @PutMapping("/{interviewId}/employee/{employeeId}")
-    public ResponseEntity<?> changeInterviewer(@PathVariable("interviewId") Integer interviewId,
-                                               @PathVariable("employeeId") Integer employeeId) {
+    public ResponseEntity<?> changeInterviewer(@PathVariable("interviewId") UUID interviewId,
+                                               @PathVariable("employeeId") UUID employeeId) {
         return new ResponseEntity<>(interviewService.updateInterviewer(interviewId, employeeId), HttpStatus.OK);
     }
 
@@ -69,13 +71,14 @@ public class InterviewController {
         return restAnswer.doResultAjax(objectForFeedbackPage);
     }
 
+
     /**
      * Метод для удаления интервью
      *
      * @param id - идентификационный номер интервью, которое подлежит удалению
      */
     @DeleteMapping("/{id}/delete")
-    public ResponseEntity<Integer> deleteById(@PathVariable (value="id") Integer id){
+    public ResponseEntity<Integer> deleteById(@PathVariable (value="id") UUID id){
         if(!interviewService.deleteById(id)){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

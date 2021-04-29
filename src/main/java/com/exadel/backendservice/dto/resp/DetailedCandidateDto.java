@@ -9,11 +9,12 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.util.List;
+import java.util.UUID;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class DetailedCandidateDto extends AbstractDto {
-    private Integer id;
+    private UUID id;
 
     private String fullName;
 

@@ -18,7 +18,7 @@ public class MailSender {
     @Value("${spring.mail.username}")
     private String username;
 
-    public void send(String emailTo, String subject, String message)  {
+    public void send(String emailTo, String subject, String message){
         SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
         simpleMailMessage.setFrom(username);
         simpleMailMessage.setTo(emailTo);
@@ -27,7 +27,7 @@ public class MailSender {
         javaMailSender.send(simpleMailMessage);
     }
 
-    public void sendLetterWithLink(String emailTo, String subject, String message) throws MessagingException{
+    public void sendLetterWithLink(String emailTo, String subject, String message) throws MessagingException {
         MimeMessage msg = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(msg, true);
         helper.setFrom(username);

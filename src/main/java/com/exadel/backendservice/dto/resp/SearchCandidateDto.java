@@ -5,10 +5,12 @@ import com.exadel.backendservice.model.CandidateStatus;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.util.UUID;
+
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class SearchCandidateDto extends AbstractDto {
-    private Integer id;
+    private UUID id;
 
     private String primaryTech;
 

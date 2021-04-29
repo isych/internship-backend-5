@@ -6,8 +6,9 @@ import com.exadel.backendservice.entity.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.UUID;
 
-public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
+public interface EmployeeRepository extends JpaRepository<Employee, UUID> {
 
     List<Employee> findAllByRole(Role id);
     Employee findByEmail(String email);

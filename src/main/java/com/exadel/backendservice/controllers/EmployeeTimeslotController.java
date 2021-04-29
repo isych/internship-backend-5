@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/timeslots")
 @RequiredArgsConstructor
@@ -24,7 +26,7 @@ public class EmployeeTimeslotController {
      * @param id - идентификационный номер таймслота, который подлежит удалению
      */
     @DeleteMapping("/{id}/delete")
-    public ResponseEntity<Integer> deleteById(@PathVariable (value="id") Integer id){
+    public ResponseEntity<Integer> deleteById(@PathVariable (value="id") UUID id){
         if(!employeeTimeslotService.deleteById(id)){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

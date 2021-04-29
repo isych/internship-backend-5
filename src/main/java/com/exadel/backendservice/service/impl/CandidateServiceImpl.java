@@ -27,6 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.mail.MailException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -89,7 +90,7 @@ public class CandidateServiceImpl implements CandidateService {
     }
 
     @Override
-    public DetailedCandidateDto getDetailedCandidateDto(Integer id) {
+    public DetailedCandidateDto getDetailedCandidateDto(UUID id) {
         Optional<Candidate> candidateOptional = candidateRepository.findById(id);
         if (candidateOptional.isPresent()) {
             Candidate candidate = candidateOptional.get();
@@ -127,7 +128,7 @@ public class CandidateServiceImpl implements CandidateService {
     }
 
     @Override
-    public CandidateRespDto uploadCv(Integer id, MultipartFile file) {
+    public CandidateRespDto uploadCv(UUID id, MultipartFile file) {
         if (file.isEmpty()) {
             throw new IllegalStateException("Cannot upload empty file");
         }
@@ -155,7 +156,7 @@ public class CandidateServiceImpl implements CandidateService {
     }
 
     @Override
-    public byte[] downloadCv(Integer id) {
+    public byte[] downloadCv(UUID id) {
         Optional<Candidate> candidateOptional = candidateRepository.findById(id);
         if (candidateOptional.isPresent()) {
             Candidate candidate = candidateOptional.get();
@@ -169,7 +170,7 @@ public class CandidateServiceImpl implements CandidateService {
     }
 
     @Override
-    public Boolean hasCv(Integer id) {
+    public Boolean hasCv(UUID id) {
         Optional<Candidate> candidateOptional = candidateRepository.findById(id);
         if (candidateOptional.isPresent()) {
             return hasCv(candidateOptional.get());
@@ -178,7 +179,7 @@ public class CandidateServiceImpl implements CandidateService {
     }
 
     @Override
-    public String getCvName(Integer id) {
+    public String getCvName(UUID id) {
         Optional<Candidate> candidateOptional = candidateRepository.findById(id);
         if (candidateOptional.isPresent()) {
             Candidate candidate = candidateOptional.get();
@@ -201,13 +202,13 @@ public class CandidateServiceImpl implements CandidateService {
         String message = String.format("%s,\nyour registration completed successfully!\nWait for the recruiter's call soon.", name);
         try {
             mailSender.send(email, "Registration for Exadel event", message);
-        } catch (Exception ex) {
+        } catch (MailException ex) {
             throw new ApiResponseException("Internal error: mail can't be send to candidate");
         }
     }
 
     @Override
-    public CandidateRespDto updateStatus(Integer id, CandidateStatus status) {
+    public CandidateRespDto updateStatus(UUID id, CandidateStatus status) {
         Candidate candidate;
         Optional<Candidate> candidateOptional = candidateRepository.findById(id);
         if (candidateOptional.isPresent()) {
@@ -220,7 +221,7 @@ public class CandidateServiceImpl implements CandidateService {
     }
 
     @Override
-    public CandidateRespDto updateInterviewStatus(Integer id, InterviewProcess awaitingHr, HttpServletRequest request) {
+    public CandidateRespDto updateInterviewStatus(UUID id, InterviewProcess awaitingHr, HttpServletRequest request) {
         Candidate candidate;
         Optional<Candidate> candidateOptional = candidateRepository.findById(id);
         if (candidateOptional.isPresent()) {
@@ -230,6 +231,6 @@ public class CandidateServiceImpl implements CandidateService {
             feedbackLinkGenerator.sendMessageWithLinkForFeedback(candidate, awaitingHr,  request);
             return candidateMapper.toDto(candidate);
         }
-        throw new DBNotFoundException("Candidate with id = " + id + " does not found");
+        throw new DBNotFoundException("Candidate with this id does not found");
     }
 }

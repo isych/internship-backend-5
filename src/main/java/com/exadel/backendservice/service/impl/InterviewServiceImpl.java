@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @Slf4j
@@ -29,9 +30,10 @@ public class InterviewServiceImpl implements InterviewService {
 
     private final InterviewRepository interviewRepository;
     private final EmployeeRepository employeeRepository;
-    private final DynamicInterviewLinkRepository dynamicInterviewLinkRepository;
+
     private final CreateInterviewMapper createInterviewMapper;
     private final InterviewRespMapper interviewRespMapper;
+    private final DynamicInterviewLinkRepository dynamicInterviewLinkRepository;
     private final FeedbackLinkGenerator feedbackLinkGenerator;
 
     @Override
@@ -44,7 +46,7 @@ public class InterviewServiceImpl implements InterviewService {
     }
 
     @Override
-    public InterviewRespDto updateInterviewer(Integer interviewId, Integer employeeId) {
+    public InterviewRespDto updateInterviewer(UUID interviewId, UUID employeeId) {
         Optional<Interview> optionalInterview = interviewRepository.findById(interviewId);
         Interview interview;
         if (optionalInterview.isEmpty()) {
@@ -64,7 +66,6 @@ public class InterviewServiceImpl implements InterviewService {
         return interviewRespMapper.toDto(interviewRepository.save(interview));
     }
 
-
     @Override
     public InterviewRespDto saveFeedback(String hash, String feedback) {
         DynamicInterviewLink dynamicInterviewLink = dynamicInterviewLinkRepository.findByCode(hash);
@@ -78,15 +79,6 @@ public class InterviewServiceImpl implements InterviewService {
         } else {
             return null;
         }
-    }
-
-    @Override
-    public boolean deleteById(Integer id) {
-        if (!interviewRepository.existsById(id)) {
-            return false;
-        }
-        interviewRepository.deleteById(id);
-        return true;
     }
 
     @Override
@@ -108,5 +100,14 @@ public class InterviewServiceImpl implements InterviewService {
                     DateTimeFormatter.ISO_LOCAL_TIME.format(interview.getEndTime())
             );
         }
+    }
+
+    @Override
+    public boolean deleteById(UUID id) {
+        if (!interviewRepository.existsById(id)) {
+            return false;
+        }
+        interviewRepository.deleteById(id);
+        return true;
     }
 }

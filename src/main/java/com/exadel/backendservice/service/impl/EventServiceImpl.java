@@ -80,7 +80,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public DetailedEventDto getEvent(Integer id) {
+    public DetailedEventDto getEvent(UUID id) {
         Optional<Event> eventOptional = eventRepository.findById(id);
         if (eventOptional.isPresent()) {
             Event event = eventOptional.get();
@@ -98,7 +98,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public byte[] downloadImage(Integer id) {
+    public byte[] downloadImage(UUID id) {
         Optional<Event> eventOptional = eventRepository.findById(id);
         if (eventOptional.isPresent()) {
             Event event = eventOptional.get();
@@ -112,7 +112,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public EventRespDto uploadImage(Integer id, MultipartFile file) {
+    public EventRespDto uploadImage(UUID id, MultipartFile file) {
         if (file.isEmpty()) {
             throw new IllegalStateException("Cannot upload empty file");
         }
@@ -139,7 +139,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public boolean hasPicture(Integer id) {
+    public boolean hasPicture(UUID id) {
         Optional<Event> eventOptional = eventRepository.findById(id);
         if (eventOptional.isPresent()) {
             return hasPicture(eventOptional.get());
@@ -165,7 +165,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public DetailedEventDto publishEvent(Integer id) {
+    public DetailedEventDto publishEvent(UUID id) {
         Optional<Event> eventOptional = eventRepository.findById(id);
 
         if (eventOptional.isPresent()) {
@@ -185,7 +185,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public DetailedEventDto moveToArchive(Integer id) {
+    public DetailedEventDto moveToArchive(UUID id) {
         Optional<Event> eventOptional = eventRepository.findById(id);
 
         if (eventOptional.isPresent()) {
