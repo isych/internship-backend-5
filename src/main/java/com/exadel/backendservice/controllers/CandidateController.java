@@ -18,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
@@ -165,8 +166,8 @@ public class CandidateController {
      */
     @ApiOperation(value = "Метод для изменения статуса интервью кандидата (ожидает интервью с hr)")
     @PutMapping(value = "/{id}/awaiting_hr")
-    public ResponseEntity<CandidateRespDto> updateInterviewStatusToAwaitingHr(@PathVariable("id") UUID id) {
-        return new ResponseEntity<CandidateRespDto>(candidateService.updateInterviewStatus(id, InterviewProcess.AWAITING_HR) , HttpStatus.OK);
+    public ResponseEntity<CandidateRespDto> updateInterviewStatusToAwaitingHr(@PathVariable("id") UUID id, HttpServletRequest request) {
+        return new ResponseEntity<CandidateRespDto>(candidateService.updateInterviewStatus(id, InterviewProcess.AWAITING_HR, request) , HttpStatus.OK);
     }
 
     /**
@@ -176,8 +177,8 @@ public class CandidateController {
      */
     @ApiOperation(value = "Метод для изменения статуса этапа интервью кандидата (ожидает интервью с техническим специалистом)")
     @PutMapping(value = "/{id}/awaiting_tс")
-    public ResponseEntity<CandidateRespDto> updateInterviewStatusToAwaitingTech(@PathVariable("id") UUID id) {
-        return new ResponseEntity<CandidateRespDto>(candidateService.updateInterviewStatus(id, InterviewProcess.AWAITING_TS) , HttpStatus.OK);
+    public ResponseEntity<CandidateRespDto> updateInterviewStatusToAwaitingTech(@PathVariable("id") UUID id, HttpServletRequest request) {
+        return new ResponseEntity<CandidateRespDto>(candidateService.updateInterviewStatus(id, InterviewProcess.AWAITING_TS, request) , HttpStatus.OK);
     }
 
     /**
@@ -187,7 +188,7 @@ public class CandidateController {
      */
     @ApiOperation(value = "Метод для изменения статуса этапа интервью кандидата (ожидает решение по результатам интервью)")
     @PutMapping(value = "/{id}/awaiting_decision")
-    public ResponseEntity<CandidateRespDto> updateInterviewStatusToAwaitingDecision(@PathVariable("id") UUID id) {
-        return new ResponseEntity<CandidateRespDto>(candidateService.updateInterviewStatus(id, InterviewProcess.WAITING_DECISION) , HttpStatus.OK);
+    public ResponseEntity<CandidateRespDto> updateInterviewStatusToAwaitingDecision(@PathVariable("id") UUID id, HttpServletRequest request) {
+        return new ResponseEntity<CandidateRespDto>(candidateService.updateInterviewStatus(id, InterviewProcess.WAITING_DECISION, request) , HttpStatus.OK);
     }
 }

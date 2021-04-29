@@ -19,6 +19,7 @@ import com.exadel.backendservice.repository.CityRepository;
 import com.exadel.backendservice.repository.EventRepository;
 import com.exadel.backendservice.repository.TechRepository;
 import com.exadel.backendservice.service.CandidateService;
+import com.exadel.backendservice.service.utils.FeedbackLinkGenerator;
 import com.exadel.backendservice.service.utils.FileStore;
 import com.exadel.backendservice.service.utils.MailSender;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +31,7 @@ import org.springframework.mail.MailException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
@@ -58,6 +60,7 @@ public class CandidateServiceImpl implements CandidateService {
     private final CandidateResponseMapper candidateMapper;
 
     private final FileStore fileStoreService;
+    private final FeedbackLinkGenerator feedbackLinkGenerator;
 
     @Override
     public CandidateRespDto registerCandidate(RegisterCandidateDto dto) {
@@ -218,13 +221,14 @@ public class CandidateServiceImpl implements CandidateService {
     }
 
     @Override
-    public CandidateRespDto updateInterviewStatus(UUID id, InterviewProcess awaitingHr) {
+    public CandidateRespDto updateInterviewStatus(UUID id, InterviewProcess awaitingHr, HttpServletRequest request) {
         Candidate candidate;
         Optional<Candidate> candidateOptional = candidateRepository.findById(id);
         if (candidateOptional.isPresent()) {
             candidate = candidateOptional.get();
             candidate.setInterviewProcess(awaitingHr);
             candidateRepository.save(candidate);
+            feedbackLinkGenerator.sendMessageWithLinkForFeedback(candidate, awaitingHr,  request);
             return candidateMapper.toDto(candidate);
         }
         throw new DBNotFoundException("Candidate with this id does not found");

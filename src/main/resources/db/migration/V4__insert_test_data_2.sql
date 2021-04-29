@@ -182,3 +182,6 @@ values ('5dce9cbc-a80d-11eb-bcbc-0242ac130015', null, null, 'candidate1@testtest
 -- values ('1c9d4d34-a811-11eb-bcbc-0242ac130012', 'good boy', '1619618400', '1619622000',
 --         '5dce9cbc-a80d-11eb-bcbc-0242ac130012', /*candidate*/
 --         '7889d51e-a79d-11eb-bcbc-0242ac130006'); /*employee*/
+
+insert into interview values ('4563d51e-a79d-11eb-bcbc-0242ac130001', null, '2021-04-01 00:00:00.000000', '2021-04-01 00:00:00.000000', '5dce9cbc-a80d-11eb-bcbc-0242ac130001', '7889d51e-a79d-11eb-bcbc-0242ac130003');
+insert into interview values ('4563d51e-a79d-11eb-bcbc-0242ac130002', null, '2021-04-01 00:00:00.000000', '2021-04-01 00:00:00.000000', '5dce9cbc-a80d-11eb-bcbc-0242ac130001', '7889d51e-a79d-11eb-bcbc-0242ac130005');

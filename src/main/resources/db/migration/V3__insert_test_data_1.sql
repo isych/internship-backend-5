@@ -12,7 +12,7 @@ insert into employee
 values ('7889d51e-a79d-11eb-bcbc-0242ac130002', 'Меркушева Валерия Евгеньевна', 'superadmin-2@fortest.ru',
         '$2a$10$dvup/KVkxe/puUu6q8xh8OI2noobcb1dQ1bCjcRVI/P1ovDBlVT4e', '602f347c-a79e-11eb-bcbc-0242ac130003');
 insert into employee
-values ('7889d51e-a79d-11eb-bcbc-0242ac130003', 'Кулакова Регина Аркадьевна', 'tech-1@fortest.ru',
+values ('7889d51e-a79d-11eb-bcbc-0242ac130003', 'Кулакова Регина Аркадьевна', 'van123_321@mail.ru',
         '$2a$10$dvup/KVkxe/puUu6q8xh8OI2noobcb1dQ1bCjcRVI/P1ovDBlVT4e', '602f347c-a79e-11eb-bcbc-0242ac130002');
 insert into employee
 values ('7889d51e-a79d-11eb-bcbc-0242ac130004', 'Георгий Арсеньевич Козлов', 'tech-2@fortest.ru',
