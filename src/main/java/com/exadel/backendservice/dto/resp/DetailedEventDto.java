@@ -20,5 +20,6 @@ public class DetailedEventDto extends AbstractDto {
     private String description;
     private EventType type;
     private List<LocationDto> locations;
+    private List<TechDto> techs;
     private EventStatus eventStatus;
 }
