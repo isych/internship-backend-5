@@ -28,7 +28,7 @@ public class InterviewController {
 
 
     @ApiOperation(value = "Метод для создания интервью")
-    @PostMapping("/create")
+    @PostMapping
     public ResponseEntity<?> createInterview(@RequestBody CreateInterviewDto createInterviewDto) {
         if(Objects.isNull(createInterviewDto)) {
             throw new ApiRequestException("Interview is null");
