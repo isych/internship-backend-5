@@ -18,7 +18,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/employee")
+@RequestMapping("/api/employees")
 @Api(tags = "Контроллер для работы с пользователями")
 public class EmployeeController {
 
