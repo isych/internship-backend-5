@@ -97,7 +97,7 @@ public class EventController {
     }
 
     @ApiOperation("Метод для перемещения события в архив")
-    @GetMapping("{id}/toarchive")
+    @GetMapping("{id}/archive")
     public ResponseEntity<DetailedEventDto> eventToArchive(@PathVariable("id") UUID id) {
         return new ResponseEntity<>(eventService.moveToArchive(id) , HttpStatus.OK);
     }

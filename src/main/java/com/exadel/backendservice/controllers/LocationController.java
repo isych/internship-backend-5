@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/location/")
+@RequestMapping("/api/locations/")
 @RequiredArgsConstructor
 @Api(tags = "Контроллер для работы со странами и городами")
 public class LocationController {
