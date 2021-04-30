@@ -26,6 +26,6 @@ class TechControllerTest extends AbstractTestConfig {
         this.mockMvc.perform(get("/tech"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("\"Java\",\"Spring Stack\",\"JS\",\"React\"")));
+                .andExpect(content().string(containsString("[\"Java\",\"Spring Stack\",\"JavaScript\",\"React\",\"Vue.js\",\".Net\",\"Groovy\",\"CSS\",\"Html\",\"webpack\"]")));
     }
 }

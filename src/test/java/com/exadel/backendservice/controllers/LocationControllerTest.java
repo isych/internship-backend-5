@@ -26,6 +26,6 @@ class LocationControllerTest extends AbstractTestConfig {
         this.mockMvc.perform(get("/api/location/"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().string(equalTo("[{\"name\":\"Ukraine\",\"cities\":[\"Kharkov\",\"Kyiv\"]},{\"name\":\"Belarus\",\"cities\":[\"Brest\",\"Minsk\"]}]")));
+                .andExpect(content().string(equalTo("[{\"name\":\"Ukraine\",\"cities\":[\"Kyiv\",\"Lviv\",\"Odesa\",\"Kharkov\"]},{\"name\":\"Belarus\",\"cities\":[\"Brest\",\"Dzyarzhynsk\",\"Slutsk\",\"Minsk\"]},{\"name\":\"Uzbekistan\",\"cities\":[\"Tashkent\",\"Samarqand\",\"Namangan\",\"Fergana\"]},{\"name\":\"Poland\",\"cities\":[\"GdaÅ\u0084sk\",\"BiaÅ\u0082ystok\",\"CheÅ\u0082m\",\"Bytom\"]},{\"name\":\"Lithuania\",\"cities\":[\"Alytus\",\"Vilnius\",\"Jonava\",\"Kaunas\"]},{\"name\":\"Germany\",\"cities\":[\"Stuttgart\",\"Berlin\",\"Munich\",\"Hamburg\"]}]")));
     }
 }
