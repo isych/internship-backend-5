@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/tech")
+@RequestMapping("/api/tech")
 @RequiredArgsConstructor
 @Api(tags = "Контроллер для работы с технологиями/языками программирования")
 public class TechController {
