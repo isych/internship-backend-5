@@ -32,4 +32,6 @@ public interface EventService {
     DetailedEventDto publishEvent(UUID id);
 
     DetailedEventDto moveToArchive(UUID id);
+
+    Page<DetailedEventDto>  getArchivedEvents(Pageable pageable);
 }
