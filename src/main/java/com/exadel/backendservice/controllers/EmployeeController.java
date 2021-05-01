@@ -68,8 +68,11 @@ public class EmployeeController {
         return new ResponseEntity<>(employeeService.getInterviewersForCandidate(), HttpStatus.OK);
     }
 
+    @ApiOperation(value = "Метод для удаления пользователя из системы по его id")
     @DeleteMapping("/{id}/delete")
     public ResponseEntity<?> deleteEmployee(@PathVariable UUID id){
         return new ResponseEntity<>(employeeService.deleteEmployee(id) ? "Employee removed" : "Employee not removed", HttpStatus.OK);
     }
+
+
 }
