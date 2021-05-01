@@ -74,7 +74,7 @@ public class EventServiceImpl implements EventService {
     @Override
     public Page<DetailedEventDto> getEventsPage(Pageable pageable) {
         Page<Event> page = eventRepository.findAll(pageable);
-        List<DetailedEventDto> eventList = page.get().map(detailedEventMapper::toDto).collect(Collectors.toList());
+        List<DetailedEventDto> eventList = page.get().map(detailedEventMapper::toDto).filter(elem -> elem.getEventStatus() != EventStatus.ARCHIVED).collect(Collectors.toList());
         log.debug("SearchEventDto -> {}", eventList);
         return new PageImpl<>(eventList);
     }
