@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -77,12 +78,20 @@ public class InterviewController {
      *
      * @param id - идентификационный номер интервью, которое подлежит удалению
      */
+    @ApiOperation(value = "Метод удаления интервью по id")
     @DeleteMapping("/{id}/delete")
     public ResponseEntity<Integer> deleteById(@PathVariable (value="id") UUID id){
         if(!interviewService.deleteById(id)){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "Метод для получения всех интервью для пользователя по его id")
+    @GetMapping("employee/{idEmployee}")
+    public ResponseEntity<?> getInterviewsForEmployee(@PathVariable UUID idEmployee){
+        List<InterviewRespDto> listEmployee = interviewService.getInterviewsForEmployee(idEmployee);
+        return restAnswer.doResultAjax(listEmployee);
     }
 
 }
