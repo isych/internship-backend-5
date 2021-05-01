@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -65,5 +66,10 @@ public class EmployeeController {
     @GetMapping("/interviewers/list/")
     public ResponseEntity<List<InterviewersByRoleDto>> getInterviewersByRole() {
         return new ResponseEntity<>(employeeService.getInterviewersForCandidate(), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}/delete")
+    public ResponseEntity<?> deleteEmployee(@PathVariable UUID id){
+        return new ResponseEntity<>(employeeService.deleteEmployee(id) ? "Employee removed" : "Employee not removed", HttpStatus.OK);
     }
 }

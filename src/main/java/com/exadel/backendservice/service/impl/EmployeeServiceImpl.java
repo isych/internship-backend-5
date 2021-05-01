@@ -3,10 +3,14 @@ package com.exadel.backendservice.service.impl;
 import com.exadel.backendservice.dto.resp.InterviewersByRoleDto;
 import com.exadel.backendservice.dto.resp.RoleRespDto;
 import com.exadel.backendservice.entity.Employee;
+import com.exadel.backendservice.entity.EmployeeTimeslot;
+import com.exadel.backendservice.entity.Interview;
 import com.exadel.backendservice.entity.Role;
 import com.exadel.backendservice.mapper.role.InterviewersByRoleMapper;
 import com.exadel.backendservice.mapper.role.RoleResponseMapper;
 import com.exadel.backendservice.repository.EmployeeRepository;
+import com.exadel.backendservice.repository.EmployeeTimeslotRepository;
+import com.exadel.backendservice.repository.InterviewRepository;
 import com.exadel.backendservice.repository.RoleEntityRepository;
 import com.exadel.backendservice.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +19,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -29,7 +35,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     private final RoleEntityRepository roleRepository;
     private final EmployeeRepository employeeRepository;
-
+    private final EmployeeTimeslotRepository employeeTimeslotRepository;
+    private final InterviewRepository interviewRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Override
@@ -67,4 +74,18 @@ public class EmployeeServiceImpl implements EmployeeService {
         return interviewersByRoleMapper.toDto(roles);
     }
 
+    @Override
+    public Boolean deleteEmployee(UUID id) {
+        Optional<Employee> optionalEmployee = employeeRepository.findById(id);
+        if (optionalEmployee.isPresent()) {
+            Optional<List<EmployeeTimeslot>> optionalEmployeeTimeslots = employeeTimeslotRepository.findAllByEmployee_Id(optionalEmployee.get().getId());
+            Optional<List<Interview>> optionalInterviews = interviewRepository.findAllByEmployee_Id(optionalEmployee.get().getId());
+            optionalEmployeeTimeslots.ifPresent(employeeTimeslots -> employeeTimeslots.forEach(employeeTimeslotRepository::delete));
+            optionalInterviews.ifPresent(interviews -> interviews.forEach(interviewRepository::delete));
+            employeeRepository.delete(optionalEmployee.get());
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

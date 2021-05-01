@@ -5,6 +5,7 @@ import com.exadel.backendservice.dto.resp.RoleRespDto;
 import com.exadel.backendservice.entity.Employee;
 
 import java.util.List;
+import java.util.UUID;
 
 
 public interface EmployeeService {
@@ -19,4 +20,5 @@ public interface EmployeeService {
 
     List<String> getListRoles();
 
+    Boolean deleteEmployee(UUID id);
 }
