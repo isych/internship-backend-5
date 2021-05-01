@@ -1,5 +1,6 @@
 package com.exadel.backendservice.controllers;
 
+import com.exadel.backendservice.dto.resp.EmployeeDto;
 import com.exadel.backendservice.dto.resp.InterviewersByRoleDto;
 import com.exadel.backendservice.dto.resp.RoleRespDto;
 import com.exadel.backendservice.entity.Employee;
@@ -74,5 +75,11 @@ public class EmployeeController {
         return new ResponseEntity<>(employeeService.deleteEmployee(id) ? "Employee removed" : "Employee not removed", HttpStatus.OK);
     }
 
+    @ApiOperation(value = "Метод для добавления пользователя в систему")
+    @PostMapping("/add")
+    public ResponseEntity<?> saveEmployee(@RequestBody EmployeeDto employeeDto){
+        Employee employee = employeeService.saveEmployee(employeeDto);
+        return new ResponseEntity<>(employee != null ? "Employee created" : "Employee not created", HttpStatus.OK);
+    }
 
 }

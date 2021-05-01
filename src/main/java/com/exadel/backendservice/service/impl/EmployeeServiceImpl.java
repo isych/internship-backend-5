@@ -1,5 +1,6 @@
 package com.exadel.backendservice.service.impl;
 
+import com.exadel.backendservice.dto.resp.EmployeeDto;
 import com.exadel.backendservice.dto.resp.InterviewersByRoleDto;
 import com.exadel.backendservice.dto.resp.RoleRespDto;
 import com.exadel.backendservice.entity.Employee;
@@ -15,6 +16,7 @@ import com.exadel.backendservice.repository.RoleEntityRepository;
 import com.exadel.backendservice.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -38,6 +40,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     private final EmployeeTimeslotRepository employeeTimeslotRepository;
     private final InterviewRepository interviewRepository;
     private final PasswordEncoder passwordEncoder;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
     public Employee findByEmail(String email) {
@@ -87,5 +90,25 @@ public class EmployeeServiceImpl implements EmployeeService {
         } else {
             return false;
         }
+    }
+
+    @Override
+    public Employee saveEmployee(EmployeeDto employeeDto) {
+        if(employeeDto != null){
+            Optional<Role> optionalRole = roleRepository.findByName("ROLE_" + employeeDto.getRole().toUpperCase());
+            if(optionalRole.isPresent() && emailIsUnique(employeeDto.getEmail())){
+                Employee employee = new Employee();
+                employee.setFullName(employeeDto.getFullName());
+                employee.setEmail(employeeDto.getEmail());
+                employee.setPassword(bCryptPasswordEncoder.encode(employeeDto.getPassword()));
+                employee.setRole(optionalRole.get());
+                return employeeRepository.save(employee);
+            }
+        }
+        return null;
+    }
+
+    private Boolean emailIsUnique(String email){
+        return employeeRepository.findByEmail(email) == null;
     }
 }
