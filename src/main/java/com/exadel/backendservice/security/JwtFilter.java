@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 import static org.springframework.util.StringUtils.hasText;
+import static org.springframework.util.StringUtils.startsWithIgnoreCase;
 
 @Component
 @Log
@@ -49,8 +50,8 @@ public class JwtFilter extends GenericFilterBean {
 
     private String getTokenFromRequest(HttpServletRequest request) {
         String bearer = request.getHeader(AUTHORIZATION);
-        if (hasText(bearer)) {
-            return bearer;
+        if (hasText(bearer) && bearer.startsWith("Bearer ")) {
+            return bearer.substring(7);
         }
         return null;
     }
