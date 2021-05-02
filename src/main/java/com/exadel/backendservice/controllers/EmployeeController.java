@@ -40,9 +40,9 @@ public class EmployeeController {
         Employee employee = employeeService.findByEmailAndPassword(request.getEmail(), request.getPassword());
         if (employee != null) {
             String token = jwtProvider.generateToken(employee.getEmail(), employee.getFullName(), employee.getRole().getName());
-            return new AuthResponse(token);
+            return new AuthResponse(token, employee.getRole().getName());
         }
-        return new AuthResponse(null);
+        return new AuthResponse(null, null);
     }
 
     /**
