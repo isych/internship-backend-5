@@ -16,4 +16,5 @@ public class ObjectForFeedbackPage {
     private String candidateTechnology;
     private String interviewDate;
     private String interviewTime;
+    private String interviewerName;
 }

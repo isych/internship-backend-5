@@ -99,7 +99,8 @@ public class InterviewServiceImpl implements InterviewService {
                     candidate.getCity().getName(),
                     candidate.getPrimaryTech().getName(),
                     DateTimeFormatter.ISO_LOCAL_DATE.format(interview.getEndTime()),
-                    DateTimeFormatter.ISO_LOCAL_TIME.format(interview.getEndTime())
+                    DateTimeFormatter.ISO_LOCAL_TIME.format(interview.getEndTime()),
+                    interview.getEmployee().getFullName()
             );
         }
     }
