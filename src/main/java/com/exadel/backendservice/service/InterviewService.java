@@ -4,6 +4,7 @@ import com.exadel.backendservice.dto.req.CreateInterviewDto;
 import com.exadel.backendservice.dto.resp.InterviewRespDto;
 import com.exadel.backendservice.model.ObjectForFeedbackPage;
 
+import java.util.List;
 import java.util.UUID;
 
 public interface InterviewService {
@@ -16,5 +17,7 @@ public interface InterviewService {
     boolean deleteById(UUID id);
 
     ObjectForFeedbackPage getObjectForFeedbackPage(String hash);
+
+    List<InterviewRespDto> getInterviewsForEmployee(UUID idEmployee);
 }
 

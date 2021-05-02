@@ -184,4 +184,8 @@ values ('5dce9cbc-a80d-11eb-bcbc-0242ac130015', null, null, 'candidate1@testtest
 --         '7889d51e-a79d-11eb-bcbc-0242ac130006'); /*employee*/
 
 insert into interview values ('4563d51e-a79d-11eb-bcbc-0242ac130001', null, '2021-04-01 00:00:00.000000', '2021-04-01 00:00:00.000000', '5dce9cbc-a80d-11eb-bcbc-0242ac130001', '7889d51e-a79d-11eb-bcbc-0242ac130003');
-insert into interview values ('4563d51e-a79d-11eb-bcbc-0242ac130002', null, '2021-04-01 00:00:00.000000', '2021-04-01 00:00:00.000000', '5dce9cbc-a80d-11eb-bcbc-0242ac130001', '7889d51e-a79d-11eb-bcbc-0242ac130005');
+insert into interview values ('4563d51e-a79d-11eb-bcbc-0242ac130002', null, '2021-04-01 00:00:00.000000', '2021-04-01 00:00:00.000000', '5dce9cbc-a80d-11eb-bcbc-0242ac130002', '7889d51e-a79d-11eb-bcbc-0242ac130003');
+insert into interview values ('4563d51e-a79d-11eb-bcbc-0242ac130003', null, '2021-04-01 00:00:00.000000', '2021-04-01 00:00:00.000000', '5dce9cbc-a80d-11eb-bcbc-0242ac130001', '7889d51e-a79d-11eb-bcbc-0242ac130006');
+insert into interview values ('4563d51e-a79d-11eb-bcbc-0242ac130004', null, '2021-04-01 00:00:00.000000', '2021-04-01 00:00:00.000000', '5dce9cbc-a80d-11eb-bcbc-0242ac130002', '7889d51e-a79d-11eb-bcbc-0242ac130005');
+insert into interview values ('4563d51e-a79d-11eb-bcbc-0242ac130005', null, '2021-04-01 00:00:00.000000', '2021-04-01 00:00:00.000000', '5dce9cbc-a80d-11eb-bcbc-0242ac130003', '7889d51e-a79d-11eb-bcbc-0242ac130004');
+

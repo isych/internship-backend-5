@@ -1,5 +1,6 @@
 package com.exadel.backendservice.controllers;
 
+import com.exadel.backendservice.dto.resp.EmployeeDto;
 import com.exadel.backendservice.dto.resp.InterviewersByRoleDto;
 import com.exadel.backendservice.dto.resp.RoleRespDto;
 import com.exadel.backendservice.entity.Employee;
@@ -15,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -37,10 +39,10 @@ public class EmployeeController {
     public AuthResponse auth(@RequestBody AuthRequest request) {
         Employee employee = employeeService.findByEmailAndPassword(request.getEmail(), request.getPassword());
         if (employee != null) {
-            String token = jwtProvider.generateToken(employee.getEmail());
+            String token = jwtProvider.generateToken(employee.getEmail(), employee.getFullName(), employee.getRole().getName());
             return new AuthResponse(token);
         }
-        return new AuthResponse("null");
+        return new AuthResponse(null);
     }
 
     /**
@@ -66,4 +68,18 @@ public class EmployeeController {
     public ResponseEntity<List<InterviewersByRoleDto>> getInterviewersByRole() {
         return new ResponseEntity<>(employeeService.getInterviewersForCandidate(), HttpStatus.OK);
     }
+
+    @ApiOperation(value = "Метод для удаления пользователя из системы по его id")
+    @DeleteMapping("/{id}/delete")
+    public ResponseEntity<?> deleteEmployee(@PathVariable UUID id){
+        return new ResponseEntity<>(employeeService.deleteEmployee(id) ? "Employee removed" : "Employee not removed", HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "Метод для добавления пользователя в систему")
+    @PostMapping("/add")
+    public ResponseEntity<?> saveEmployee(@RequestBody EmployeeDto employeeDto){
+        Employee employee = employeeService.saveEmployee(employeeDto);
+        return new ResponseEntity<>(employee != null ? "Employee created" : "Employee not created", HttpStatus.OK);
+    }
+
 }

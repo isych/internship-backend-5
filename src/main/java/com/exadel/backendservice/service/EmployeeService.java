@@ -1,10 +1,12 @@
 package com.exadel.backendservice.service;
 
+import com.exadel.backendservice.dto.resp.EmployeeDto;
 import com.exadel.backendservice.dto.resp.InterviewersByRoleDto;
 import com.exadel.backendservice.dto.resp.RoleRespDto;
 import com.exadel.backendservice.entity.Employee;
 
 import java.util.List;
+import java.util.UUID;
 
 
 public interface EmployeeService {
@@ -19,4 +21,7 @@ public interface EmployeeService {
 
     List<String> getListRoles();
 
+    Boolean deleteEmployee(UUID id);
+
+    Employee saveEmployee(EmployeeDto employeeDto);
 }

@@ -47,7 +47,7 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public EventRespDto saveEvent(CreateEventDto dto) {
-        if(!isUnique(dto.getName())) {
+        if (!isUnique(dto.getName())) {
             throw new DBNotUniqueValueForUniqueFieldException("This name for events is used");
         }
         if (!cityRepository.existsAllByNameIn(dto.getCities())) {
@@ -74,7 +74,7 @@ public class EventServiceImpl implements EventService {
     @Override
     public Page<DetailedEventDto> getEventsPage(Pageable pageable) {
         Page<Event> page = eventRepository.findAll(pageable);
-        List<DetailedEventDto> eventList = page.get().map(detailedEventMapper::toDto).collect(Collectors.toList());
+        List<DetailedEventDto> eventList = page.get().map(detailedEventMapper::toDto).filter(elem -> elem.getEventStatus() != EventStatus.ARCHIVED).collect(Collectors.toList());
         log.debug("SearchEventDto -> {}", eventList);
         return new PageImpl<>(eventList);
     }
@@ -102,7 +102,7 @@ public class EventServiceImpl implements EventService {
         Optional<Event> eventOptional = eventRepository.findById(id);
         if (eventOptional.isPresent()) {
             Event event = eventOptional.get();
-            if (hasPicture(event)){
+            if (hasPicture(event)) {
                 return fileStoreService.download(event.getPicturePath(), event.getPictureName());
             }
             throw new DBNotFoundException("Event does not have an image");
@@ -156,7 +156,7 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public Page<DetailedEventDto> getPublishedEvents(Pageable pageable) {
-        List<Event> eventsList = eventRepository.findByEventStatus(EventStatus.PUBLISHED,  pageable);
+        List<Event> eventsList = eventRepository.findByEventStatus(EventStatus.PUBLISHED, pageable);
         List<DetailedEventDto> publishedEvents = eventsList.stream()
                 .map(detailedEventMapper::toDto)
                 .collect(Collectors.toList());
@@ -170,7 +170,7 @@ public class EventServiceImpl implements EventService {
 
         if (eventOptional.isPresent()) {
             Event event = eventOptional.get();
-            if(!event.getEventStatus().equals(EventStatus.PUBLISHED)) {
+            if (!event.getEventStatus().equals(EventStatus.PUBLISHED)) {
                 event.setEventStatus(EventStatus.PUBLISHED);
                 eventRepository.save(event);
                 DetailedEventDto detailedEventDto = detailedEventMapper.toDto(event);
@@ -190,7 +190,7 @@ public class EventServiceImpl implements EventService {
 
         if (eventOptional.isPresent()) {
             Event event = eventOptional.get();
-            if(!event.getEventStatus().equals(EventStatus.ARCHIVED)) {
+            if (!event.getEventStatus().equals(EventStatus.ARCHIVED)) {
                 event.setEventStatus(EventStatus.ARCHIVED);
                 eventRepository.save(event);
                 DetailedEventDto detailedEventDto = detailedEventMapper.toDto(event);
@@ -203,4 +203,15 @@ public class EventServiceImpl implements EventService {
             throw new DBNotFoundException(UNABLE_TO_FIND_EVENT);
         }
     }
+
+    @Override
+    public Page<DetailedEventDto> getArchivedEvents(Pageable pageable) {
+        List<Event> eventsList = eventRepository.findByEventStatus(EventStatus.ARCHIVED, pageable);
+        List<DetailedEventDto> publishedEvents = eventsList.stream()
+                .map(detailedEventMapper::toDto)
+                .collect(Collectors.toList());
+        log.debug("SearchEventDto -> {}", publishedEvents);
+        return new PageImpl<>(publishedEvents);
+    }
+
 }

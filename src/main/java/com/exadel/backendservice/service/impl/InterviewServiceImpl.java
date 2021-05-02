@@ -20,8 +20,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -97,7 +99,8 @@ public class InterviewServiceImpl implements InterviewService {
                     candidate.getCity().getName(),
                     candidate.getPrimaryTech().getName(),
                     DateTimeFormatter.ISO_LOCAL_DATE.format(interview.getEndTime()),
-                    DateTimeFormatter.ISO_LOCAL_TIME.format(interview.getEndTime())
+                    DateTimeFormatter.ISO_LOCAL_TIME.format(interview.getEndTime()),
+                    interview.getEmployee().getFullName()
             );
         }
     }
@@ -109,5 +112,12 @@ public class InterviewServiceImpl implements InterviewService {
         }
         interviewRepository.deleteById(id);
         return true;
+    }
+
+    @Override
+    public List<InterviewRespDto> getInterviewsForEmployee(UUID idEmployee) {
+        return interviewRepository.findAllByEmployee_Id(idEmployee)
+                .map(interviews -> interviews.stream().map(interviewRespMapper::toDto).collect(Collectors.toList()))
+                .orElse(null);
     }
 }

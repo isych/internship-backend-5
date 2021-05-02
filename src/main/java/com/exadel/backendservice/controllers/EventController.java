@@ -101,4 +101,10 @@ public class EventController {
     public ResponseEntity<DetailedEventDto> eventToArchive(@PathVariable("id") UUID id) {
         return new ResponseEntity<>(eventService.moveToArchive(id) , HttpStatus.OK);
     }
+
+    @ApiOperation("Метод для получения архивных ивентов")
+    @GetMapping("archived")
+    public ResponseEntity<Page<DetailedEventDto>> getArchivedEvents(Pageable pageable){
+        return new ResponseEntity<>(eventService.getArchivedEvents(pageable), HttpStatus.OK);
+    }
 }

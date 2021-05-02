@@ -5,6 +5,6 @@ import java.util.List;
 import java.util.UUID;
 
 public interface EmployeeTimeslotService {
-    public boolean deleteById(UUID id);
+    boolean deleteById(UUID id);
     List<EmployeeTimeslotDto> getListByEmployeeId(UUID id);
 }
