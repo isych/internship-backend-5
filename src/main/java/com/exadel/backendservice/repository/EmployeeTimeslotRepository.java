@@ -9,4 +9,5 @@ import java.util.UUID;
 
 public interface EmployeeTimeslotRepository extends JpaRepository<EmployeeTimeslot, UUID>{
     Optional<List<EmployeeTimeslot>> findAllByEmployee_Id(UUID id);
+    List<EmployeeTimeslot> findAll();
 }
