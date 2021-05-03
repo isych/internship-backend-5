@@ -5,6 +5,7 @@ import com.exadel.backendservice.dto.req.RegisterCandidateDto;
 import com.exadel.backendservice.dto.resp.CandidateRespDto;
 import com.exadel.backendservice.dto.resp.DetailedCandidateDto;
 import com.exadel.backendservice.dto.resp.SearchCandidateDto;
+import com.exadel.backendservice.entity.Candidate;
 import com.exadel.backendservice.model.CandidateStatus;
 import com.exadel.backendservice.model.InterviewProcess;
 import org.springframework.data.domain.Page;
@@ -40,4 +41,6 @@ public interface CandidateService {
     CandidateRespDto updateStatus(UUID id, CandidateStatus status);
 
     CandidateRespDto updateInterviewStatus(UUID id, InterviewProcess awaitingHr, HttpServletRequest request);
+
+    List<Candidate> getCandidatesWithFilter(List<String> primaryTech, List<String> interviewProccess, List<String> status, List<String> country);
 }

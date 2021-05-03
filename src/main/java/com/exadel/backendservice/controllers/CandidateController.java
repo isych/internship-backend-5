@@ -4,9 +4,11 @@ import com.exadel.backendservice.dto.req.RegisterCandidateDto;
 import com.exadel.backendservice.dto.resp.CandidateRespDto;
 import com.exadel.backendservice.dto.resp.DetailedCandidateDto;
 import com.exadel.backendservice.dto.resp.SearchCandidateDto;
+import com.exadel.backendservice.entity.Candidate;
 import com.exadel.backendservice.model.CandidateStatus;
 import com.exadel.backendservice.model.InterviewProcess;
 import com.exadel.backendservice.service.CandidateService;
+import com.exadel.backendservice.service.utils.RestAnswer;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +33,7 @@ import java.util.UUID;
 @Api(tags = "Контроллер для работы с кандидатами")
 public class CandidateController {
     private final CandidateService candidateService;
+    private final RestAnswer restAnswer;
 
     /**
      * Метод регистрации нового кандидата
@@ -191,4 +194,19 @@ public class CandidateController {
     public ResponseEntity<CandidateRespDto> updateInterviewStatusToAwaitingDecision(@PathVariable("id") UUID id, HttpServletRequest request) {
         return new ResponseEntity<CandidateRespDto>(candidateService.updateInterviewStatus(id, InterviewProcess.WAITING_DECISION, request) , HttpStatus.OK);
     }
+
+    @PostMapping("/getWithFilter")
+    public ResponseEntity<?> getCandidatesWithFilter(@RequestParam(required = false) List<String> primaryTech,
+                                                     @RequestParam(required = false) List<String> interviewProccess,
+                                                     @RequestParam(required = false) List<String> status,
+                                                     @RequestParam(required = false) List<String> country) {
+
+        List<Candidate> list = candidateService.getCandidatesWithFilter(primaryTech, interviewProccess, status, country);
+        return restAnswer.doResultAjax(list);
+    }
+
+//    @GetMapping("/qwe/{country}")
+//    private ResponseEntity<?> getAllCities(@PathVariable String country){
+//        return restAnswer.doResultAjax(cityRepositoryJPA.findCitiesByCountryName(country));
+//    }
 }
