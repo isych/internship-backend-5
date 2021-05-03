@@ -25,6 +25,7 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
 
 @RestController
@@ -195,18 +196,28 @@ public class CandidateController {
         return new ResponseEntity<CandidateRespDto>(candidateService.updateInterviewStatus(id, InterviewProcess.WAITING_DECISION, request) , HttpStatus.OK);
     }
 
-    @PostMapping("/getWithFilter")
+    @ApiOperation(value = "Метод для поиска кандидатов с помощью фильтра")
+    @PostMapping("/getCandidatesWithFilter")
     public ResponseEntity<?> getCandidatesWithFilter(@RequestParam(required = false) List<String> primaryTech,
                                                      @RequestParam(required = false) List<String> interviewProccess,
                                                      @RequestParam(required = false) List<String> status,
                                                      @RequestParam(required = false) List<String> country) {
 
-        List<Candidate> list = candidateService.getCandidatesWithFilter(primaryTech, interviewProccess, status, country);
+        List<SearchCandidateDto> list = candidateService.getCandidatesWithFilter(primaryTech, interviewProccess, status, country);
         return restAnswer.doResultAjax(list);
     }
 
-//    @GetMapping("/qwe/{country}")
-//    private ResponseEntity<?> getAllCities(@PathVariable String country){
-//        return restAnswer.doResultAjax(cityRepositoryJPA.findCitiesByCountryName(country));
-//    }
+    @ApiOperation(value = "Метод для получения списка стран, в которых проживают кандидаты")
+    @GetMapping("/countries")
+    public ResponseEntity<?> getCountries(){
+        Set<String> list = candidateService.getCountries();
+        return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "Метод для получения списка технологий кандидатов")
+    @GetMapping("/tech")
+    public ResponseEntity<?> getCandidatesTech(){
+        Set<String> tech = candidateService.getCandidatesTech();
+        return new ResponseEntity<>(tech, HttpStatus.OK);
+    }
 }

@@ -231,14 +231,32 @@ public class CandidateServiceImpl implements CandidateService {
     }
 
     @Override
-    public List<Candidate> getCandidatesWithFilter(List<String> primaryTech, List<String> interviewProccess, List<String> status, List<String> country) {
+    public List<SearchCandidateDto> getCandidatesWithFilter(List<String> primaryTech, List<String> interviewProccess, List<String> status, List<String> country) {
         Map<String, List<String>> map = new HashMap<>();
         paramsToMap(primaryTech, interviewProccess, status, country, map);
-        List<Candidate> list = candidateRepositoryJPA.findAllByFilter(createPartQuery(map));
-//        List<SearchCandidateDto> candidateDtoList = list.stream()
-//                .map(elem -> new SearchCandidateDto(elem.getId(), elem.getPrimaryTech().getName(), elem.getFullName(), elem.getEvent().getName(), elem.getStatus()))
-//                .collect(Collectors.toList());
-        return list;
+        if (map.size() != 0) {
+            String param = createPartQuery(map);
+            String query = "select id from candidate where (" + param.replaceAll(" and", ") and").replaceAll("and ", "and (") + ")";
+            List<UUID> list = candidateRepositoryJPA.findAllByFilter(query);
+            return getSearchCandidateDtos(list);
+        } else {
+            return candidateRepository.findAll().stream()
+                    .map(elem -> new SearchCandidateDto(elem.getId(), elem.getPrimaryTech().getName(), elem.getFullName(), elem.getEvent().getName(), elem.getStatus()))
+                    .collect(Collectors.toList());
+        }
+    }
+
+    private List<SearchCandidateDto> getSearchCandidateDtos(List<UUID> list) {
+        List<Candidate> candidateList = list.stream()
+                .map(elem -> candidateRepository.findById(elem).get())
+                .collect(Collectors.toList());
+        if (!candidateList.isEmpty()) {
+            return candidateList.stream()
+                    .map(elem -> new SearchCandidateDto(elem.getId(), elem.getPrimaryTech().getName(), elem.getFullName(), elem.getEvent().getName(), elem.getStatus()))
+                    .collect(Collectors.toList());
+        } else {
+            return null;
+        }
     }
 
     private String createPartQuery(Map<String, List<String>> map) {
@@ -248,11 +266,11 @@ public class CandidateServiceImpl implements CandidateService {
             Map.Entry pair = (Map.Entry) it.next();
             String key = (String) pair.getKey();
             List<String> elems = (List<String>) pair.getValue();
-            for ( String el : elems) {
+            for (String el : elems) {
                 sb.append(key).append(" = '").append(el).append("' or ");
             }
             String str = sb.toString();
-            String res = str.substring(0, str.length()-3) + "and ";
+            String res = str.substring(0, str.length() - 3) + "and ";
             sb.delete(0, sb.length());
             sb.append(res);
 
@@ -278,12 +296,26 @@ public class CandidateServiceImpl implements CandidateService {
         }
         if (country != null && !country.isEmpty()) {
             List<UUID> cityId = new ArrayList<>();
-            for (String elem: country) {
+            for (String elem : country) {
                 cityId = cityRepositoryJPA.findCitiesByCountryName(elem);
             }
             map.put("city_id", cityId.stream().map(UUID::toString).collect(Collectors.toList()));
         }
     }
 
+    @Override
+    public Set<String> getCountries() {
+        return candidateRepository.findAll()
+                .stream()
+                .map(elem -> elem.getCity().getCountry().getName())
+                .collect(Collectors.toSet());
+    }
 
+    @Override
+    public Set<String> getCandidatesTech() {
+        return candidateRepository.findAll()
+                .stream()
+                .map(elem -> elem.getPrimaryTech().getName())
+                .collect(Collectors.toSet());
+    }
 }
