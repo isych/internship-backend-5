@@ -1,14 +1,14 @@
 -- CANDIDATE
 insert into candidate
-values ('5dce9cbc-a80d-11eb-bcbc-0242ac130001', null, null, 'candidate1@testtest.com', 'Nick Nikolaev', 'REGISTERED',
+values ('5dce9cbc-a80d-11eb-bcbc-0242ac130001', null, null, 'candidate1@testtest.com', 'Nick Nikolaev', 'AWAITING_TS',
         '+964493431', 'FROM_FOUR_TO_SIX',
-        'live:.cid.60e0d1dadfe72c0e96f4', 'RED', 'imma smart student',
+        'live:.cid.60e0d1dadfe72c0e96f4', 'YELLOW', 'imma smart student',
         '8ba50dc4-a79f-11eb-bcbc-0242ac130001', /*city*/
         '201398a0-a79f-11eb-bcbc-0242ac130001', /*event*/
         'f8fcba8e-a79f-11eb-bcbc-0242ac130001'); /*tech*/
 
 insert into candidate
-values ('5dce9cbc-a80d-11eb-bcbc-0242ac130002', null, null, 'candidate1@testtest.com', 'Nick Nikolaev', 'REGISTERED',
+values ('5dce9cbc-a80d-11eb-bcbc-0242ac130002', null, null, 'candidate1@testtest.com', 'Nick Nikolaev', 'AWAITING_TS',
         '+964493431', 'FROM_FOUR_TO_SIX',
         'live:.cid.60e0d1dadfe72c0e96f4', 'RED', 'imma smart student',
         '8ba50dc4-a79f-11eb-bcbc-0242ac130002', /*city*/
@@ -16,9 +16,9 @@ values ('5dce9cbc-a80d-11eb-bcbc-0242ac130002', null, null, 'candidate1@testtest
         'f8fcba8e-a79f-11eb-bcbc-0242ac130002'); /*tech*/
 
 insert into candidate
-values ('5dce9cbc-a80d-11eb-bcbc-0242ac130003', null, null, 'candidate1@testtest.com', 'Nick Nikolaev', 'REGISTERED',
+values ('5dce9cbc-a80d-11eb-bcbc-0242ac130003', null, null, 'candidate1@testtest.com', 'Nick Nikolaev', 'AWAITING_TS',
         '+964493431', 'FROM_FOUR_TO_SIX',
-        'live:.cid.60e0d1dadfe72c0e96f4', 'RED', 'imma smart student',
+        'live:.cid.60e0d1dadfe72c0e96f4', 'YELLOW', 'imma smart student',
         '8ba50dc4-a79f-11eb-bcbc-0242ac130003', /*city*/
         '201398a0-a79f-11eb-bcbc-0242ac130003', /*event*/
         'f8fcba8e-a79f-11eb-bcbc-0242ac130003'); /*tech*/
@@ -34,13 +34,13 @@ values ('5dce9cbc-a80d-11eb-bcbc-0242ac130004', null, null, 'candidate1@testtest
 insert into candidate
 values ('5dce9cbc-a80d-11eb-bcbc-0242ac130005', null, null, 'candidate1@testtest.com', 'Nick Nikolaev', 'REGISTERED',
         '+964493431', 'FROM_FOUR_TO_SIX',
-        'live:.cid.60e0d1dadfe72c0e96f4', 'RED', 'imma smart student',
+        'live:.cid.60e0d1dadfe72c0e96f4', 'YELLOW', 'imma smart student',
         '8ba50dc4-a79f-11eb-bcbc-0242ac130005', /*city*/
         '201398a0-a79f-11eb-bcbc-0242ac130005', /*event*/
         'f8fcba8e-a79f-11eb-bcbc-0242ac130005'); /*tech*/
 
 insert into candidate
-values ('5dce9cbc-a80d-11eb-bcbc-0242ac130006', null, null, 'candidate1@testtest.com', 'Nick Nikolaev', 'REGISTERED',
+values ('5dce9cbc-a80d-11eb-bcbc-0242ac130006', null, null, 'candidate1@testtest.com', 'Nick Nikolaev', 'AWAITING_HR',
         '+964493431', 'FROM_FOUR_TO_SIX',
         'live:.cid.60e0d1dadfe72c0e96f4', 'RED', 'imma smart student',
         '8ba50dc4-a79f-11eb-bcbc-0242ac130006', /*city*/
@@ -48,9 +48,9 @@ values ('5dce9cbc-a80d-11eb-bcbc-0242ac130006', null, null, 'candidate1@testtest
         'f8fcba8e-a79f-11eb-bcbc-0242ac130006'); /*tech*/
 
 insert into candidate
-values ('5dce9cbc-a80d-11eb-bcbc-0242ac130007', null, null, 'candidate1@testtest.com', 'Nick Nikolaev', 'REGISTERED',
+values ('5dce9cbc-a80d-11eb-bcbc-0242ac130007', null, null, 'candidate1@testtest.com', 'Nick Nikolaev', 'AWAITING_HR',
         '+964493431', 'FROM_FOUR_TO_SIX',
-        'live:.cid.60e0d1dadfe72c0e96f4', 'RED', 'imma smart student',
+        'live:.cid.60e0d1dadfe72c0e96f4', 'YELLOW', 'imma smart student',
         '8ba50dc4-a79f-11eb-bcbc-0242ac130007', /*city*/
         '201398a0-a79f-11eb-bcbc-0242ac130007', /*event*/
         'f8fcba8e-a79f-11eb-bcbc-0242ac130007'); /*tech*/
@@ -58,13 +58,13 @@ values ('5dce9cbc-a80d-11eb-bcbc-0242ac130007', null, null, 'candidate1@testtest
 insert into candidate
 values ('5dce9cbc-a80d-11eb-bcbc-0242ac130008', null, null, 'candidate1@testtest.com', 'Nick Nikolaev', 'REGISTERED',
         '+964493431', 'FROM_FOUR_TO_SIX',
-        'live:.cid.60e0d1dadfe72c0e96f4', 'RED', 'imma smart student',
+        'live:.cid.60e0d1dadfe72c0e96f4', 'GREEN', 'imma smart student',
         '8ba50dc4-a79f-11eb-bcbc-0242ac130008', /*city*/
         '201398a0-a79f-11eb-bcbc-0242ac130008', /*event*/
         'f8fcba8e-a79f-11eb-bcbc-0242ac130008'); /*tech*/
 
 insert into candidate
-values ('5dce9cbc-a80d-11eb-bcbc-0242ac130009', null, null, 'candidate1@testtest.com', 'Nick Nikolaev', 'REGISTERED',
+values ('5dce9cbc-a80d-11eb-bcbc-0242ac130009', null, null, 'candidate1@testtest.com', 'Nick Nikolaev', 'WAITING_DECISION',
         '+964493431', 'FROM_FOUR_TO_SIX',
         'live:.cid.60e0d1dadfe72c0e96f4', 'RED', 'imma smart student',
         '8ba50dc4-a79f-11eb-bcbc-0242ac130009', /*city*/
@@ -80,15 +80,15 @@ values ('5dce9cbc-a80d-11eb-bcbc-0242ac130010', null, null, 'candidate1@testtest
         'f8fcba8e-a79f-11eb-bcbc-0242ac130010'); /*tech*/
 
 insert into candidate
-values ('5dce9cbc-a80d-11eb-bcbc-0242ac130011', null, null, 'candidate1@testtest.com', 'Nick Nikolaev', 'REGISTERED',
+values ('5dce9cbc-a80d-11eb-bcbc-0242ac130011', null, null, 'candidate1@testtest.com', 'Nick Nikolaev', 'WAITING_DECISION',
         '+964493431', 'FROM_FOUR_TO_SIX',
-        'live:.cid.60e0d1dadfe72c0e96f4', 'RED', 'imma smart student',
+        'live:.cid.60e0d1dadfe72c0e96f4', 'YELLOW', 'imma smart student',
         '8ba50dc4-a79f-11eb-bcbc-0242ac130011', /*city*/
         '201398a0-a79f-11eb-bcbc-0242ac130011', /*event*/
         'f8fcba8e-a79f-11eb-bcbc-0242ac130001'); /*tech*/
 
 insert into candidate
-values ('5dce9cbc-a80d-11eb-bcbc-0242ac130012', null, null, 'candidate1@testtest.com', 'Nick Nikolaev', 'REGISTERED',
+values ('5dce9cbc-a80d-11eb-bcbc-0242ac130012', null, null, 'candidate1@testtest.com', 'Nick Nikolaev', 'WAITING_DECISION',
         '+964493431', 'FROM_FOUR_TO_SIX',
         'live:.cid.60e0d1dadfe72c0e96f4', 'RED', 'imma smart student',
         '8ba50dc4-a79f-11eb-bcbc-0242ac130012', /*city*/
@@ -106,7 +106,7 @@ values ('5dce9cbc-a80d-11eb-bcbc-0242ac130013', null, null, 'candidate1@testtest
 insert into candidate
 values ('5dce9cbc-a80d-11eb-bcbc-0242ac130014', null, null, 'candidate1@testtest.com', 'Nick Nikolaev', 'REGISTERED',
         '+964493431', 'FROM_FOUR_TO_SIX',
-        'live:.cid.60e0d1dadfe72c0e96f4', 'RED', 'imma smart student',
+        'live:.cid.60e0d1dadfe72c0e96f4', 'GREEN', 'imma smart student',
         '8ba50dc4-a79f-11eb-bcbc-0242ac130014', /*city*/
         '201398a0-a79f-11eb-bcbc-0242ac130014', /*event*/
         'f8fcba8e-a79f-11eb-bcbc-0242ac130004'); /*tech*/
@@ -114,7 +114,7 @@ values ('5dce9cbc-a80d-11eb-bcbc-0242ac130014', null, null, 'candidate1@testtest
 insert into candidate
 values ('5dce9cbc-a80d-11eb-bcbc-0242ac130015', null, null, 'candidate1@testtest.com', 'Nick Nikolaev', 'REGISTERED',
         '+964493431', 'FROM_FOUR_TO_SIX',
-        'live:.cid.60e0d1dadfe72c0e96f4', 'RED', 'imma smart student',
+        'live:.cid.60e0d1dadfe72c0e96f4', 'GREEN', 'imma smart student',
         '8ba50dc4-a79f-11eb-bcbc-0242ac130015', /*city*/
         '201398a0-a79f-11eb-bcbc-0242ac130015', /*event*/
         'f8fcba8e-a79f-11eb-bcbc-0242ac130005'); /*tech*/
