@@ -14,10 +14,7 @@ import com.exadel.backendservice.mapper.candidate.DetailedCandidateMapper;
 import com.exadel.backendservice.mapper.candidate.RegisterCandidateMapper;
 import com.exadel.backendservice.mapper.candidate.SearchCandidateMapper;
 import com.exadel.backendservice.model.*;
-import com.exadel.backendservice.repository.CandidateRepository;
-import com.exadel.backendservice.repository.CityRepository;
-import com.exadel.backendservice.repository.EventRepository;
-import com.exadel.backendservice.repository.TechRepository;
+import com.exadel.backendservice.repository.*;
 import com.exadel.backendservice.service.CandidateService;
 import com.exadel.backendservice.service.utils.FeedbackLinkGenerator;
 import com.exadel.backendservice.service.utils.FileStore;
@@ -33,10 +30,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -53,6 +47,8 @@ public class CandidateServiceImpl implements CandidateService {
     private final CityRepository cityRepository;
     private final TechRepository techRepository;
     private final EventRepository eventRepository;
+    private final CityRepositoryJPA cityRepositoryJPA;
+    private final CandidateRepositoryJPA candidateRepositoryJPA;
 
     private final RegisterCandidateMapper registerCandidateMapper;
     private final SearchCandidateMapper searchCandidateMapper;
@@ -228,9 +224,98 @@ public class CandidateServiceImpl implements CandidateService {
             candidate = candidateOptional.get();
             candidate.setInterviewProcess(awaitingHr);
             candidateRepository.save(candidate);
-            feedbackLinkGenerator.sendMessageWithLinkForFeedback(candidate, awaitingHr,  request);
+            feedbackLinkGenerator.sendMessageWithLinkForFeedback(candidate, awaitingHr, request);
             return candidateMapper.toDto(candidate);
         }
         throw new DBNotFoundException("Candidate with this id does not found");
+    }
+
+    @Override
+    public List<SearchCandidateDto> getCandidatesWithFilter(List<String> primaryTech, List<String> interviewProccess, List<String> status, List<String> country) {
+        Map<String, List<String>> map = new HashMap<>();
+        paramsToMap(primaryTech, interviewProccess, status, country, map);
+        if (map.size() != 0) {
+            String param = createPartQuery(map);
+            String query = "select id from candidate where (" + param.replaceAll(" and", ") and").replaceAll("and ", "and (") + ")";
+            List<UUID> list = candidateRepositoryJPA.findAllByFilter(query);
+            return getSearchCandidateDtos(list);
+        } else {
+            return candidateRepository.findAll().stream()
+                    .map(elem -> new SearchCandidateDto(elem.getId(), elem.getPrimaryTech().getName(), elem.getFullName(), elem.getEvent().getName(), elem.getStatus()))
+                    .collect(Collectors.toList());
+        }
+    }
+
+    private List<SearchCandidateDto> getSearchCandidateDtos(List<UUID> list) {
+        List<Candidate> candidateList = list.stream()
+                .map(elem -> candidateRepository.findById(elem).get())
+                .collect(Collectors.toList());
+        if (!candidateList.isEmpty()) {
+            return candidateList.stream()
+                    .map(elem -> new SearchCandidateDto(elem.getId(), elem.getPrimaryTech().getName(), elem.getFullName(), elem.getEvent().getName(), elem.getStatus()))
+                    .collect(Collectors.toList());
+        } else {
+            return null;
+        }
+    }
+
+    private String createPartQuery(Map<String, List<String>> map) {
+        StringBuilder sb = new StringBuilder();
+        Iterator it = map.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry pair = (Map.Entry) it.next();
+            String key = (String) pair.getKey();
+            List<String> elems = (List<String>) pair.getValue();
+            for (String el : elems) {
+                sb.append(key).append(" = '").append(el).append("' or ");
+            }
+            String str = sb.toString();
+            String res = str.substring(0, str.length() - 3) + "and ";
+            sb.delete(0, sb.length());
+            sb.append(res);
+
+        }
+        String str = sb.toString();
+        return str.substring(0, str.length() - 5);
+    }
+
+    private void paramsToMap(List<String> primaryTech, List<String> interviewProccess, List<String> status, List<String> country, Map<String, List<String>> map) {
+        if (primaryTech != null && !primaryTech.isEmpty()) {
+            List<String> list = new ArrayList<>();
+            for (String elem : primaryTech) {
+                UUID techId = techRepository.findByName(elem).get().getId();
+                list.add(techId.toString());
+            }
+            map.put("tech_id", list);
+        }
+        if (interviewProccess != null && !interviewProccess.isEmpty()) {
+            map.put("interview_process", interviewProccess);
+        }
+        if (status != null && !status.isEmpty()) {
+            map.put("status", status);
+        }
+        if (country != null && !country.isEmpty()) {
+            List<UUID> cityId = new ArrayList<>();
+            for (String elem : country) {
+                cityId = cityRepositoryJPA.findCitiesByCountryName(elem);
+            }
+            map.put("city_id", cityId.stream().map(UUID::toString).collect(Collectors.toList()));
+        }
+    }
+
+    @Override
+    public Set<String> getCountries() {
+        return candidateRepository.findAll()
+                .stream()
+                .map(elem -> elem.getCity().getCountry().getName())
+                .collect(Collectors.toSet());
+    }
+
+    @Override
+    public Set<String> getCandidatesTech() {
+        return candidateRepository.findAll()
+                .stream()
+                .map(elem -> elem.getPrimaryTech().getName())
+                .collect(Collectors.toSet());
     }
 }

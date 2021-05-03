@@ -4,9 +4,11 @@ import com.exadel.backendservice.dto.req.RegisterCandidateDto;
 import com.exadel.backendservice.dto.resp.CandidateRespDto;
 import com.exadel.backendservice.dto.resp.DetailedCandidateDto;
 import com.exadel.backendservice.dto.resp.SearchCandidateDto;
+import com.exadel.backendservice.entity.Candidate;
 import com.exadel.backendservice.model.CandidateStatus;
 import com.exadel.backendservice.model.InterviewProcess;
 import com.exadel.backendservice.service.CandidateService;
+import com.exadel.backendservice.service.utils.RestAnswer;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +25,7 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
 
 @RestController
@@ -31,6 +34,7 @@ import java.util.UUID;
 @Api(tags = "Контроллер для работы с кандидатами")
 public class CandidateController {
     private final CandidateService candidateService;
+    private final RestAnswer restAnswer;
 
     /**
      * Метод регистрации нового кандидата
@@ -190,5 +194,30 @@ public class CandidateController {
     @PutMapping(value = "/{id}/awaiting_decision")
     public ResponseEntity<CandidateRespDto> updateInterviewStatusToAwaitingDecision(@PathVariable("id") UUID id, HttpServletRequest request) {
         return new ResponseEntity<CandidateRespDto>(candidateService.updateInterviewStatus(id, InterviewProcess.WAITING_DECISION, request) , HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "Метод для поиска кандидатов с помощью фильтра")
+    @PostMapping("/getCandidatesWithFilter")
+    public ResponseEntity<?> getCandidatesWithFilter(@RequestParam(required = false) List<String> primaryTech,
+                                                     @RequestParam(required = false) List<String> interviewProccess,
+                                                     @RequestParam(required = false) List<String> status,
+                                                     @RequestParam(required = false) List<String> country) {
+
+        List<SearchCandidateDto> list = candidateService.getCandidatesWithFilter(primaryTech, interviewProccess, status, country);
+        return restAnswer.doResultAjax(list);
+    }
+
+    @ApiOperation(value = "Метод для получения списка стран, в которых проживают кандидаты")
+    @GetMapping("/countries")
+    public ResponseEntity<?> getCountries(){
+        Set<String> list = candidateService.getCountries();
+        return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "Метод для получения списка технологий кандидатов")
+    @GetMapping("/tech")
+    public ResponseEntity<?> getCandidatesTech(){
+        Set<String> tech = candidateService.getCandidatesTech();
+        return new ResponseEntity<>(tech, HttpStatus.OK);
     }
 }

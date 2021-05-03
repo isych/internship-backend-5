@@ -5,6 +5,7 @@ import com.exadel.backendservice.dto.req.RegisterCandidateDto;
 import com.exadel.backendservice.dto.resp.CandidateRespDto;
 import com.exadel.backendservice.dto.resp.DetailedCandidateDto;
 import com.exadel.backendservice.dto.resp.SearchCandidateDto;
+import com.exadel.backendservice.entity.Candidate;
 import com.exadel.backendservice.model.CandidateStatus;
 import com.exadel.backendservice.model.InterviewProcess;
 import org.springframework.data.domain.Page;
@@ -14,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 public interface CandidateService {
@@ -40,4 +42,10 @@ public interface CandidateService {
     CandidateRespDto updateStatus(UUID id, CandidateStatus status);
 
     CandidateRespDto updateInterviewStatus(UUID id, InterviewProcess awaitingHr, HttpServletRequest request);
+
+    List<SearchCandidateDto> getCandidatesWithFilter(List<String> primaryTech, List<String> interviewProccess, List<String> status, List<String> country);
+
+    Set<String> getCountries();
+
+    Set<String> getCandidatesTech();
 }
