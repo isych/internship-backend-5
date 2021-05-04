@@ -30,7 +30,7 @@ public class FeedbackLinkGenerator {
 
     public String generateLink(HttpServletRequest request) {
         String link =  request.getScheme() + "://" + request.getServerName() + ":" +
-                request.getServerPort() + "/api/interviews/feedback/" +
+                request.getServerPort() +"/api/interviews/feedback/" +
                 generateKey();
         return "<a href=" + link + ">CLICK ME</a>";
     }
