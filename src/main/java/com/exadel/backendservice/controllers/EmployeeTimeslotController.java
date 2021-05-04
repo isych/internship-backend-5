@@ -1,8 +1,7 @@
 package com.exadel.backendservice.controllers;
 
-import com.exadel.backendservice.dto.resp.EmployeeTimeslotDto;
-import com.exadel.backendservice.entity.EmployeeTimeslot;
-import com.exadel.backendservice.service.EmployeeService;
+import com.exadel.backendservice.dto.resp.TimeslotPreferenceDto;
+import com.exadel.backendservice.exception.ApiRequestException;
 import com.exadel.backendservice.service.EmployeeTimeslotService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -11,7 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import javax.validation.Valid;
+import java.util.Objects;
 import java.util.UUID;
 
 @RestController
@@ -45,4 +45,14 @@ public class EmployeeTimeslotController {
     public ResponseEntity<?> getByEmployeeId(@PathVariable (value="id") UUID id){
         return new ResponseEntity<>(employeeTimeslotService.getListByEmployeeId(id), HttpStatus.OK);
     }
+
+    @ApiOperation("Метод для добавления таймслота для сотрудника")
+    @PostMapping("employee/{id}/add")
+    public ResponseEntity<?> addToEmployee(@RequestBody @Valid TimeslotPreferenceDto timeslotPreferenceDto, @PathVariable("id") UUID id) {
+        if(Objects.isNull(timeslotPreferenceDto)) {
+            throw new ApiRequestException("Timeslot is null");
+        }
+        return new ResponseEntity<>(employeeTimeslotService.addToEmployee(timeslotPreferenceDto, id), HttpStatus.OK);
+    }
+
 }
