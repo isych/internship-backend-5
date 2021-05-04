@@ -231,9 +231,9 @@ public class CandidateServiceImpl implements CandidateService {
     }
 
     @Override
-    public List<SearchCandidateDto> getCandidatesWithFilter(List<String> primaryTech, List<String> interviewProccess, List<String> status, List<String> country) {
+    public List<SearchCandidateDto> getCandidatesWithFilter(List<String> primaryTech, List<String> interviewProccess, List<String> status, List<String> country, List<String> event) {
         Map<String, List<String>> map = new HashMap<>();
-        paramsToMap(primaryTech, interviewProccess, status, country, map);
+        paramsToMap(primaryTech, interviewProccess, status, country, event, map);
         if (map.size() != 0) {
             String param = createPartQuery(map);
             String query = "select id from candidate where (" + param.replaceAll(" and", ") and").replaceAll("and ", "and (") + ")";
@@ -279,7 +279,7 @@ public class CandidateServiceImpl implements CandidateService {
         return str.substring(0, str.length() - 5);
     }
 
-    private void paramsToMap(List<String> primaryTech, List<String> interviewProccess, List<String> status, List<String> country, Map<String, List<String>> map) {
+    private void paramsToMap(List<String> primaryTech, List<String> interviewProccess, List<String> status, List<String> country, List<String> event, Map<String, List<String>> map) {
         if (primaryTech != null && !primaryTech.isEmpty()) {
             List<String> list = new ArrayList<>();
             for (String elem : primaryTech) {
@@ -301,6 +301,10 @@ public class CandidateServiceImpl implements CandidateService {
             }
             map.put("city_id", cityId.stream().map(UUID::toString).collect(Collectors.toList()));
         }
+        if(event != null && !event.isEmpty()){
+            List<String> eventNames = event.stream().map(elem -> eventRepository.findByName(elem).get().getId().toString()).collect(Collectors.toList());
+            map.put("event_id", eventNames);
+        }
     }
 
     @Override
@@ -317,5 +321,10 @@ public class CandidateServiceImpl implements CandidateService {
                 .stream()
                 .map(elem -> elem.getPrimaryTech().getName())
                 .collect(Collectors.toSet());
+    }
+
+    @Override
+    public Set<String> getCandidatesEvents() {
+        return candidateRepository.findAll().stream().map(elem -> elem.getEvent().getName()).collect(Collectors.toSet());
     }
 }

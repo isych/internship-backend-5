@@ -4,7 +4,6 @@ import com.exadel.backendservice.dto.req.RegisterCandidateDto;
 import com.exadel.backendservice.dto.resp.CandidateRespDto;
 import com.exadel.backendservice.dto.resp.DetailedCandidateDto;
 import com.exadel.backendservice.dto.resp.SearchCandidateDto;
-import com.exadel.backendservice.entity.Candidate;
 import com.exadel.backendservice.model.CandidateStatus;
 import com.exadel.backendservice.model.InterviewProcess;
 import com.exadel.backendservice.service.CandidateService;
@@ -201,9 +200,10 @@ public class CandidateController {
     public ResponseEntity<?> getCandidatesWithFilter(@RequestParam(required = false) List<String> primaryTech,
                                                      @RequestParam(required = false) List<String> interviewProccess,
                                                      @RequestParam(required = false) List<String> status,
-                                                     @RequestParam(required = false) List<String> country) {
+                                                     @RequestParam(required = false) List<String> countryName,
+                                                     @RequestParam(required = false) List<String> eventName) {
 
-        List<SearchCandidateDto> list = candidateService.getCandidatesWithFilter(primaryTech, interviewProccess, status, country);
+        List<SearchCandidateDto> list = candidateService.getCandidatesWithFilter(primaryTech, interviewProccess, status, countryName, eventName);
         return restAnswer.doResultAjax(list);
     }
 
@@ -218,6 +218,13 @@ public class CandidateController {
     @GetMapping("/tech")
     public ResponseEntity<?> getCandidatesTech(){
         Set<String> tech = candidateService.getCandidatesTech();
+        return new ResponseEntity<>(tech, HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "Метод для получения списка событий, на которые зарегистрированы кандидатов")
+    @GetMapping("/events")
+    public ResponseEntity<?> getCandidatesEvents(){
+        Set<String> tech = candidateService.getCandidatesEvents();
         return new ResponseEntity<>(tech, HttpStatus.OK);
     }
 }
