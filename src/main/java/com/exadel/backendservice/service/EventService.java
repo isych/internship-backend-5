@@ -4,11 +4,13 @@ import com.exadel.backendservice.dto.req.CreateEventDto;
 import com.exadel.backendservice.dto.resp.CandidateRespDto;
 import com.exadel.backendservice.dto.resp.DetailedEventDto;
 import com.exadel.backendservice.dto.resp.EventRespDto;
+import com.exadel.backendservice.dto.resp.EventsFilterDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 public interface EventService {
@@ -37,4 +39,10 @@ public interface EventService {
     Page<DetailedEventDto>  getArchivedEvents(Pageable pageable);
 
     List<CandidateRespDto> getCandidatesFromEvent(UUID id);
+
+    List getEventsWithFilter(List<String> country, List<String> tech, List<String> type);
+
+    Set<String> getCountries();
+
+    Set<String> getEventsTech();
 }

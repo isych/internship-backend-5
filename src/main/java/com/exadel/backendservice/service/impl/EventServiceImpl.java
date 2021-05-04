@@ -1,10 +1,10 @@
 package com.exadel.backendservice.service.impl;
 
+import com.exadel.backendservice.dto.LocationDto;
 import com.exadel.backendservice.dto.req.CreateEventDto;
-import com.exadel.backendservice.dto.resp.CandidateRespDto;
-import com.exadel.backendservice.dto.resp.DetailedEventDto;
-import com.exadel.backendservice.dto.resp.EventRespDto;
+import com.exadel.backendservice.dto.resp.*;
 import com.exadel.backendservice.entity.Event;
+import com.exadel.backendservice.entity.Tech;
 import com.exadel.backendservice.exception.*;
 import com.exadel.backendservice.mapper.candidate.CandidateResponseMapper;
 import com.exadel.backendservice.mapper.event.CreateEventMapper;
@@ -16,9 +16,11 @@ import com.exadel.backendservice.model.EventType;
 import com.exadel.backendservice.model.MimeTypes;
 import com.exadel.backendservice.repository.CityRepository;
 import com.exadel.backendservice.repository.EventRepository;
+import com.exadel.backendservice.repository.EventRepositoryJPA;
 import com.exadel.backendservice.repository.TechRepository;
 import com.exadel.backendservice.service.EventService;
 import com.exadel.backendservice.service.utils.FileStore;
+import com.google.common.collect.Lists;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -40,6 +42,7 @@ public class EventServiceImpl implements EventService {
     private final EventRepository eventRepository;
     private final CityRepository cityRepository;
     private final TechRepository techRepository;
+    private final EventRepositoryJPA eventRepositoryJPA;
 
     private final DetailedEventMapper detailedEventMapper;
     private final CreateEventMapper createEventMapper;
@@ -232,4 +235,73 @@ public class EventServiceImpl implements EventService {
         }
     }
 
+    @Override
+    public List getEventsWithFilter(List<String> country, List<String> tech, List<String> type) {
+        Map<String, List<String>> map = new HashMap<>();
+        paramsToMap(country, tech, type, map);
+        if (map.size() != 0) {
+            String param = createPartQuery(map);
+            String query = "select distinct events.id as id, events.name as name, events.start_date as start_date, events.description as description, events.type as type, res.name as country, t.name as tech, events.status as status from ((select distinct event_id, country.name from event_city join city on event_city.city_id = city.id join country on country.id = city.country_id) as res join events on events.id = res.event_id) join (select event_id, t.name from event_tech join tech t on t.id = event_tech.tech_id) as t on t.event_id = events.id where (" + param.replaceAll(" and", ") and").replaceAll("and ", "and (") + ")";
+            return eventRepositoryJPA.findAllByFilter(query);
+        } else {
+            return eventRepository.findAll()
+                    .stream()
+                    .map(elem -> new EventDto(
+                            elem.getId(),
+                            elem.getName(),
+                            elem.getStartDate(),
+                            elem.getDescription(),
+                            elem.getType(),
+                            elem.getCities().stream().map(city -> new LocationDto(city.getName(), city.getCountry().getName())).collect(Collectors.toList()),
+                            elem.getTechs().stream().map(el -> new TechDto(el.getId(), el.getName())).collect(Collectors.toList()),
+                            elem.getEventStatus()))
+                    .collect(Collectors.toList());
+        }
+    }
+
+    private void paramsToMap(List<String> country, List<String> tech, List<String> type, Map<String, List<String>> map) {
+        if (country != null && !country.isEmpty()) {
+            map.put("res.name", country);
+        }
+        if (type != null && !type.isEmpty()) {
+            map.put("events.type", type);
+        }
+        if (tech != null && !tech.isEmpty()) {
+            map.put("t.name", tech);
+        }
+    }
+
+    private String createPartQuery(Map<String, List<String>> map) {
+        StringBuilder sb = new StringBuilder();
+        Iterator it = map.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry pair = (Map.Entry) it.next();
+            String key = (String) pair.getKey();
+            List<String> elems = (List<String>) pair.getValue();
+            for (String el : elems) {
+                sb.append(key).append(" = '").append(el).append("' or ");
+            }
+            String str = sb.toString();
+            String res = str.substring(0, str.length() - 3) + "and ";
+            sb.delete(0, sb.length());
+            sb.append(res);
+
+        }
+        String str = sb.toString();
+        return str.substring(0, str.length() - 5);
+    }
+
+    @Override
+    public Set<String> getCountries() {
+        Set<String> countries = new HashSet<>();
+        eventRepository.findAll().stream().map(elem -> elem.getCities().stream().map(el -> el.getCountry().getName()).collect(Collectors.toSet())).forEach(countries::addAll);
+        return countries;
+    }
+
+    @Override
+    public Set<String> getEventsTech() {
+        Set<String> tech = new HashSet<>();
+        eventRepository.findAll().stream().map(elem -> elem.getTechs().stream().map(Tech::getName).collect(Collectors.toSet())).forEach(tech::addAll);
+        return tech;
+    }
 }

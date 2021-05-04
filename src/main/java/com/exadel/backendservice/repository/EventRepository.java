@@ -11,6 +11,8 @@ import java.util.UUID;
 
 public interface EventRepository extends PagingAndSortingRepository<Event, UUID> {
 
+    List<Event> findAll();
+
     Optional<Event> findByName(String name);
 
     Boolean existsByName(String name);

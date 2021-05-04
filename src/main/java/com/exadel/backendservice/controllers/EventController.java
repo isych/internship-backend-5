@@ -3,9 +3,12 @@ package com.exadel.backendservice.controllers;
 import com.exadel.backendservice.dto.req.CreateEventDto;
 import com.exadel.backendservice.dto.resp.DetailedEventDto;
 import com.exadel.backendservice.dto.resp.EventRespDto;
+import com.exadel.backendservice.dto.resp.EventsFilterDto;
+import com.exadel.backendservice.dto.resp.SearchCandidateDto;
 import com.exadel.backendservice.exception.ApiRequestException;
 import com.exadel.backendservice.exception.ApiResponseException;
 import com.exadel.backendservice.service.EventService;
+import com.exadel.backendservice.service.utils.RestAnswer;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
 
 @RestController
@@ -28,6 +32,7 @@ import java.util.UUID;
 public class EventController {
 
     private final EventService eventService;
+    private final RestAnswer restAnswer;
 
     @ApiOperation(value = "Метод для получения списка всех типов событий(INTERNSHIP | MEETUP | TRAINING)")
     @GetMapping("/types")
@@ -113,4 +118,28 @@ public class EventController {
     public ResponseEntity<?> getCandidatesFromEvent(@PathVariable("id") UUID id) {
         return new ResponseEntity<>(eventService.getCandidatesFromEvent(id), HttpStatus.OK);
     }
+
+    @ApiOperation(value = "Метод для поиска событий с помощью фильтра")
+    @PostMapping("/getEventsWithFilter")
+    public ResponseEntity<?> getEventsWithFilter(@RequestParam(required = false) List<String> country,
+                                                 @RequestParam(required = false) List<String> tech,
+                                                 @RequestParam(required = false) List<String> type) {
+        List list = eventService.getEventsWithFilter(country, tech, type);
+        return restAnswer.doResultAjax(list);
+    }
+
+    @ApiOperation(value = "Метод для получения списка стран, в которых проводятся мероприятия")
+    @GetMapping("/countries")
+    public ResponseEntity<?> getCountries(){
+        Set<String> list = eventService.getCountries();
+        return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "Метод для получения списка технологий для мероприятий")
+    @GetMapping("/tech")
+    public ResponseEntity<?> getEventsTech(){
+        Set<String> tech = eventService.getEventsTech();
+        return new ResponseEntity<>(tech, HttpStatus.OK);
+    }
+
 }
