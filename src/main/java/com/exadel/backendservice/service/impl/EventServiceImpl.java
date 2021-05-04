@@ -1,10 +1,12 @@
 package com.exadel.backendservice.service.impl;
 
 import com.exadel.backendservice.dto.req.CreateEventDto;
+import com.exadel.backendservice.dto.resp.CandidateRespDto;
 import com.exadel.backendservice.dto.resp.DetailedEventDto;
 import com.exadel.backendservice.dto.resp.EventRespDto;
 import com.exadel.backendservice.entity.Event;
 import com.exadel.backendservice.exception.*;
+import com.exadel.backendservice.mapper.candidate.CandidateResponseMapper;
 import com.exadel.backendservice.mapper.event.CreateEventMapper;
 import com.exadel.backendservice.mapper.event.DetailedEventMapper;
 import com.exadel.backendservice.mapper.event.EventResponseMapper;
@@ -42,6 +44,7 @@ public class EventServiceImpl implements EventService {
     private final DetailedEventMapper detailedEventMapper;
     private final CreateEventMapper createEventMapper;
     private final EventResponseMapper eventResponseMapper;
+    private final CandidateResponseMapper candidateResponseMapper;
     private final FileStore fileStoreService;
 
 
@@ -212,6 +215,21 @@ public class EventServiceImpl implements EventService {
                 .collect(Collectors.toList());
         log.debug("SearchEventDto -> {}", publishedEvents);
         return new PageImpl<>(publishedEvents);
+    }
+
+    @Override
+    public List<CandidateRespDto> getCandidatesFromEvent(UUID id) {
+        Optional<Event> optionalEvent = eventRepository.findById(id);
+        if(optionalEvent.isPresent()) {
+            Event event = optionalEvent.get();
+            List<CandidateRespDto> candidates= event.getCandidates().stream()
+                    .map(candidateResponseMapper::toDto)
+                    .collect(Collectors.toList());
+            log.debug("CandidateRespDto -> {}", candidates);
+            return candidates;
+        } else {
+            throw new DBNotFoundException(UNABLE_TO_FIND_EVENT);
+        }
     }
 
 }

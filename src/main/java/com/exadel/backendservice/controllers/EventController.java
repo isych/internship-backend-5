@@ -107,4 +107,10 @@ public class EventController {
     public ResponseEntity<Page<DetailedEventDto>> getArchivedEvents(Pageable pageable){
         return new ResponseEntity<>(eventService.getArchivedEvents(pageable), HttpStatus.OK);
     }
+
+    @ApiOperation("Метод для получения списка кандидатов к определенному ивенту")
+    @GetMapping("{id}/candidates")
+    public ResponseEntity<?> getCandidatesFromEvent(@PathVariable("id") UUID id) {
+        return new ResponseEntity<>(eventService.getCandidatesFromEvent(id), HttpStatus.OK);
+    }
 }
