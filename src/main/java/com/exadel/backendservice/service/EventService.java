@@ -1,6 +1,7 @@
 package com.exadel.backendservice.service;
 
 import com.exadel.backendservice.dto.req.CreateEventDto;
+import com.exadel.backendservice.dto.resp.CandidateRespDto;
 import com.exadel.backendservice.dto.resp.DetailedEventDto;
 import com.exadel.backendservice.dto.resp.EventRespDto;
 import org.springframework.data.domain.Page;
@@ -34,4 +35,6 @@ public interface EventService {
     DetailedEventDto moveToArchive(UUID id);
 
     Page<DetailedEventDto>  getArchivedEvents(Pageable pageable);
+
+    List<CandidateRespDto> getCandidatesFromEvent(UUID id);
 }
