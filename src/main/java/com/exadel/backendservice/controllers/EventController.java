@@ -73,7 +73,7 @@ public class EventController {
 
     @ApiOperation("Метод для загрузки изображения события на сервер. Доступные форматы: jpeg, png, gif, bmp Принимает id события которое возвращается после создания события")
     @PostMapping("/{id}/image/upload")
-    public ResponseEntity<EventRespDto> uploadImage(@RequestParam("id") UUID id, @RequestPart("file") MultipartFile file) {
+    public ResponseEntity<EventRespDto> uploadImage(@PathVariable("id") UUID id, @RequestPart("file") MultipartFile file) {
         return new ResponseEntity<>(eventService.uploadImage(id, file), HttpStatus.OK);
     }
 
