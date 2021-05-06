@@ -241,7 +241,7 @@ public class CandidateServiceImpl implements CandidateService {
             return getSearchCandidateDtos(list);
         } else {
             return candidateRepository.findAll().stream()
-                    .map(elem -> new SearchCandidateDto(elem.getId(), elem.getPrimaryTech().getName(), elem.getFullName(), elem.getEvent().getName(), elem.getStatus()))
+                    .map(searchCandidateMapper::toDto)
                     .collect(Collectors.toList());
         }
     }
@@ -252,7 +252,7 @@ public class CandidateServiceImpl implements CandidateService {
                 .collect(Collectors.toList());
         if (!candidateList.isEmpty()) {
             return candidateList.stream()
-                    .map(elem -> new SearchCandidateDto(elem.getId(), elem.getPrimaryTech().getName(), elem.getFullName(), elem.getEvent().getName(), elem.getStatus()))
+                    .map(searchCandidateMapper::toDto)
                     .collect(Collectors.toList());
         } else {
             return null;
