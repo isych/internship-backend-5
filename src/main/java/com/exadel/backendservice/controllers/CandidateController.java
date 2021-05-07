@@ -196,7 +196,7 @@ public class CandidateController {
     }
 
     @ApiOperation(value = "Метод для поиска кандидатов с помощью фильтра")
-    @PostMapping("/getCandidatesWithFilter")
+    @GetMapping("/getCandidatesWithFilter")
     public ResponseEntity<?> getCandidatesWithFilter(@RequestParam(required = false) List<String> primaryTech,
                                                      @RequestParam(required = false) List<String> interviewProccess,
                                                      @RequestParam(required = false) List<String> status,

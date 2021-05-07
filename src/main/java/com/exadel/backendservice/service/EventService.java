@@ -5,6 +5,7 @@ import com.exadel.backendservice.dto.resp.CandidateRespDto;
 import com.exadel.backendservice.dto.resp.DetailedEventDto;
 import com.exadel.backendservice.dto.resp.EventRespDto;
 import com.exadel.backendservice.dto.resp.EventsFilterDto;
+import com.exadel.backendservice.model.EventStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
@@ -40,9 +41,11 @@ public interface EventService {
 
     List<CandidateRespDto> getCandidatesFromEvent(UUID id);
 
-    List getEventsWithFilter(List<String> country, List<String> tech, List<String> type);
+    List getEventsWithFilter(List<String> country, List<String> tech, List<String> type, List<String> status);
 
     Set<String> getCountries();
 
     Set<String> getEventsTech();
+
+    Set<EventStatus> getEventsStatus();
 }
