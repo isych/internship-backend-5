@@ -2,6 +2,7 @@ package com.exadel.backendservice.repository;
 
 import com.exadel.backendservice.dto.resp.EventsFilterDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -16,7 +17,7 @@ public class EventRepositoryJPA {
 
     private final JdbcTemplate template;
 
-    public List<EventsFilterDto> findAllByFilter(String query) {
+    public List<EventsFilterDto> findAllByFilter(String query, Pageable pageable) {
         return template.query(query, new BeanPropertyRowMapper<>(EventsFilterDto.class));
 
     }
