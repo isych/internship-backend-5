@@ -37,11 +37,10 @@ public class JwtProvider {
         Date expDate = Date.from(LocalDateTime.now().plusMinutes(validityInMinutes).atZone(ZoneId.systemDefault()).toInstant());
         LOGGER.info("Generated new token for user with login is " + login);
         Map<String, Object> claimsMap = new HashMap<>();
-        claimsMap.put("fullName", fullName);
         claimsMap.put("role", roleName.substring(5));
         return Jwts.builder()
                 .setClaims(claimsMap)
-                .setSubject(login)
+                .setSubject(fullName)
                 .setIssuedAt(now)
                 .setExpiration(expDate)
                 .signWith(SignatureAlgorithm.HS256, jwtSecret)
