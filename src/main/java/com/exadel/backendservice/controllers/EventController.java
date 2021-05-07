@@ -7,6 +7,7 @@ import com.exadel.backendservice.dto.resp.EventsFilterDto;
 import com.exadel.backendservice.dto.resp.SearchCandidateDto;
 import com.exadel.backendservice.exception.ApiRequestException;
 import com.exadel.backendservice.exception.ApiResponseException;
+import com.exadel.backendservice.model.EventStatus;
 import com.exadel.backendservice.service.EventService;
 import com.exadel.backendservice.service.utils.RestAnswer;
 import io.swagger.annotations.Api;
@@ -120,11 +121,12 @@ public class EventController {
     }
 
     @ApiOperation(value = "Метод для поиска событий с помощью фильтра")
-    @PostMapping("/getEventsWithFilter")
+    @GetMapping("/getEventsWithFilter")
     public ResponseEntity<?> getEventsWithFilter(@RequestParam(required = false) List<String> country,
                                                  @RequestParam(required = false) List<String> tech,
-                                                 @RequestParam(required = false) List<String> type) {
-        List list = eventService.getEventsWithFilter(country, tech, type);
+                                                 @RequestParam(required = false) List<String> type,
+                                                 @RequestParam(required = false) List<String> status) {
+        List list = eventService.getEventsWithFilter(country, tech, type, status);
         return restAnswer.doResultAjax(list);
     }
 
@@ -140,6 +142,13 @@ public class EventController {
     public ResponseEntity<?> getEventsTech(){
         Set<String> tech = eventService.getEventsTech();
         return new ResponseEntity<>(tech, HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "Метод для получения списка статусов для мероприятий")
+    @GetMapping("/status")
+    public ResponseEntity<?> getEventsStatus(){
+        Set<EventStatus> status = eventService.getEventsStatus();
+        return new ResponseEntity<>(status, HttpStatus.OK);
     }
 
 }

@@ -223,9 +223,9 @@ public class EventServiceImpl implements EventService {
     @Override
     public List<CandidateRespDto> getCandidatesFromEvent(UUID id) {
         Optional<Event> optionalEvent = eventRepository.findById(id);
-        if(optionalEvent.isPresent()) {
+        if (optionalEvent.isPresent()) {
             Event event = optionalEvent.get();
-            List<CandidateRespDto> candidates= event.getCandidates().stream()
+            List<CandidateRespDto> candidates = event.getCandidates().stream()
                     .map(candidateResponseMapper::toDto)
                     .collect(Collectors.toList());
             log.debug("CandidateRespDto -> {}", candidates);
@@ -236,9 +236,9 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public List getEventsWithFilter(List<String> country, List<String> tech, List<String> type) {
+    public List getEventsWithFilter(List<String> country, List<String> tech, List<String> type, List<String> status) {
         Map<String, List<String>> map = new HashMap<>();
-        paramsToMap(country, tech, type, map);
+        paramsToMap(country, tech, type, status, map);
         if (map.size() != 0) {
             String param = createPartQuery(map);
             String query = "select distinct events.id as id, events.name as name, events.start_date as start_date, events.description as description, events.type as type, res.name as country, t.name as tech, events.status as status from ((select distinct event_id, country.name from event_city join city on event_city.city_id = city.id join country on country.id = city.country_id) as res join events on events.id = res.event_id) join (select event_id, t.name from event_tech join tech t on t.id = event_tech.tech_id) as t on t.event_id = events.id where (" + param.replaceAll(" and", ") and").replaceAll("and ", "and (") + ")";
@@ -246,6 +246,7 @@ public class EventServiceImpl implements EventService {
         } else {
             return eventRepository.findAll()
                     .stream()
+                    .filter(event -> !event.getEventStatus().equals(EventStatus.ARCHIVED))
                     .map(elem -> new EventDto(
                             elem.getId(),
                             elem.getName(),
@@ -259,7 +260,7 @@ public class EventServiceImpl implements EventService {
         }
     }
 
-    private void paramsToMap(List<String> country, List<String> tech, List<String> type, Map<String, List<String>> map) {
+    private void paramsToMap(List<String> country, List<String> tech, List<String> type, List<String> status, Map<String, List<String>> map) {
         if (country != null && !country.isEmpty()) {
             map.put("res.name", country);
         }
@@ -268,6 +269,9 @@ public class EventServiceImpl implements EventService {
         }
         if (tech != null && !tech.isEmpty()) {
             map.put("t.name", tech);
+        }
+        if (status != null && !status.isEmpty()) {
+            map.put("events.status", status);
         }
     }
 
@@ -303,5 +307,12 @@ public class EventServiceImpl implements EventService {
         Set<String> tech = new HashSet<>();
         eventRepository.findAll().stream().map(elem -> elem.getTechs().stream().map(Tech::getName).collect(Collectors.toSet())).forEach(tech::addAll);
         return tech;
+    }
+
+    @Override
+    public Set<EventStatus> getEventsStatus() {
+        return eventRepository.findAll().stream()
+                .map(Event::getEventStatus)
+                .collect(Collectors.toSet());
     }
 }
