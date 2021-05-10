@@ -301,12 +301,14 @@ public class EventServiceImpl implements EventService {
         Map<String, Object> info = new HashMap<>();
         Set<String> tech = new HashSet<>();
         Set<String> countries = new HashSet<>();
+        Set<EventType> type = events.stream().map(elem -> elem.getType()).collect(Collectors.toSet());
         Set<EventStatus> eventStatuses = events.stream().map(Event::getEventStatus).collect(Collectors.toSet());
         events.stream().map(elem -> elem.getTechs().stream().map(Tech::getName).collect(Collectors.toSet())).forEach(tech::addAll);
         events.stream().map(elem -> elem.getCities().stream().map(el -> el.getCountry().getName()).collect(Collectors.toSet())).forEach(countries::addAll);
         info.put("tech", tech);
         info.put("country", countries);
         info.put("status", eventStatuses);
+        info.put("type", type);
         return info;
     }
 }

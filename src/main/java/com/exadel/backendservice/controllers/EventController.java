@@ -127,7 +127,7 @@ public class EventController {
         return restAnswer.doResultAjax(list);
     }
 
-    @ApiOperation(value = "Метод для получения информации, используемой при фильтарции")
+    @ApiOperation(value = "Метод для получения информации, используемой при фильтрации")
     @GetMapping("/getInfoForFilters")
     public ResponseEntity<?> getInfoForFilters(){
         Map<String, Object> info = eventService.getInfoForFilters();
