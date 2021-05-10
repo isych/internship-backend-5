@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
@@ -43,9 +44,5 @@ public interface EventService {
 
     List getEventsWithFilter(List<String> country, List<String> tech, List<String> type, List<String> status);
 
-    Set<String> getCountries();
-
-    Set<String> getEventsTech();
-
-    Set<EventStatus> getEventsStatus();
+    Map<String, Object> getInfoForFilters();
 }

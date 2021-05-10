@@ -21,10 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -130,25 +127,11 @@ public class EventController {
         return restAnswer.doResultAjax(list);
     }
 
-    @ApiOperation(value = "Метод для получения списка стран, в которых проводятся мероприятия")
-    @GetMapping("/countries")
-    public ResponseEntity<?> getCountries(){
-        Set<String> list = eventService.getCountries();
-        return new ResponseEntity<>(list, HttpStatus.OK);
-    }
-
-    @ApiOperation(value = "Метод для получения списка технологий для мероприятий")
-    @GetMapping("/tech")
-    public ResponseEntity<?> getEventsTech(){
-        Set<String> tech = eventService.getEventsTech();
-        return new ResponseEntity<>(tech, HttpStatus.OK);
-    }
-
-    @ApiOperation(value = "Метод для получения списка статусов для мероприятий")
-    @GetMapping("/status")
-    public ResponseEntity<?> getEventsStatus(){
-        Set<EventStatus> status = eventService.getEventsStatus();
-        return new ResponseEntity<>(status, HttpStatus.OK);
+    @ApiOperation(value = "Метод для получения информации, используемой при фильтарции")
+    @GetMapping("/getInfoForFilters")
+    public ResponseEntity<?> getInfoForFilters(){
+        Map<String, Object> info = eventService.getInfoForFilters();
+        return new ResponseEntity<>(info, HttpStatus.OK);
     }
 
 }

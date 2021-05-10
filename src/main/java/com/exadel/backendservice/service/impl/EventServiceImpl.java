@@ -296,23 +296,18 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public Set<String> getCountries() {
-        Set<String> countries = new HashSet<>();
-        eventRepository.findAll().stream().map(elem -> elem.getCities().stream().map(el -> el.getCountry().getName()).collect(Collectors.toSet())).forEach(countries::addAll);
-        return countries;
-    }
-
-    @Override
-    public Set<String> getEventsTech() {
+    public Map<String, Object> getInfoForFilters() {
+        Map<String, Object> info = new HashMap<>();
         Set<String> tech = new HashSet<>();
-        eventRepository.findAll().stream().map(elem -> elem.getTechs().stream().map(Tech::getName).collect(Collectors.toSet())).forEach(tech::addAll);
-        return tech;
-    }
-
-    @Override
-    public Set<EventStatus> getEventsStatus() {
-        return eventRepository.findAll().stream()
+        Set<String> countries = new HashSet<>();
+        Set<EventStatus> eventStatuses = eventRepository.findAll().stream()
                 .map(Event::getEventStatus)
                 .collect(Collectors.toSet());
+        eventRepository.findAll().stream().map(elem -> elem.getTechs().stream().map(Tech::getName).collect(Collectors.toSet())).forEach(tech::addAll);
+        eventRepository.findAll().stream().map(elem -> elem.getCities().stream().map(el -> el.getCountry().getName()).collect(Collectors.toSet())).forEach(countries::addAll);
+        info.put("tech", tech);
+        info.put("country", countries);
+        info.put("status", eventStatuses);
+        return info;
     }
 }
