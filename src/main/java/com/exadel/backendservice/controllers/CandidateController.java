@@ -22,10 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.IOException;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/candidates")
@@ -207,24 +204,30 @@ public class CandidateController {
         return restAnswer.doResultAjax(list);
     }
 
-    @ApiOperation(value = "Метод для получения списка стран, в которых проживают кандидаты")
-    @GetMapping("/countries")
-    public ResponseEntity<?> getCountries(){
-        Set<String> list = candidateService.getCountries();
-        return new ResponseEntity<>(list, HttpStatus.OK);
+    @GetMapping("/getInfoForFilter")
+    public ResponseEntity<?> getInfoForFilter(){
+        Map<String, Object> info = candidateService.getInfoForFilter();
+        return new ResponseEntity<>(info, HttpStatus.OK);
     }
 
-    @ApiOperation(value = "Метод для получения списка технологий кандидатов")
-    @GetMapping("/tech")
-    public ResponseEntity<?> getCandidatesTech(){
-        Set<String> tech = candidateService.getCandidatesTech();
-        return new ResponseEntity<>(tech, HttpStatus.OK);
-    }
-
-    @ApiOperation(value = "Метод для получения списка событий, на которые зарегистрированы кандидатов")
-    @GetMapping("/events")
-    public ResponseEntity<?> getCandidatesEvents(){
-        Set<String> tech = candidateService.getCandidatesEvents();
-        return new ResponseEntity<>(tech, HttpStatus.OK);
-    }
+//    @ApiOperation(value = "Метод для получения списка стран, в которых проживают кандидаты")
+//    @GetMapping("/countries")
+//    public ResponseEntity<?> getCountries(){
+//        Set<String> list = candidateService.getCountries();
+//        return new ResponseEntity<>(list, HttpStatus.OK);
+//    }
+//
+//    @ApiOperation(value = "Метод для получения списка технологий кандидатов")
+//    @GetMapping("/tech")
+//    public ResponseEntity<?> getCandidatesTech(){
+//        Set<String> tech = candidateService.getCandidatesTech();
+//        return new ResponseEntity<>(tech, HttpStatus.OK);
+//    }
+//
+//    @ApiOperation(value = "Метод для получения списка событий, на которые зарегистрированы кандидатов")
+//    @GetMapping("/events")
+//    public ResponseEntity<?> getCandidatesEvents(){
+//        Set<String> tech = candidateService.getCandidatesEvents();
+//        return new ResponseEntity<>(tech, HttpStatus.OK);
+//    }
 }
