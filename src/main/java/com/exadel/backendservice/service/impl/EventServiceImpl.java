@@ -296,23 +296,19 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public Set<String> getCountries() {
-        Set<String> countries = new HashSet<>();
-        eventRepository.findAll().stream().map(elem -> elem.getCities().stream().map(el -> el.getCountry().getName()).collect(Collectors.toSet())).forEach(countries::addAll);
-        return countries;
-    }
-
-    @Override
-    public Set<String> getEventsTech() {
+    public Map<String, Object> getInfoForFilters() {
+        List<Event> events = eventRepository.findAll();
+        Map<String, Object> info = new HashMap<>();
         Set<String> tech = new HashSet<>();
-        eventRepository.findAll().stream().map(elem -> elem.getTechs().stream().map(Tech::getName).collect(Collectors.toSet())).forEach(tech::addAll);
-        return tech;
-    }
-
-    @Override
-    public Set<EventStatus> getEventsStatus() {
-        return eventRepository.findAll().stream()
-                .map(Event::getEventStatus)
-                .collect(Collectors.toSet());
+        Set<String> countries = new HashSet<>();
+        Set<EventType> type = events.stream().map(elem -> elem.getType()).collect(Collectors.toSet());
+        Set<EventStatus> eventStatuses = events.stream().map(Event::getEventStatus).collect(Collectors.toSet());
+        events.stream().map(elem -> elem.getTechs().stream().map(Tech::getName).collect(Collectors.toSet())).forEach(tech::addAll);
+        events.stream().map(elem -> elem.getCities().stream().map(el -> el.getCountry().getName()).collect(Collectors.toSet())).forEach(countries::addAll);
+        info.put("tech", tech);
+        info.put("country", countries);
+        info.put("status", eventStatuses);
+        info.put("type", type);
+        return info;
     }
 }

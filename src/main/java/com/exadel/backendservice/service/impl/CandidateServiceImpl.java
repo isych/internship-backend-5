@@ -308,23 +308,19 @@ public class CandidateServiceImpl implements CandidateService {
     }
 
     @Override
-    public Set<String> getCountries() {
-        return candidateRepository.findAll()
-                .stream()
-                .map(elem -> elem.getCity().getCountry().getName())
-                .collect(Collectors.toSet());
-    }
-
-    @Override
-    public Set<String> getCandidatesTech() {
-        return candidateRepository.findAll()
-                .stream()
-                .map(elem -> elem.getPrimaryTech().getName())
-                .collect(Collectors.toSet());
-    }
-
-    @Override
-    public Set<String> getCandidatesEvents() {
-        return candidateRepository.findAll().stream().map(elem -> elem.getEvent().getName()).collect(Collectors.toSet());
+    public Map<String, Object> getInfoForFilter() {
+        List<Candidate> candidates = candidateRepository.findAll();
+        Map<String, Object> info = new HashMap<>();
+        Set<String> country = candidates.stream().map(elem -> elem.getCity().getCountry().getName()).collect(Collectors.toSet());
+        Set<String> tech = candidates.stream().map(elem -> elem.getPrimaryTech().getName()).collect(Collectors.toSet());
+        Set<String> event = candidates.stream().map(elem -> elem.getEvent().getName()).collect(Collectors.toSet());
+        Set<CandidateStatus> status = candidates.stream().map(elem -> elem.getStatus()).collect(Collectors.toSet());
+        Set<InterviewProcess> interviewProccess = candidates.stream().map(elem -> elem.getInterviewProcess()).collect(Collectors.toSet());
+        info.put("countryName", country);
+        info.put("primaryTech", tech);
+        info.put("eventName", event);
+        info.put("status", status);
+        info.put("interviewProccess", interviewProccess);
+        return info;
     }
 }

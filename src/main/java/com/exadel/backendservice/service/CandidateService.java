@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
@@ -45,9 +46,5 @@ public interface CandidateService {
 
     List<SearchCandidateDto> getCandidatesWithFilter(List<String> primaryTech, List<String> interviewProccess, List<String> status, List<String> country, List<String> event);
 
-    Set<String> getCountries();
-
-    Set<String> getCandidatesTech();
-
-    Set<String> getCandidatesEvents();
+    Map<String, Object> getInfoForFilter();
 }
