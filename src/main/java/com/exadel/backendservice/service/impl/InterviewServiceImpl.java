@@ -6,23 +6,27 @@ import com.exadel.backendservice.entity.Candidate;
 import com.exadel.backendservice.entity.DynamicInterviewLink;
 import com.exadel.backendservice.entity.Employee;
 import com.exadel.backendservice.entity.Interview;
+import com.exadel.backendservice.exception.ApiResponseException;
 import com.exadel.backendservice.exception.DBNotFoundException;
 import com.exadel.backendservice.mapper.interview.CreateInterviewMapper;
 import com.exadel.backendservice.mapper.interview.InterviewRespMapper;
+import com.exadel.backendservice.model.MessageBody;
+import com.exadel.backendservice.model.MessageBodyBase;
+import com.exadel.backendservice.model.MessageSubject;
 import com.exadel.backendservice.model.ObjectForFeedbackPage;
 import com.exadel.backendservice.repository.DynamicInterviewLinkRepository;
 import com.exadel.backendservice.repository.EmployeeRepository;
 import com.exadel.backendservice.repository.InterviewRepository;
 import com.exadel.backendservice.service.InterviewService;
 import com.exadel.backendservice.service.utils.FeedbackLinkGenerator;
+import com.exadel.backendservice.service.utils.MailSender;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.mail.MailException;
 import org.springframework.stereotype.Service;
 
 import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,11 +36,11 @@ public class InterviewServiceImpl implements InterviewService {
 
     private final InterviewRepository interviewRepository;
     private final EmployeeRepository employeeRepository;
-
     private final CreateInterviewMapper createInterviewMapper;
     private final InterviewRespMapper interviewRespMapper;
     private final DynamicInterviewLinkRepository dynamicInterviewLinkRepository;
     private final FeedbackLinkGenerator feedbackLinkGenerator;
+    private final MailSender mailSender;
 
     @Override
     public InterviewRespDto saveInterview(CreateInterviewDto createInterviewDto) {
@@ -44,6 +48,34 @@ public class InterviewServiceImpl implements InterviewService {
         log.debug("Create interview -> {}", interview);
         InterviewRespDto createdInterview = interviewRespMapper.toDto(interviewRepository.save(interview));
         log.debug("Created interview -> {}", createdInterview);
+
+        List<MessageBodyBase> messageBodyBases = new ArrayList<>();
+        if(interview.getEmployee().getRole().getName().equals("ROLE_TECH")){
+            messageBodyBases.add(MessageBodyBase.APPOINTED_TECH_INTERVIEW);
+        }else  if(interview.getEmployee().getRole().getName().equals("ROLE_ADMIN")){
+            messageBodyBases.add(MessageBodyBase.APPOINTED_HR_INTERVIEW);
+        }
+
+        try {
+            mailSender.send(
+                    interview.getCandidate().getEmail(),
+                    MessageSubject.INTERVIEW.getSubject(),
+                    new MessageBody(
+                            interview.getCandidate().getFullName(),
+                            messageBodyBases,
+                            interview.getStartTime()).getBody()
+            );
+            mailSender.send(
+                    interview.getEmployee().getEmail(),
+                    MessageSubject.INTERVIEW.getSubject(),
+                    new MessageBody(
+                            interview.getCandidate().getFullName(),
+                            messageBodyBases,
+                            interview.getStartTime()).getBody()
+            );
+        }catch (MailException ex) {
+            throw new ApiResponseException("Internal error: mail can't be send to candidate");
+        }
         return createdInterview;
     }
 

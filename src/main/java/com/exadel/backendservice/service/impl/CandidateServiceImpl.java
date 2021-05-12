@@ -1,5 +1,6 @@
 package com.exadel.backendservice.service.impl;
 
+
 import com.exadel.backendservice.dto.req.RegisterCandidateDto;
 import com.exadel.backendservice.dto.resp.CandidateRespDto;
 import com.exadel.backendservice.dto.resp.DetailedCandidateDto;
@@ -41,7 +42,6 @@ import java.util.stream.Stream;
 public class CandidateServiceImpl implements CandidateService {
     private final String UNABLE_TO_FIND_CANDIDATE = "Unable to find candidate";
     public static final String MORE_THAN_ONE_CHAR_REGEX = "( )+";
-
     private final MailSender mailSender;
     private final CandidateRepository candidateRepository;
     private final CityRepository cityRepository;
@@ -49,14 +49,22 @@ public class CandidateServiceImpl implements CandidateService {
     private final EventRepository eventRepository;
     private final CityRepositoryJPA cityRepositoryJPA;
     private final CandidateRepositoryJPA candidateRepositoryJPA;
-
     private final RegisterCandidateMapper registerCandidateMapper;
     private final SearchCandidateMapper searchCandidateMapper;
     private final DetailedCandidateMapper detailedCandidateMapper;
     private final CandidateResponseMapper candidateMapper;
-
     private final FileStore fileStoreService;
     private final FeedbackLinkGenerator feedbackLinkGenerator;
+
+
+    private void sendMailToCandidate(String email, String name) {
+        String message = String.format("%s,\nyour registration completed successfully!\nWait for the recruiter's call soon.", name);
+        try {
+            mailSender.send(email, "Registration for Exadel event", message);
+        } catch (MailException ex) {
+            throw new ApiResponseException("Internal error: mail can't be send to candidate");
+        }
+    }
 
     @Override
     public CandidateRespDto registerCandidate(RegisterCandidateDto dto) {
@@ -74,7 +82,18 @@ public class CandidateServiceImpl implements CandidateService {
         Candidate savedCandidate = candidateRepository.save(candidate);
         CandidateRespDto candidateRespDto = candidateMapper.toDto(savedCandidate);
         log.debug("Candidate with ID: {}", candidateRespDto.getId());
-        sendMailToCandidate(candidateRespDto.getEmail(), candidateRespDto.getFullName());
+       try {
+           mailSender.send(
+                   savedCandidate.getEmail(),
+                   MessageSubject.REGISTRATION.getSubject(),
+                   new MessageBody(
+                           savedCandidate.getFullName(),
+                           Arrays.asList(MessageBodyBase.CANDIDATE_REGISTERED)
+                   ).getBody()
+           );
+       }catch (MailException ex) {
+           throw new ApiResponseException("Internal error: mail can't be send to candidate");
+       }
         return candidateRespDto;
     }
 
@@ -194,15 +213,6 @@ public class CandidateServiceImpl implements CandidateService {
         return result.replaceAll(MORE_THAN_ONE_CHAR_REGEX, "_");
     }
 
-    private void sendMailToCandidate(String email, String name) {
-        String message = String.format("%s,\nyour registration completed successfully!\nWait for the recruiter's call soon.", name);
-        try {
-            mailSender.send(email, "Registration for Exadel event", message);
-        } catch (MailException ex) {
-            throw new ApiResponseException("Internal error: mail can't be send to candidate");
-        }
-    }
-
     @Override
     public CandidateRespDto updateStatus(UUID id, CandidateStatus status) {
         Candidate candidate;
@@ -211,20 +221,38 @@ public class CandidateServiceImpl implements CandidateService {
             candidate = candidateOptional.get();
             candidate.setStatus(status);
             candidateRepository.save(candidate);
+
+            List<MessageBodyBase> messageBodyBases = new ArrayList<>();
+            if(status.equals(CandidateStatus.GREEN)){
+                messageBodyBases.add(MessageBodyBase.CANDIDATE_ACCEPTED);
+            }else if(status.equals(CandidateStatus.RED)){
+                messageBodyBases.add(MessageBodyBase.CANDIDATE_REJECTED);
+            }
+
+            try {
+                mailSender.send(
+                        candidate.getEmail(),
+                        MessageSubject.RESULT.getSubject(),
+                        new MessageBody(candidate.getFullName(), messageBodyBases).getBody()
+                );
+
+            }catch (MailException ex) {
+                throw new ApiResponseException("Internal error: mail can't be send to candidate");
+            }
             return candidateMapper.toDto(candidate);
         }
         throw new DBNotFoundException("Candidate with this id does not found");
     }
 
     @Override
-    public CandidateRespDto updateInterviewStatus(UUID id, InterviewProcess awaitingHr, HttpServletRequest request) {
+    public CandidateRespDto updateInterviewStatus(UUID id, InterviewProcess interviewProcess, HttpServletRequest request) {
         Candidate candidate;
         Optional<Candidate> candidateOptional = candidateRepository.findById(id);
         if (candidateOptional.isPresent()) {
             candidate = candidateOptional.get();
-            candidate.setInterviewProcess(awaitingHr);
+            candidate.setInterviewProcess(interviewProcess);
             candidateRepository.save(candidate);
-            feedbackLinkGenerator.sendMessageWithLinkForFeedback(candidate, awaitingHr, request);
+            feedbackLinkGenerator.sendMessageWithLinkForFeedback(candidate, interviewProcess, request);
             return candidateMapper.toDto(candidate);
         }
         throw new DBNotFoundException("Candidate with this id does not found");
