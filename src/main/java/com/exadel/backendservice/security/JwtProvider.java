@@ -10,10 +10,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.Base64;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Component
 @Log
@@ -32,13 +29,14 @@ public class JwtProvider {
         jwtSecret = Base64.getEncoder().encodeToString(jwtSecret.getBytes());
     }
 
-    public String generateToken(String login, String fullName, String roleName) {
+    public String generateToken(String login, String fullName, String roleName, UUID uuid) {
         Date now = Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant());
         Date expDate = Date.from(LocalDateTime.now().plusMinutes(validityInMinutes).atZone(ZoneId.systemDefault()).toInstant());
         LOGGER.info("Generated new token for user with login is " + login);
         Map<String, Object> claimsMap = new HashMap<>();
         claimsMap.put("fullName", fullName);
         claimsMap.put("role", roleName.substring(5));
+        claimsMap.put("id", uuid);
         return Jwts.builder()
                 .setClaims(claimsMap)
                 .setSubject(login)

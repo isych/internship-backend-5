@@ -30,7 +30,7 @@ public class FeedbackLinkGenerator {
 
     public String generateLink(HttpServletRequest request) {
         String link =  request.getScheme() + "://" + request.getServerName() + ":" +
-                request.getServerPort() +"/api/interviews/feedback/" +
+                /*request.getServerPort()*/ 8080 +"/interviews/feedback/" +
                 generateKey();
         return "<a href=" + link + ">CLICK ME</a>";
     }
@@ -89,9 +89,6 @@ public class FeedbackLinkGenerator {
             Interview interview = getInterview(awaitingHr, candidate);
             if (interview != null) {
                 saveHashToDb(hash, interview.getId());
-
-
-
                 mailSender.sendLetterWithLink(interview.getEmployee().getEmail(), "Feedback on the results of the interview", message);
             }
         } catch (Exception ex) {
