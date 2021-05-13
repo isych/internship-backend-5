@@ -44,7 +44,7 @@ public interface CandidateService {
 
     CandidateRespDto updateInterviewStatus(UUID id, InterviewProcess awaitingHr, HttpServletRequest request);
 
-    List<SearchCandidateDto> getCandidatesWithFilter(List<String> primaryTech, List<String> interviewProccess, List<String> status, List<String> country, List<String> event);
+    Page<SearchCandidateDto> getCandidatesWithFilter(List<String> primaryTech, List<String> interviewProccess, List<String> status, List<String> country, List<String> event, Pageable pageable);
 
     Map<String, Object> getInfoForFilter();
 }

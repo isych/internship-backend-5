@@ -231,18 +231,23 @@ public class CandidateServiceImpl implements CandidateService {
     }
 
     @Override
-    public List<SearchCandidateDto> getCandidatesWithFilter(List<String> primaryTech, List<String> interviewProccess, List<String> status, List<String> country, List<String> event) {
+    public Page<SearchCandidateDto> getCandidatesWithFilter(List<String> primaryTech, List<String> interviewProccess, List<String> status, List<String> country, List<String> event, Pageable pageable) {
+        final int start = (int)pageable.getOffset();
         Map<String, List<String>> map = new HashMap<>();
         paramsToMap(primaryTech, interviewProccess, status, country, event, map);
         if (map.size() != 0) {
             String param = createPartQuery(map);
             String query = "select id from candidate where (" + param.replaceAll(" and", ") and").replaceAll("and ", "and (") + ")";
             List<UUID> list = candidateRepositoryJPA.findAllByFilter(query);
-            return getSearchCandidateDtos(list);
+            List candidates = getSearchCandidateDtos(list);
+            int end = Math.min((start + pageable.getPageSize()), candidates.size());
+            return new PageImpl<>(candidates.subList(start, end), pageable, candidates.size());
         } else {
-            return candidateRepository.findAll().stream()
+            List candidates =  candidateRepository.findAll().stream()
                     .map(searchCandidateMapper::toDto)
                     .collect(Collectors.toList());
+            int end = Math.min((start + pageable.getPageSize()), candidates.size());
+            return new PageImpl<>(candidates.subList(start, end), pageable, candidates.size());
         }
     }
 
