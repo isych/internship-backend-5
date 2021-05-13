@@ -17,7 +17,7 @@ public class EventRepositoryJPA {
 
     private final JdbcTemplate template;
 
-    public List<EventsFilterDto> findAllByFilter(String query, Pageable pageable) {
+    public List<EventsFilterDto> findAllByFilter(String query) {
         return template.query(query, new BeanPropertyRowMapper<>(EventsFilterDto.class));
 
     }
