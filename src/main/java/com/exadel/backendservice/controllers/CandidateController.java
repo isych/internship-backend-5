@@ -198,10 +198,11 @@ public class CandidateController {
                                                      @RequestParam(required = false) List<String> interviewProccess,
                                                      @RequestParam(required = false) List<String> status,
                                                      @RequestParam(required = false) List<String> countryName,
-                                                     @RequestParam(required = false) List<String> eventName) {
+                                                     @RequestParam(required = false) List<String> eventName,
+                                                     Pageable pageable) {
 
-        List<SearchCandidateDto> list = candidateService.getCandidatesWithFilter(primaryTech, interviewProccess, status, countryName, eventName);
-        return restAnswer.doResultAjax(list);
+        Page<SearchCandidateDto> page = candidateService.getCandidatesWithFilter(primaryTech, interviewProccess, status, countryName, eventName, pageable);
+        return restAnswer.doResultAjax(page);
     }
 
     @ApiOperation(value = "Метод для получения информации, используемой при фильтрации")
