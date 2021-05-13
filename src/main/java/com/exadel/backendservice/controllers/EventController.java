@@ -122,9 +122,10 @@ public class EventController {
     public ResponseEntity<?> getEventsWithFilter(@RequestParam(required = false) List<String> country,
                                                  @RequestParam(required = false) List<String> tech,
                                                  @RequestParam(required = false) List<String> type,
-                                                 @RequestParam(required = false) List<String> status) {
-        List list = eventService.getEventsWithFilter(country, tech, type, status);
-        return restAnswer.doResultAjax(list);
+                                                 @RequestParam(required = false) List<String> status,
+                                                 Pageable pageable) {
+        Page page = eventService.getEventsWithFilter(country, tech, type, status, pageable);
+        return restAnswer.doResultAjax(page);
     }
 
     @ApiOperation(value = "Метод для получения информации, используемой при фильтрации")

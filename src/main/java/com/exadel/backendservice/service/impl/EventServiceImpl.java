@@ -20,11 +20,13 @@ import com.exadel.backendservice.repository.EventRepositoryJPA;
 import com.exadel.backendservice.repository.TechRepository;
 import com.exadel.backendservice.service.EventService;
 import com.exadel.backendservice.service.utils.FileStore;
-import com.google.common.collect.Lists;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.support.PagedListHolder;
+import org.springframework.beans.support.SortDefinition;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -82,7 +84,8 @@ public class EventServiceImpl implements EventService {
         Page<Event> page = eventRepository.findAll(pageable);
         List<DetailedEventDto> eventList = page.get().map(detailedEventMapper::toDto).filter(elem -> elem.getEventStatus() != EventStatus.ARCHIVED).collect(Collectors.toList());
         log.debug("SearchEventDto -> {}", eventList);
-        return new PageImpl<>(eventList);
+        //return new PageImpl<>(eventList);
+        return new PageImpl(eventList, PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), pageable.getSort()), eventList.size());
     }
 
     @Override
@@ -236,15 +239,18 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public List getEventsWithFilter(List<String> country, List<String> tech, List<String> type, List<String> status) {
+    public PageImpl getEventsWithFilter(List<String> country, List<String> tech, List<String> type, List<String> status, Pageable pageable) {
+        final int start = (int)pageable.getOffset();
         Map<String, List<String>> map = new HashMap<>();
         paramsToMap(country, tech, type, status, map);
         if (map.size() != 0) {
             String param = createPartQuery(map);
             String query = "select distinct events.id as id, events.name as name, events.start_date as start_date, events.description as description, events.type as type, res.name as country, t.name as tech, events.status as status from ((select distinct event_id, country.name from event_city join city on event_city.city_id = city.id join country on country.id = city.country_id) as res join events on events.id = res.event_id) join (select event_id, t.name from event_tech join tech t on t.id = event_tech.tech_id) as t on t.event_id = events.id where (" + param.replaceAll(" and", ") and").replaceAll("and ", "and (") + ")";
-            return eventRepositoryJPA.findAllByFilter(query);
+            List events = eventRepositoryJPA.findAllByFilter(query);
+            int end = Math.min((start + pageable.getPageSize()), events.size());
+            return new PageImpl<>(events.subList(start, end), pageable, events.size());
         } else {
-            return eventRepository.findAll()
+            List events = eventRepository.findAll()
                     .stream()
                     .filter(event -> !event.getEventStatus().equals(EventStatus.ARCHIVED))
                     .map(elem -> new EventDto(
@@ -257,6 +263,8 @@ public class EventServiceImpl implements EventService {
                             elem.getTechs().stream().map(el -> new TechDto(el.getId(), el.getName())).collect(Collectors.toList()),
                             elem.getEventStatus()))
                     .collect(Collectors.toList());
+            int end = Math.min((start + pageable.getPageSize()), events.size());
+            return new PageImpl<>(events.subList(start, end), pageable, events.size());
         }
     }
 
