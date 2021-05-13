@@ -41,6 +41,7 @@ public class InterviewServiceImpl implements InterviewService {
     @Override
     public InterviewRespDto saveInterview(CreateInterviewDto createInterviewDto) {
         Interview interview = createInterviewMapper.toEntity(createInterviewDto);
+        interview.setEndTime(createInterviewDto.getStartTime().plusHours(1));
         log.debug("Create interview -> {}", interview);
         InterviewRespDto createdInterview = interviewRespMapper.toDto(interviewRepository.save(interview));
         log.debug("Created interview -> {}", createdInterview);
