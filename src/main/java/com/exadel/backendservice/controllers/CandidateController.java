@@ -131,6 +131,11 @@ public class CandidateController {
                 .body(resource);
     }
 
+    /**
+     * Метод для проверки прикрепил ли кандидат резюме
+     *
+     * @param id - идентификационный номер кандидата
+     */
     @ApiOperation(value = "Метод для проверки прикрепил ли кандидат резюме")
     @GetMapping("/{id}/cv/exists")
     public ResponseEntity<Boolean> checkCv(@PathVariable("id") UUID id) {

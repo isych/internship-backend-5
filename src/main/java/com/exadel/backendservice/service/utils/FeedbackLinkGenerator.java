@@ -77,7 +77,7 @@ public class FeedbackLinkGenerator {
         return key.toString();
     }
 
-    public void sendMessageWithLinkForFeedback(Candidate candidate, InterviewProcess awaitingHr, HttpServletRequest request) {
+    public void sendMessageWithLinkForFeedback(Candidate candidate, InterviewProcess interviewProcess, HttpServletRequest request) {
         String link = generateLink(request);
         String message = new StringBuilder()
                 .append("Please write feedback on the results of the interview with the candidate is ")
@@ -86,7 +86,7 @@ public class FeedbackLinkGenerator {
                 .append(link)
                 .toString();
         try {
-            Interview interview = getInterview(awaitingHr, candidate);
+            Interview interview = getInterview(interviewProcess, candidate);
             if (interview != null) {
                 saveHashToDb(hash, interview.getId());
                 mailSender.sendLetterWithLink(interview.getEmployee().getEmail(), "Feedback on the results of the interview", message);
