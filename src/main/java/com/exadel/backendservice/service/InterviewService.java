@@ -19,5 +19,7 @@ public interface InterviewService {
     ObjectForFeedbackPage getObjectForFeedbackPage(String hash);
 
     List<InterviewRespDto> getInterviewsForEmployee(UUID idEmployee);
+
+    InterviewRespDto editInterview(UUID id, CreateInterviewDto createInterviewDto);
 }
 

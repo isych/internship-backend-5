@@ -94,4 +94,17 @@ public class InterviewController {
         return restAnswer.doResultAjax(listEmployee);
     }
 
+    @ApiOperation(value = "Метод для редактирования интервью")
+    @PutMapping("{id}/edit")
+    public ResponseEntity<?> editInterview(@PathVariable UUID id, @RequestBody CreateInterviewDto createInterviewDto) {
+        if(Objects.isNull(createInterviewDto)) {
+            throw new ApiRequestException("Interview is null");
+        }
+        InterviewRespDto interviewRespDto = interviewService.editInterview(id, createInterviewDto);
+        if (Objects.isNull(interviewRespDto)) {
+            throw new ApiResponseException("Cannot edit interview. Internal error.");
+        }
+        return new ResponseEntity<>(interviewRespDto , HttpStatus.CREATED);
+    }
+
 }
