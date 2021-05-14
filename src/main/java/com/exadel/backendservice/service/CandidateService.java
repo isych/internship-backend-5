@@ -47,4 +47,6 @@ public interface CandidateService {
     Page<SearchCandidateDto> getCandidatesWithFilter(List<String> primaryTech, List<String> interviewProccess, List<String> status, List<String> country, List<String> event, Pageable pageable);
 
     Map<String, Object> getInfoForFilter();
+
+    CandidateRespDto editCandidate(UUID id, RegisterCandidateDto registerCandidateDto);
 }

@@ -51,6 +51,22 @@ public class CandidateController {
         return new ResponseEntity<>(candidateRespDto, HttpStatus.CREATED);
     }
 
+
+    @ApiOperation(value = "Метод для редактирования кандидата")
+    @PutMapping("/{id}/edit")
+    public ResponseEntity<?> editCandidate(@PathVariable UUID id, @RequestBody @Valid RegisterCandidateDto registerCandidateDto) {
+        CandidateRespDto candidateRespDto;
+        if (Objects.isNull(registerCandidateDto)) {
+            return new ResponseEntity<>("Cannot edit candidate. Invalid input data.", HttpStatus.OK);
+        }
+        candidateRespDto = candidateService.editCandidate(id, registerCandidateDto);
+        if (Objects.isNull(candidateRespDto)) {
+            return new ResponseEntity<>("Cannot edit candidate. Internal error.", HttpStatus.OK);
+        }
+        return new ResponseEntity<>(candidateRespDto, HttpStatus.OK);
+    }
+
+
     /**
      * Метод для частичного извлечения кандидатов
      *
