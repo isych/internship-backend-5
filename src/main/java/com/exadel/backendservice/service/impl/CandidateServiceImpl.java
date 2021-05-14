@@ -356,4 +356,18 @@ public class CandidateServiceImpl implements CandidateService {
         info.put("interviewProccess", interviewProccess);
         return info;
     }
+
+    @Override
+    public CandidateRespDto editCandidate(UUID id, RegisterCandidateDto registerCandidateDto) {
+        Optional<Candidate> candidateFromDb = candidateRepository.findById(id);
+        if(candidateFromDb.isPresent()){
+            Candidate candidate = registerCandidateMapper.toEntity(registerCandidateDto);
+            candidate.setId(id);
+            Candidate savedCandidate = candidateRepository.save(candidate);
+            CandidateRespDto candidateRespDto = candidateMapper.toDto(savedCandidate);
+            return candidateRespDto;
+        } else {
+            return null;
+        }
+    }
 }
