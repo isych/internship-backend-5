@@ -45,39 +45,7 @@ public class InterviewServiceImpl implements InterviewService {
     @Override
     public InterviewRespDto saveInterview(CreateInterviewDto createInterviewDto) {
         Interview interview = createInterviewMapper.toEntity(createInterviewDto);
-        interview.setEndTime(createInterviewDto.getStartTime().plusHours(1));
-        log.debug("Create interview -> {}", interview);
-        InterviewRespDto createdInterview = interviewRespMapper.toDto(interviewRepository.save(interview));
-        log.debug("Created interview -> {}", createdInterview);
-
-        List<MessageBodyBase> messageBodyBases = new ArrayList<>();
-        if(interview.getEmployee().getRole().getName().equals("ROLE_TECH")){
-            messageBodyBases.add(MessageBodyBase.APPOINTED_TECH_INTERVIEW);
-        }else  if(interview.getEmployee().getRole().getName().equals("ROLE_ADMIN")){
-            messageBodyBases.add(MessageBodyBase.APPOINTED_HR_INTERVIEW);
-        }
-
-        try {
-            mailSender.send(
-                    interview.getCandidate().getEmail(),
-                    MessageSubject.INTERVIEW.getSubject(),
-                    new MessageBody(
-                            interview.getCandidate().getFullName(),
-                            messageBodyBases,
-                            interview.getStartTime()).getBody()
-            );
-            mailSender.send(
-                    interview.getEmployee().getEmail(),
-                    MessageSubject.INTERVIEW.getSubject(),
-                    new MessageBody(
-                            interview.getCandidate().getFullName(),
-                            messageBodyBases,
-                            interview.getStartTime()).getBody()
-            );
-        }catch (MailException ex) {
-            throw new ApiResponseException("Internal error: mail can't be send to candidate");
-        }
-        return createdInterview;
+        return getInterviewRespDto(createInterviewDto, interview);
     }
 
     @Override
@@ -152,5 +120,45 @@ public class InterviewServiceImpl implements InterviewService {
         return interviewRepository.findAllByEmployee_Id(idEmployee)
                 .map(interviews -> interviews.stream().map(interviewRespMapper::toDto).collect(Collectors.toList()))
                 .orElse(null);
+    }
+
+    @Override
+    public InterviewRespDto editInterview(UUID id, CreateInterviewDto createInterviewDto) {
+        Interview interview = createInterviewMapper.toEntity(createInterviewDto);
+        interview.setId(id);
+        return getInterviewRespDto(createInterviewDto, interview);
+    }
+
+    private InterviewRespDto getInterviewRespDto(CreateInterviewDto createInterviewDto, Interview interview) {
+        interview.setEndTime(createInterviewDto.getStartTime().plusHours(1));
+        InterviewRespDto createdInterview = interviewRespMapper.toDto(interviewRepository.save(interview));
+
+        List<MessageBodyBase> messageBodyBases = new ArrayList<>();
+        if(interview.getEmployee().getRole().getName().equals("ROLE_TECH")){
+            messageBodyBases.add(MessageBodyBase.APPOINTED_TECH_INTERVIEW);
+        }else  if(interview.getEmployee().getRole().getName().equals("ROLE_ADMIN")){
+            messageBodyBases.add(MessageBodyBase.APPOINTED_HR_INTERVIEW);
+        }
+        try {
+            mailSender.send(
+                    interview.getCandidate().getEmail(),
+                    MessageSubject.INTERVIEW.getSubject(),
+                    new MessageBody(
+                            interview.getCandidate().getFullName(),
+                            messageBodyBases,
+                            interview.getStartTime()).getBody()
+            );
+            mailSender.send(
+                    interview.getEmployee().getEmail(),
+                    MessageSubject.INTERVIEW.getSubject(),
+                    new MessageBody(
+                            interview.getCandidate().getFullName(),
+                            messageBodyBases,
+                            interview.getStartTime()).getBody()
+            );
+        }catch (MailException ex) {
+            throw new ApiResponseException("Internal error: mail can't be send to candidate");
+        }
+        return createdInterview;
     }
 }
