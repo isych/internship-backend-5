@@ -240,7 +240,7 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public PageImpl getEventsWithFilter(List<String> country, List<String> tech, List<String> type, List<String> status, Pageable pageable) {
-        final int start = (int)pageable.getOffset();
+        final int start = (int) pageable.getOffset();
         Map<String, List<String>> map = new HashMap<>();
         paramsToMap(country, tech, type, status, map);
         if (map.size() != 0) {
@@ -309,7 +309,7 @@ public class EventServiceImpl implements EventService {
         Map<String, Object> info = new HashMap<>();
         Set<String> tech = new HashSet<>();
         Set<String> countries = new HashSet<>();
-        Set<EventType> type = events.stream().map(elem -> elem.getType()).collect(Collectors.toSet());
+        Set<EventType> type = events.stream().map(Event::getType).collect(Collectors.toSet());
         Set<EventStatus> eventStatuses = events.stream().map(Event::getEventStatus).collect(Collectors.toSet());
         events.stream().map(elem -> elem.getTechs().stream().map(Tech::getName).collect(Collectors.toSet())).forEach(tech::addAll);
         events.stream().map(elem -> elem.getCities().stream().map(el -> el.getCountry().getName()).collect(Collectors.toSet())).forEach(countries::addAll);
@@ -318,5 +318,14 @@ public class EventServiceImpl implements EventService {
         info.put("status", eventStatuses);
         info.put("type", type);
         return info;
+    }
+
+    @Override
+    public EventRespDto editEvent(UUID id, CreateEventDto dto) {
+        Event event = createEventMapper.toEntity(dto);
+        event.setId(id);
+        System.out.println("EVENT: : " + event);
+        Event eventWithID = eventRepository.save(event);
+        return eventResponseMapper.toDto(eventWithID);
     }
 }

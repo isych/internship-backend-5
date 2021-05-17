@@ -50,6 +50,12 @@ public class EventController {
         return new ResponseEntity<>(eventService.getEvent(id), HttpStatus.OK);
     }
 
+    @ApiOperation(value = "Метод для редактирования информации о событии по id")
+    @PutMapping("/{id}/edit")
+    public ResponseEntity<EventRespDto> editEvent(@PathVariable(name = "id") UUID id, @RequestBody CreateEventDto dto) {
+        return new ResponseEntity<>(eventService.editEvent(id, dto), HttpStatus.OK);
+    }
+
     @ApiOperation(value = "Метод проверки уникальности имени события в системе")
     @GetMapping("/uniqueness/{name}")
     public ResponseEntity<Boolean> checkUniqueness(@PathVariable(name = "name") String name) {
@@ -96,18 +102,18 @@ public class EventController {
     @ApiOperation("Метод для публикации события")
     @GetMapping("{id}/publish")
     public ResponseEntity<DetailedEventDto> publishEvent(@PathVariable("id") UUID id) {
-        return new ResponseEntity<>(eventService.publishEvent(id) , HttpStatus.OK);
+        return new ResponseEntity<>(eventService.publishEvent(id), HttpStatus.OK);
     }
 
     @ApiOperation("Метод для перемещения события в архив")
     @GetMapping("{id}/archive")
     public ResponseEntity<DetailedEventDto> eventToArchive(@PathVariable("id") UUID id) {
-        return new ResponseEntity<>(eventService.moveToArchive(id) , HttpStatus.OK);
+        return new ResponseEntity<>(eventService.moveToArchive(id), HttpStatus.OK);
     }
 
     @ApiOperation("Метод для получения архивных ивентов")
     @GetMapping("archived")
-    public ResponseEntity<Page<DetailedEventDto>> getArchivedEvents(Pageable pageable){
+    public ResponseEntity<Page<DetailedEventDto>> getArchivedEvents(Pageable pageable) {
         return new ResponseEntity<>(eventService.getArchivedEvents(pageable), HttpStatus.OK);
     }
 
@@ -130,7 +136,7 @@ public class EventController {
 
     @ApiOperation(value = "Метод для получения информации, используемой при фильтрации")
     @GetMapping("/getInfoForFilters")
-    public ResponseEntity<?> getInfoForFilters(){
+    public ResponseEntity<?> getInfoForFilters() {
         Map<String, Object> info = eventService.getInfoForFilters();
         return new ResponseEntity<>(info, HttpStatus.OK);
     }

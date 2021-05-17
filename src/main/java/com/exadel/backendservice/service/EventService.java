@@ -46,4 +46,6 @@ public interface EventService {
     Page<EventsFilterDto> getEventsWithFilter(List<String> country, List<String> tech, List<String> type, List<String> status, Pageable pageable);
 
     Map<String, Object> getInfoForFilters();
+
+    EventRespDto editEvent(UUID id, CreateEventDto dto);
 }
