@@ -52,7 +52,7 @@ public class EventController {
 
     @ApiOperation(value = "Метод для редактирования информации о событии по id")
     @PutMapping("/{id}/edit")
-    public ResponseEntity<EventRespDto> editEvent(@PathVariable(name = "id") UUID id, CreateEventDto dto) {
+    public ResponseEntity<EventRespDto> editEvent(@PathVariable(name = "id") UUID id, @RequestBody CreateEventDto dto) {
         return new ResponseEntity<>(eventService.editEvent(id, dto), HttpStatus.OK);
     }
 

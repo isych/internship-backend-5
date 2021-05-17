@@ -240,7 +240,7 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public PageImpl getEventsWithFilter(List<String> country, List<String> tech, List<String> type, List<String> status, Pageable pageable) {
-        final int start = (int)pageable.getOffset();
+        final int start = (int) pageable.getOffset();
         Map<String, List<String>> map = new HashMap<>();
         paramsToMap(country, tech, type, status, map);
         if (map.size() != 0) {
@@ -324,6 +324,7 @@ public class EventServiceImpl implements EventService {
     public EventRespDto editEvent(UUID id, CreateEventDto dto) {
         Event event = createEventMapper.toEntity(dto);
         event.setId(id);
+        System.out.println("EVENT: : " + event);
         Event eventWithID = eventRepository.save(event);
         return eventResponseMapper.toDto(eventWithID);
     }
