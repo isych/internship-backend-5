@@ -1,7 +1,6 @@
 package com.exadel.backendservice.service;
 
 import com.exadel.backendservice.dto.req.CreateInterviewDto;
-import com.exadel.backendservice.dto.resp.InterviewFullInfoRespDto;
 import com.exadel.backendservice.dto.resp.InterviewRespDto;
 import com.exadel.backendservice.model.ObjectForFeedbackPage;
 
@@ -19,7 +18,7 @@ public interface InterviewService {
 
     ObjectForFeedbackPage getObjectForFeedbackPage(String hash);
 
-    List<InterviewFullInfoRespDto> getInterviewsForEmployee(UUID idEmployee);
+    List<InterviewRespDto> getInterviewsForEmployee(UUID idEmployee);
 
     InterviewRespDto editInterview(UUID id, CreateInterviewDto createInterviewDto);
 }

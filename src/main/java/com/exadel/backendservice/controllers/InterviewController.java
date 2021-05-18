@@ -1,7 +1,6 @@
 package com.exadel.backendservice.controllers;
 
 import com.exadel.backendservice.dto.req.CreateInterviewDto;
-import com.exadel.backendservice.dto.resp.InterviewFullInfoRespDto;
 import com.exadel.backendservice.dto.resp.InterviewRespDto;
 import com.exadel.backendservice.exception.ApiRequestException;
 import com.exadel.backendservice.exception.ApiResponseException;
@@ -91,7 +90,7 @@ public class InterviewController {
     @ApiOperation(value = "Метод для получения всех интервью для пользователя по его id")
     @GetMapping("employee/{idEmployee}")
     public ResponseEntity<?> getInterviewsForEmployee(@PathVariable UUID idEmployee){
-        List<InterviewFullInfoRespDto> listEmployee = interviewService.getInterviewsForEmployee(idEmployee);
+        List<InterviewRespDto> listEmployee = interviewService.getInterviewsForEmployee(idEmployee);
         return restAnswer.doResultAjax(listEmployee);
     }
 
