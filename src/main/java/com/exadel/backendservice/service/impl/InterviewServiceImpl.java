@@ -1,6 +1,7 @@
 package com.exadel.backendservice.service.impl;
 
 import com.exadel.backendservice.dto.req.CreateInterviewDto;
+import com.exadel.backendservice.dto.resp.InterviewFullInfoRespDto;
 import com.exadel.backendservice.dto.resp.InterviewRespDto;
 import com.exadel.backendservice.entity.Candidate;
 import com.exadel.backendservice.entity.DynamicInterviewLink;
@@ -116,10 +117,18 @@ public class InterviewServiceImpl implements InterviewService {
     }
 
     @Override
-    public List<InterviewRespDto> getInterviewsForEmployee(UUID idEmployee) {
-        return interviewRepository.findAllByEmployee_Id(idEmployee)
-                .map(interviews -> interviews.stream().map(interviewRespMapper::toDto).collect(Collectors.toList()))
-                .orElse(null);
+    public List<InterviewFullInfoRespDto> getInterviewsForEmployee(UUID idEmployee) {
+        return interviewRepository.findAllByEmployee_Id(idEmployee).map(interviews -> interviews.stream()
+                .map(elem ->
+                        new InterviewFullInfoRespDto(
+                                elem.getId(),
+                                elem.getCandidate().getFullName(),
+                                elem.getEmployee().getFullName(),
+                                elem.getStartTime(),
+                                elem.getCandidate().getInterviewProcess(),
+                                elem.getCandidate().getPrimaryTech().getName()
+                        )
+                ).collect(Collectors.toList())).orElse(null);
     }
 
     @Override

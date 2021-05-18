@@ -7,6 +7,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class InternshipApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(InternshipApplication.class, args);
+        SpringApplication app = new SpringApplication(InternshipApplication.class);
+        app.setBanner((environment, sourceClass, out) -> {});
+        app.run(args);
     }
 }
