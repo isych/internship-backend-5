@@ -1,6 +1,5 @@
 package com.exadel.backendservice.dto.resp;
 
-import com.exadel.backendservice.model.CandidateStatus;
 import com.exadel.backendservice.model.InterviewProcess;
 import lombok.AllArgsConstructor;
 import lombok.Data;
