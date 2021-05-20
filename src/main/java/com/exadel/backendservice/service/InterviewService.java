@@ -24,6 +24,8 @@ public interface InterviewService {
 
     InterviewRespDto editInterview(UUID id, CreateInterviewDto createInterviewDto);
 
+    InterviewRespDto updateFeedback(UUID id, String feedback);
+
     DetailedInterviewDto getInterview(UUID id);
 }
 

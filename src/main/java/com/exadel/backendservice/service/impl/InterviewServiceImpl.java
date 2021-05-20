@@ -29,7 +29,10 @@ import org.springframework.mail.MailException;
 import org.springframework.stereotype.Service;
 
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -82,7 +85,6 @@ public class InterviewServiceImpl implements InterviewService {
             interviewRepository.save(interview);
             feedbackLinkGenerator.removeHashFromDb(hash);
             return interviewRespMapper.toDto(interview);
-
         } else {
             return null;
         }
@@ -149,6 +151,17 @@ public class InterviewServiceImpl implements InterviewService {
             return  detailedInterviewMapper.toDto(interview);
         }
         throw new DBNotFoundException("Cannot find interview by id");
+    }
+
+    @Override
+    public InterviewRespDto updateFeedback(UUID id, String feedback) {
+        Optional<Interview> interviewOptional = interviewRepository.findById(id);
+        if (interviewOptional.isPresent()) {
+            Interview interview = interviewOptional.get();
+            interview.setFeedback(feedback);
+            return interviewRespMapper.toDto(interviewRepository.save(interview));
+        }
+        throw new DBNotFoundException("Cannot find interview with this id");
     }
 
     private InterviewRespDto getInterviewRespDto(CreateInterviewDto createInterviewDto, Interview interview) {
