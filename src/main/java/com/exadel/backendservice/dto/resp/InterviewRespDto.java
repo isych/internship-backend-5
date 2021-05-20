@@ -18,4 +18,6 @@ public class InterviewRespDto extends AbstractDto {
     private String employee;
 
     private LocalDateTime startTime;
+
+    private String feedback;
 }

@@ -22,5 +22,7 @@ public interface InterviewService {
     List<InterviewFullInfoRespDto> getInterviewsForEmployee(UUID idEmployee);
 
     InterviewRespDto editInterview(UUID id, CreateInterviewDto createInterviewDto);
+
+    InterviewRespDto updateFeedback(UUID id, String feedback);
 }
 

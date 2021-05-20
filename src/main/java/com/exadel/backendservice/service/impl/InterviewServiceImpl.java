@@ -27,7 +27,10 @@ import org.springframework.mail.MailException;
 import org.springframework.stereotype.Service;
 
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -79,7 +82,6 @@ public class InterviewServiceImpl implements InterviewService {
             interviewRepository.save(interview);
             feedbackLinkGenerator.removeHashFromDb(hash);
             return interviewRespMapper.toDto(interview);
-
         } else {
             return null;
         }
@@ -138,14 +140,25 @@ public class InterviewServiceImpl implements InterviewService {
         return getInterviewRespDto(createInterviewDto, interview);
     }
 
+    @Override
+    public InterviewRespDto updateFeedback(UUID id, String feedback) {
+        Optional<Interview> interviewOptional = interviewRepository.findById(id);
+        if (interviewOptional.isPresent()) {
+            Interview interview = interviewOptional.get();
+            interview.setFeedback(feedback);
+            return interviewRespMapper.toDto(interviewRepository.save(interview));
+        }
+        throw new DBNotFoundException("Cannot find interview with this id");
+    }
+
     private InterviewRespDto getInterviewRespDto(CreateInterviewDto createInterviewDto, Interview interview) {
         interview.setEndTime(createInterviewDto.getStartTime().plusHours(1));
         InterviewRespDto createdInterview = interviewRespMapper.toDto(interviewRepository.save(interview));
 
         List<MessageBodyBase> messageBodyBases = new ArrayList<>();
-        if(interview.getEmployee().getRole().getName().equals("ROLE_TECH")){
+        if (interview.getEmployee().getRole().getName().equals("ROLE_TECH")) {
             messageBodyBases.add(MessageBodyBase.APPOINTED_TECH_INTERVIEW);
-        }else  if(interview.getEmployee().getRole().getName().equals("ROLE_ADMIN")){
+        } else if (interview.getEmployee().getRole().getName().equals("ROLE_ADMIN")) {
             messageBodyBases.add(MessageBodyBase.APPOINTED_HR_INTERVIEW);
         }
         try {
@@ -165,7 +178,7 @@ public class InterviewServiceImpl implements InterviewService {
                             messageBodyBases,
                             interview.getStartTime()).getBody()
             );
-        }catch (MailException ex) {
+        } catch (MailException ex) {
             throw new ApiResponseException("Internal error: mail can't be send to candidate");
         }
         return createdInterview;

@@ -32,14 +32,14 @@ public class InterviewController {
     @ApiOperation(value = "Метод для создания интервью")
     @PostMapping
     public ResponseEntity<?> createInterview(@RequestBody CreateInterviewDto createInterviewDto) {
-        if(Objects.isNull(createInterviewDto)) {
+        if (Objects.isNull(createInterviewDto)) {
             throw new ApiRequestException("Interview is null");
         }
         InterviewRespDto interviewRespDto = interviewService.saveInterview(createInterviewDto);
         if (Objects.isNull(interviewRespDto)) {
             throw new ApiResponseException("Cannot create interview. Internal error.");
         }
-        return new ResponseEntity<>(interviewRespDto , HttpStatus.CREATED);
+        return new ResponseEntity<>(interviewRespDto, HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "Метод для изменения интервьюера для интервью")
@@ -49,10 +49,16 @@ public class InterviewController {
         return new ResponseEntity<>(interviewService.updateInterviewer(interviewId, employeeId), HttpStatus.OK);
     }
 
+    @ApiOperation(value = "Метод для изменения фидбека для инетервью")
+    @PutMapping("/{id}/feedback/edit")
+    public ResponseEntity<?> changeFeedback(@PathVariable("id") UUID id, @RequestBody String feedback) {
+        return new ResponseEntity<>(interviewService.updateFeedback(id, feedback), HttpStatus.OK);
+    }
+
     /**
      * Метод сохранения нового фидбэка
      *
-     * @param hash - hash для идентификации интервью
+     * @param hash     - hash для идентификации интервью
      * @param feedback - строка для хранения фидбэка
      */
     @ApiOperation(value = "Метод сохранения фидбэка для интервью")
@@ -68,7 +74,7 @@ public class InterviewController {
      */
     @ApiOperation(value = "Метод получения информации для страницы фидбэка")
     @GetMapping("/feedback/{hash}")
-    public ResponseEntity<?> getPageForFeedback(@PathVariable String hash){
+    public ResponseEntity<?> getPageForFeedback(@PathVariable String hash) {
         ObjectForFeedbackPage objectForFeedbackPage = interviewService.getObjectForFeedbackPage(hash);
         return restAnswer.doResultAjax(objectForFeedbackPage);
     }
@@ -81,8 +87,8 @@ public class InterviewController {
      */
     @ApiOperation(value = "Метод удаления интервью по id")
     @DeleteMapping("/{id}/delete")
-    public ResponseEntity<Integer> deleteById(@PathVariable (value="id") UUID id){
-        if(!interviewService.deleteById(id)){
+    public ResponseEntity<Integer> deleteById(@PathVariable(value = "id") UUID id) {
+        if (!interviewService.deleteById(id)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(HttpStatus.OK);
@@ -90,7 +96,7 @@ public class InterviewController {
 
     @ApiOperation(value = "Метод для получения всех интервью для пользователя по его id")
     @GetMapping("employee/{idEmployee}")
-    public ResponseEntity<?> getInterviewsForEmployee(@PathVariable UUID idEmployee){
+    public ResponseEntity<?> getInterviewsForEmployee(@PathVariable UUID idEmployee) {
         List<InterviewFullInfoRespDto> listEmployee = interviewService.getInterviewsForEmployee(idEmployee);
         return restAnswer.doResultAjax(listEmployee);
     }
@@ -98,14 +104,14 @@ public class InterviewController {
     @ApiOperation(value = "Метод для редактирования интервью")
     @PutMapping("{id}/edit")
     public ResponseEntity<?> editInterview(@PathVariable UUID id, @RequestBody CreateInterviewDto createInterviewDto) {
-        if(Objects.isNull(createInterviewDto)) {
+        if (Objects.isNull(createInterviewDto)) {
             throw new ApiRequestException("Interview is null");
         }
         InterviewRespDto interviewRespDto = interviewService.editInterview(id, createInterviewDto);
         if (Objects.isNull(interviewRespDto)) {
             throw new ApiResponseException("Cannot edit interview. Internal error.");
         }
-        return new ResponseEntity<>(interviewRespDto , HttpStatus.CREATED);
+        return new ResponseEntity<>(interviewRespDto, HttpStatus.CREATED);
     }
 
 }
