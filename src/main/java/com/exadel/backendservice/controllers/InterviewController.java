@@ -28,6 +28,11 @@ public class InterviewController {
     private final InterviewService interviewService;
     private final RestAnswer restAnswer;
 
+    @ApiOperation(value = "Метод для получения информации о интервью")
+    @GetMapping("/{id}")
+    public ResponseEntity<?> showInterview(@PathVariable UUID id) {
+        return new ResponseEntity<>(interviewService.getInterview(id) , HttpStatus.CREATED);
+    }
 
     @ApiOperation(value = "Метод для создания интервью")
     @PostMapping
