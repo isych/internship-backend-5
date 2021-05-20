@@ -1,6 +1,7 @@
 package com.exadel.backendservice.service.impl;
 
 import com.exadel.backendservice.dto.req.CreateInterviewDto;
+import com.exadel.backendservice.dto.resp.DetailedInterviewDto;
 import com.exadel.backendservice.dto.resp.InterviewFullInfoRespDto;
 import com.exadel.backendservice.dto.resp.InterviewRespDto;
 import com.exadel.backendservice.entity.Candidate;
@@ -10,6 +11,7 @@ import com.exadel.backendservice.entity.Interview;
 import com.exadel.backendservice.exception.ApiResponseException;
 import com.exadel.backendservice.exception.DBNotFoundException;
 import com.exadel.backendservice.mapper.interview.CreateInterviewMapper;
+import com.exadel.backendservice.mapper.interview.DetailedInterviewMapper;
 import com.exadel.backendservice.mapper.interview.InterviewRespMapper;
 import com.exadel.backendservice.model.MessageBody;
 import com.exadel.backendservice.model.MessageBodyBase;
@@ -40,6 +42,7 @@ public class InterviewServiceImpl implements InterviewService {
     private final CreateInterviewMapper createInterviewMapper;
     private final InterviewRespMapper interviewRespMapper;
     private final DynamicInterviewLinkRepository dynamicInterviewLinkRepository;
+    private final DetailedInterviewMapper detailedInterviewMapper;
     private final FeedbackLinkGenerator feedbackLinkGenerator;
     private final MailSender mailSender;
 
@@ -138,14 +141,24 @@ public class InterviewServiceImpl implements InterviewService {
         return getInterviewRespDto(createInterviewDto, interview);
     }
 
+    @Override
+    public DetailedInterviewDto getInterview(UUID id) {
+        Optional<Interview> interviewOptional = interviewRepository.findById(id);
+        if (interviewOptional.isPresent()) {
+            Interview interview = interviewOptional.get();
+            return  detailedInterviewMapper.toDto(interview);
+        }
+        throw new DBNotFoundException("Cannot find interview by id");
+    }
+
     private InterviewRespDto getInterviewRespDto(CreateInterviewDto createInterviewDto, Interview interview) {
         interview.setEndTime(createInterviewDto.getStartTime().plusHours(1));
         InterviewRespDto createdInterview = interviewRespMapper.toDto(interviewRepository.save(interview));
 
         List<MessageBodyBase> messageBodyBases = new ArrayList<>();
-        if(interview.getEmployee().getRole().getName().equals("ROLE_TECH")){
+        if (interview.getEmployee().getRole().getName().equals("ROLE_TECH")) {
             messageBodyBases.add(MessageBodyBase.APPOINTED_TECH_INTERVIEW);
-        }else  if(interview.getEmployee().getRole().getName().equals("ROLE_ADMIN")){
+        } else if (interview.getEmployee().getRole().getName().equals("ROLE_ADMIN")) {
             messageBodyBases.add(MessageBodyBase.APPOINTED_HR_INTERVIEW);
         }
         try {
@@ -165,7 +178,7 @@ public class InterviewServiceImpl implements InterviewService {
                             messageBodyBases,
                             interview.getStartTime()).getBody()
             );
-        }catch (MailException ex) {
+        } catch (MailException ex) {
             throw new ApiResponseException("Internal error: mail can't be send to candidate");
         }
         return createdInterview;
