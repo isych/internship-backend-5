@@ -1,6 +1,7 @@
 package com.exadel.backendservice.service.impl;
 
 import com.exadel.backendservice.dto.req.CreateInterviewDto;
+import com.exadel.backendservice.dto.resp.DetailedInterviewDto;
 import com.exadel.backendservice.dto.resp.InterviewFullInfoRespDto;
 import com.exadel.backendservice.dto.resp.InterviewRespDto;
 import com.exadel.backendservice.entity.Candidate;
@@ -10,6 +11,7 @@ import com.exadel.backendservice.entity.Interview;
 import com.exadel.backendservice.exception.ApiResponseException;
 import com.exadel.backendservice.exception.DBNotFoundException;
 import com.exadel.backendservice.mapper.interview.CreateInterviewMapper;
+import com.exadel.backendservice.mapper.interview.DetailedInterviewMapper;
 import com.exadel.backendservice.mapper.interview.InterviewRespMapper;
 import com.exadel.backendservice.model.MessageBody;
 import com.exadel.backendservice.model.MessageBodyBase;
@@ -43,6 +45,7 @@ public class InterviewServiceImpl implements InterviewService {
     private final CreateInterviewMapper createInterviewMapper;
     private final InterviewRespMapper interviewRespMapper;
     private final DynamicInterviewLinkRepository dynamicInterviewLinkRepository;
+    private final DetailedInterviewMapper detailedInterviewMapper;
     private final FeedbackLinkGenerator feedbackLinkGenerator;
     private final MailSender mailSender;
 
@@ -138,6 +141,16 @@ public class InterviewServiceImpl implements InterviewService {
         Interview interview = createInterviewMapper.toEntity(createInterviewDto);
         interview.setId(id);
         return getInterviewRespDto(createInterviewDto, interview);
+    }
+
+    @Override
+    public DetailedInterviewDto getInterview(UUID id) {
+        Optional<Interview> interviewOptional = interviewRepository.findById(id);
+        if (interviewOptional.isPresent()) {
+            Interview interview = interviewOptional.get();
+            return  detailedInterviewMapper.toDto(interview);
+        }
+        throw new DBNotFoundException("Cannot find interview by id");
     }
 
     @Override
