@@ -246,9 +246,22 @@ public class EventServiceImpl implements EventService {
         if (map.size() != 0) {
             String param = createPartQuery(map);
             String query = "select distinct events.id as id, events.name as name, events.start_date as start_date, events.description as description, events.type as type, res.name as country, t.name as tech, events.status as status from ((select distinct event_id, country.name from event_city join city on event_city.city_id = city.id join country on country.id = city.country_id) as res join events on events.id = res.event_id) join (select event_id, t.name from event_tech join tech t on t.id = event_tech.tech_id) as t on t.event_id = events.id where (" + param.replaceAll(" and", ") and").replaceAll("and ", "and (") + ")";
-            List events = eventRepositoryJPA.findAllByFilter(query);
-            int end = Math.min((start + pageable.getPageSize()), events.size());
-            return new PageImpl<>(events.subList(start, end), pageable, events.size());
+            List<Event> events = eventRepositoryJPA.findAllByFilter(query).stream()
+                    .map(elem -> eventRepository.findById(elem.getId()).get())
+                    .collect(Collectors.toList());
+            List eventsDto = events.stream()
+                    .map(elem -> new EventDto(
+                            elem.getId(),
+                            elem.getName(),
+                            elem.getStartDate(),
+                            elem.getDescription(),
+                            elem.getType(),
+                            elem.getCities().stream().map(city -> new LocationDto(city.getName(), city.getCountry().getName())).collect(Collectors.toList()),
+                            elem.getTechs().stream().map(el -> new TechDto(el.getId(), el.getName())).collect(Collectors.toList()),
+                            elem.getEventStatus()))
+                    .collect(Collectors.toList());
+            int end = Math.min((start + pageable.getPageSize()), eventsDto.size());
+            return new PageImpl<>(eventsDto.subList(start, end), pageable, eventsDto.size());
         } else {
             List events = eventRepository.findAll()
                     .stream()

@@ -57,7 +57,7 @@ public class EmployeeController {
         return employeeService.getListRoles();
     }
 
-    @ApiOperation(value = "Метод для получения списка ролей только интервьюеров")
+    @ApiOperation(value = "Метод для получения списка ролей")
     @GetMapping("/interviewers/roles")
     public ResponseEntity<List<RoleRespDto>> getInterviewersRoles() {
         return new ResponseEntity<>(employeeService.getInterviewersRoles(), HttpStatus.OK);

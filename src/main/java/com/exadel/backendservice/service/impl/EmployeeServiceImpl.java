@@ -73,7 +73,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public List<InterviewersByRoleDto> getInterviewersForCandidate() {
-        List<Role> roles = roleRepository.findAllByNameIsNot(SUPERADMIN_ROLE_NAME);
+        List<Role> roles = roleRepository.findAll();
         return interviewersByRoleMapper.toDto(roles);
     }
 
