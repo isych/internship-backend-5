@@ -18,4 +18,6 @@ public interface EventRepository extends PagingAndSortingRepository<Event, UUID>
     Boolean existsByName(String name);
 
     List<Event> findByEventStatus(EventStatus eventStatus,  Pageable pageable);
+
+    Optional<Event> findById(UUID id);
 }
