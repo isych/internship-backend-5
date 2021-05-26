@@ -11,7 +11,8 @@ services:
     restart: on-failure
 
   rest:
-    image: karachun/rest-server
+#    image: karachun/rest-server
+    image: karachun/rest-server:sec
     ports:
       - "8081:8081"
     environment:

@@ -197,7 +197,7 @@ public class CandidateController {
      * @param id - идентификационный номер кандидата, которому требуется установить значение статуса этапа интервью  "ожидает интервью с техническим специалистом"
      */
     @ApiOperation(value = "Метод для изменения статуса этапа интервью кандидата (ожидает интервью с техническим специалистом)")
-    @PutMapping(value = "/{id}/awaiting_tс")
+    @PutMapping(value = "/{id}/awaiting_tc")
     public ResponseEntity<CandidateRespDto> updateInterviewStatusToAwaitingTech(@PathVariable("id") UUID id, HttpServletRequest request) {
         return new ResponseEntity<CandidateRespDto>(candidateService.updateInterviewStatus(id, InterviewProcess.AWAITING_TS, request) , HttpStatus.OK);
     }
