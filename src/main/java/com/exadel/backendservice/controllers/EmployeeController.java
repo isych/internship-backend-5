@@ -71,15 +71,21 @@ public class EmployeeController {
 
     @ApiOperation(value = "Метод для удаления пользователя из системы по его id")
     @DeleteMapping("/{id}/delete")
-    public ResponseEntity<?> deleteEmployee(@PathVariable UUID id){
+    public ResponseEntity<?> deleteEmployee(@PathVariable UUID id) {
         return new ResponseEntity<>(employeeService.deleteEmployee(id) ? "Employee removed" : "Employee not removed", HttpStatus.OK);
     }
 
     @ApiOperation(value = "Метод для добавления пользователя в систему")
     @PostMapping("/add")
-    public ResponseEntity<?> saveEmployee(@RequestBody EmployeeDto employeeDto){
+    public ResponseEntity<?> saveEmployee(@RequestBody EmployeeDto employeeDto) {
         Employee employee = employeeService.saveEmployee(employeeDto);
         return new ResponseEntity<>(employee != null ? "Employee created" : "Employee not created", HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "Метод для получения списка  времени каждого интервью у пользователя")
+    @GetMapping("{id}/interviews/time-list")
+    public ResponseEntity<?> interviewsByEmployeeId(@PathVariable("id") UUID id) {
+        return new ResponseEntity<>(employeeService.getAllInterviewsById(id), HttpStatus.OK);
     }
 
 }

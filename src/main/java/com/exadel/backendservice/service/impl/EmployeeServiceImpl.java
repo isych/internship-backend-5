@@ -7,6 +7,7 @@ import com.exadel.backendservice.entity.Employee;
 import com.exadel.backendservice.entity.EmployeeTimeslot;
 import com.exadel.backendservice.entity.Interview;
 import com.exadel.backendservice.entity.Role;
+import com.exadel.backendservice.exception.DBNotFoundException;
 import com.exadel.backendservice.mapper.role.InterviewersByRoleMapper;
 import com.exadel.backendservice.mapper.role.RoleResponseMapper;
 import com.exadel.backendservice.repository.EmployeeRepository;
@@ -20,6 +21,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -94,9 +97,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Employee saveEmployee(EmployeeDto employeeDto) {
-        if(employeeDto != null){
+        if (employeeDto != null) {
             Optional<Role> optionalRole = roleRepository.findByName("ROLE_" + employeeDto.getRole().toUpperCase());
-            if(optionalRole.isPresent() && emailIsUnique(employeeDto.getEmail())){
+            if (optionalRole.isPresent() && emailIsUnique(employeeDto.getEmail())) {
                 Employee employee = new Employee();
                 employee.setFullName(employeeDto.getFullName());
                 employee.setEmail(employeeDto.getEmail());
@@ -108,7 +111,21 @@ public class EmployeeServiceImpl implements EmployeeService {
         return null;
     }
 
-    private Boolean emailIsUnique(String email){
+    @Override
+    public List<LocalDateTime> getAllInterviewsById(UUID id) {
+        Optional<List<Interview>> interviewsOptional = interviewRepository.findAllByEmployee_Id(id);
+        List<LocalDateTime> dateList = new ArrayList<>();
+        if (interviewsOptional.isPresent()) {
+            List<Interview> interviews = interviewsOptional.get();
+            for (Interview interview : interviews) {
+                dateList.add(interview.getStartTime());
+            }
+            return dateList;
+        }
+        throw new DBNotFoundException("Unable to find interviews by employee id");
+    }
+
+    private Boolean emailIsUnique(String email) {
         return employeeRepository.findByEmail(email) == null;
     }
 }
