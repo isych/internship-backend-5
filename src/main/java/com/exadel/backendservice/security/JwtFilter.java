@@ -17,7 +17,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 import static org.springframework.util.StringUtils.hasText;
-import static org.springframework.util.StringUtils.startsWithIgnoreCase;
 
 @Component
 @Log
