@@ -49,6 +49,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET,"/api/interviews/feedback/**").hasAnyRole("SUPERADMIN", "ADMIN", "TECH")
                 .antMatchers(HttpMethod.PUT,"/api/interviews/feedback/**").hasAnyRole("SUPERADMIN", "ADMIN", "TECH")
                 .antMatchers(HttpMethod.GET,"/api/candidates").hasAnyRole("SUPERADMIN", "ADMIN")
+                .antMatchers(HttpMethod.GET,"/api/candidates/preferred-times").permitAll()
                 .antMatchers(HttpMethod.GET,"/api/candidates/**").hasAnyRole("SUPERADMIN", "ADMIN")
                 .antMatchers(HttpMethod.PUT,"/api/candidates/**/accept").hasAnyRole("SUPERADMIN")
                 .antMatchers(HttpMethod.PUT,"/api/candidates/**/awaiting_hr").hasAnyRole("SUPERADMIN", "ADMIN")
