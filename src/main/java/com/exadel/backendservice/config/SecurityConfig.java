@@ -35,6 +35,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.PUT,"/api/events/**/edit").hasAnyRole("SUPERADMIN", "ADMIN")
                 .antMatchers(HttpMethod.POST,"/api/events/**/image/upload").hasAnyRole("SUPERADMIN", "ADMIN")
                 .antMatchers(HttpMethod.GET,"/api/events/**/publish").hasAnyRole("SUPERADMIN")
+                .antMatchers(HttpMethod.PUT,"/api/events/**/unpublish").hasAnyRole("SUPERADMIN")
                 .antMatchers(HttpMethod.GET,"/api/events/archived").hasAnyRole("SUPERADMIN", "ADMIN")
                 .antMatchers(HttpMethod.POST,"/api/events/create").hasAnyRole("SUPERADMIN", "ADMIN")
                 .antMatchers(HttpMethod.GET,"/api/events/uniqueness/**").hasAnyRole("SUPERADMIN", "ADMIN")

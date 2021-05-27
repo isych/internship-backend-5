@@ -105,6 +105,12 @@ public class EventController {
         return new ResponseEntity<>(eventService.publishEvent(id), HttpStatus.OK);
     }
 
+    @ApiOperation("Метод для смены статуса события на unpublish")
+    @PutMapping("{id}/unpublish")
+    public ResponseEntity<DetailedEventDto> unpublishEvent(@PathVariable("id") UUID id) {
+        return new ResponseEntity<>(eventService.unpublishEvent(id), HttpStatus.OK);
+    }
+
     @ApiOperation("Метод для перемещения события в архив")
     @GetMapping("{id}/archive")
     public ResponseEntity<DetailedEventDto> eventToArchive(@PathVariable("id") UUID id) {

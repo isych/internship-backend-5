@@ -48,4 +48,6 @@ public interface EventService {
     Map<String, Object> getInfoForFilters();
 
     EventRespDto editEvent(UUID id, CreateEventDto dto);
+
+    DetailedEventDto unpublishEvent(UUID id);
 }

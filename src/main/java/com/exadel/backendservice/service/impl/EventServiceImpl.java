@@ -340,4 +340,23 @@ public class EventServiceImpl implements EventService {
         Event eventWithID = eventRepository.save(event);
         return eventResponseMapper.toDto(eventWithID);
     }
+
+    @Override
+    public DetailedEventDto unpublishEvent(UUID id) {
+        Optional<Event> eventOptional = eventRepository.findById(id);
+        if (eventOptional.isPresent()) {
+            Event event = eventOptional.get();
+            if (!event.getEventStatus().equals(EventStatus.NOT_PUBLISHED)) {
+                event.setEventStatus(EventStatus.NOT_PUBLISHED);
+                eventRepository.save(event);
+                DetailedEventDto detailedEventDto = detailedEventMapper.toDto(event);
+                log.debug("DetailedEventDto -> {}", detailedEventDto);
+                return detailedEventDto;
+            } else {
+                throw new SameEventStatusException("Event is already unpublished");
+            }
+        } else {
+            throw new DBNotFoundException(UNABLE_TO_FIND_EVENT);
+        }
+    }
 }
