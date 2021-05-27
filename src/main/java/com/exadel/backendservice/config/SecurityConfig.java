@@ -26,7 +26,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .httpBasic().disable()
-                .csrf().disable()
+                .cors().and().csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
@@ -64,6 +64,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.DELETE,"/api/timeslots/**/delete").hasAnyRole("SUPERADMIN", "ADMIN")
                 .antMatchers(HttpMethod.GET,"/api/timeslots/employee/**").hasAnyRole("SUPERADMIN", "ADMIN")
                 .antMatchers(HttpMethod.POST,"/api/timeslots/employee/**/add").hasAnyRole("SUPERADMIN", "ADMIN")
+                .antMatchers(HttpMethod.POST, "/api/employees/auth").permitAll()
                 .and()
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
     }
@@ -72,6 +73,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
 }
 
 

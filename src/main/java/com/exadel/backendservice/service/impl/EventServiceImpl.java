@@ -245,10 +245,9 @@ public class EventServiceImpl implements EventService {
         paramsToMap(country, tech, type, status, map);
         if (map.size() != 0) {
             String param = createPartQuery(map);
-            String query = "select distinct events.id as id, events.name as name, events.start_date as start_date, events.description as description, events.type as type, res.name as country, t.name as tech, events.status as status from ((select distinct event_id, country.name from event_city join city on event_city.city_id = city.id join country on country.id = city.country_id) as res join events on events.id = res.event_id) join (select event_id, t.name from event_tech join tech t on t.id = event_tech.tech_id) as t on t.event_id = events.id where (" + param.replaceAll(" and", ") and").replaceAll("and ", "and (") + ")";
-            List<Event> events = eventRepositoryJPA.findAllByFilter(query).stream()
-                    .map(elem -> eventRepository.findById(elem.getId()).get())
-                    .collect(Collectors.toList());
+            String query = "select events.id as id from ((select event_id, country.name from event_city join city on event_city.city_id = city.id join country on country.id = city.country_id) as res join events on events.id = res.event_id) join (select event_id, t.name from event_tech join tech t on t.id = event_tech.tech_id) as t on t.event_id = events.id where (" + param.replaceAll(" and", ") and").replaceAll("and ", "and (") + ")";
+            Set<Event> events = eventRepositoryJPA.findAllByFilter(query).stream()
+                .map(elem -> eventRepository.findById(elem.getId()).get()).collect(Collectors.toSet());
             List eventsDto = events.stream()
                     .map(elem -> new EventDto(
                             elem.getId(),
