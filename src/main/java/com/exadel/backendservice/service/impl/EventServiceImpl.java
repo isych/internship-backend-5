@@ -247,7 +247,7 @@ public class EventServiceImpl implements EventService {
             String param = createPartQuery(map);
             String query = "select events.id as id from ((select event_id, country.name from event_city join city on event_city.city_id = city.id join country on country.id = city.country_id) as res join events on events.id = res.event_id) join (select event_id, t.name from event_tech join tech t on t.id = event_tech.tech_id) as t on t.event_id = events.id where (" + param.replaceAll(" and", ") and").replaceAll("and ", "and (") + ")";
             Set<Event> events = eventRepositoryJPA.findAllByFilter(query).stream()
-                .map(elem -> eventRepository.findById(elem.getId()).get()).collect(Collectors.toSet());
+                    .map(elem -> eventRepository.findById(elem.getId()).get()).collect(Collectors.toSet());
             List eventsDto = events.stream()
                     .map(elem -> new EventDto(
                             elem.getId(),
@@ -334,11 +334,16 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public EventRespDto editEvent(UUID id, CreateEventDto dto) {
-        Event event = createEventMapper.toEntity(dto);
-        event.setId(id);
-        System.out.println("EVENT: : " + event);
-        Event eventWithID = eventRepository.save(event);
-        return eventResponseMapper.toDto(eventWithID);
+        Optional<Event> eventWithPic = eventRepository.findById(id);
+        if (eventWithPic.isPresent()) {
+            Event event = createEventMapper.toEntity(dto);
+            event.setId(id);
+            event.setPicturePath(eventWithPic.get().getPicturePath());
+            event.setPictureName(eventWithPic.get().getPictureName());
+            Event eventWithID = eventRepository.save(event);
+            return eventResponseMapper.toDto(eventWithID);
+        }
+        throw new DBNotFoundException("Unable to find event with this id");
     }
 
     @Override

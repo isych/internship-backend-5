@@ -57,15 +57,6 @@ public class CandidateServiceImpl implements CandidateService {
     private final FeedbackLinkGenerator feedbackLinkGenerator;
 
 
-    private void sendMailToCandidate(String email, String name) {
-        String message = String.format("%s,\nyour registration completed successfully!\nWait for the recruiter's call soon.", name);
-        try {
-            mailSender.send(email, "Registration for Exadel event", message);
-        } catch (MailException ex) {
-            throw new ApiResponseException("Internal error: mail can't be send to candidate");
-        }
-    }
-
     @Override
     public CandidateRespDto registerCandidate(RegisterCandidateDto dto) {
         if (!eventRepository.existsByName(dto.getEvent())) {
@@ -82,18 +73,18 @@ public class CandidateServiceImpl implements CandidateService {
         Candidate savedCandidate = candidateRepository.save(candidate);
         CandidateRespDto candidateRespDto = candidateMapper.toDto(savedCandidate);
         log.debug("Candidate with ID: {}", candidateRespDto.getId());
-       try {
-           mailSender.send(
-                   savedCandidate.getEmail(),
-                   MessageSubject.REGISTRATION.getSubject(),
-                   new MessageBody(
-                           savedCandidate.getFullName(),
-                           Arrays.asList(MessageBodyBase.CANDIDATE_REGISTERED)
-                   ).getBody()
-           );
-       }catch (MailException ex) {
-           throw new ApiResponseException("Internal error: mail can't be send to candidate");
-       }
+        try {
+            mailSender.send(
+                    savedCandidate.getEmail(),
+                    MessageSubject.REGISTRATION.getSubject(),
+                    new MessageBody(
+                            savedCandidate.getFullName(),
+                            Arrays.asList(MessageBodyBase.CANDIDATE_REGISTERED)
+                    ).getBody()
+            );
+        } catch (MailException ex) {
+            throw new ApiResponseException("Internal error: mail can't be send to candidate");
+        }
         return candidateRespDto;
     }
 
@@ -223,9 +214,9 @@ public class CandidateServiceImpl implements CandidateService {
             candidateRepository.save(candidate);
 
             List<MessageBodyBase> messageBodyBases = new ArrayList<>();
-            if(status.equals(CandidateStatus.GREEN)){
+            if (status.equals(CandidateStatus.GREEN)) {
                 messageBodyBases.add(MessageBodyBase.CANDIDATE_ACCEPTED);
-            }else if(status.equals(CandidateStatus.RED)){
+            } else if (status.equals(CandidateStatus.RED)) {
                 messageBodyBases.add(MessageBodyBase.CANDIDATE_REJECTED);
             }
 
@@ -236,7 +227,7 @@ public class CandidateServiceImpl implements CandidateService {
                         new MessageBody(candidate.getFullName(), messageBodyBases).getBody()
                 );
 
-            }catch (MailException ex) {
+            } catch (MailException ex) {
                 throw new ApiResponseException("Internal error: mail can't be send to candidate");
             }
             return candidateMapper.toDto(candidate);
@@ -260,28 +251,61 @@ public class CandidateServiceImpl implements CandidateService {
 
     @Override
     public Page<SearchCandidateDto> getCandidatesWithFilter(List<String> primaryTech, List<String> interviewProccess, List<String> status, List<String> country, List<String> event, Pageable pageable) {
-            final int start = (int) pageable.getOffset();
-            Map<String, List<String>> map = new HashMap<>();
-            paramsToMap(primaryTech, interviewProccess, status, country, event, map);
-            if (map.size() != 0) {
-                String param = createPartQuery(map);
-                String query = "select id from candidate where (" + param.replaceAll(" and", ") and").replaceAll("and ", "and (") + ")";
-                List<UUID> list = candidateRepositoryJPA.findAllByFilter(query);
-                List candidates = getSearchCandidateDtos(list);
-                if(candidates != null) {
-                    int end = Math.min((start + pageable.getPageSize()), candidates.size());
-                    return new PageImpl<>(candidates.subList(start, end), pageable, candidates.size());
-                } else {
-                    return new PageImpl<>(new ArrayList<>(), pageable, 0);
-                }
-            } else {
-                List candidates = candidateRepository.findAll().stream()
-                        .map(searchCandidateMapper::toDto)
-                        .collect(Collectors.toList());
+        final int start = (int) pageable.getOffset();
+        Map<String, List<String>> map = new HashMap<>();
+        paramsToMap(primaryTech, interviewProccess, status, country, event, map);
+        if (map.size() != 0) {
+            String param = createPartQuery(map);
+            String query = "select id from candidate where (" + param.replaceAll(" and", ") and").replaceAll("and ", "and (") + ")";
+            List<UUID> list = candidateRepositoryJPA.findAllByFilter(query);
+            List candidates = getSearchCandidateDtos(list);
+            if (candidates != null) {
                 int end = Math.min((start + pageable.getPageSize()), candidates.size());
                 return new PageImpl<>(candidates.subList(start, end), pageable, candidates.size());
+            } else {
+                return new PageImpl<>(new ArrayList<>(), pageable, 0);
             }
+        } else {
+            List candidates = candidateRepository.findAll().stream()
+                    .map(searchCandidateMapper::toDto)
+                    .collect(Collectors.toList());
+            int end = Math.min((start + pageable.getPageSize()), candidates.size());
+            return new PageImpl<>(candidates.subList(start, end), pageable, candidates.size());
+        }
 
+    }
+
+    @Override
+    public Map<String, Object> getInfoForFilter() {
+        List<Candidate> candidates = candidateRepository.findAll();
+        Map<String, Object> info = new HashMap<>();
+        Set<String> country = candidates.stream().map(elem -> elem.getCity().getCountry().getName()).collect(Collectors.toSet());
+        Set<String> tech = candidates.stream().map(elem -> elem.getPrimaryTech().getName()).collect(Collectors.toSet());
+        Set<String> event = candidates.stream().map(elem -> elem.getEvent().getName()).collect(Collectors.toSet());
+        Set<CandidateStatus> status = candidates.stream().map(elem -> elem.getStatus()).collect(Collectors.toSet());
+        Set<InterviewProcess> interviewProccess = candidates.stream().map(elem -> elem.getInterviewProcess()).collect(Collectors.toSet());
+        info.put("countryName", country);
+        info.put("primaryTech", tech);
+        info.put("eventName", event);
+        info.put("status", status);
+        info.put("interviewProccess", interviewProccess);
+        return info;
+    }
+
+    @Override
+    public CandidateRespDto editCandidate(UUID id, RegisterCandidateDto registerCandidateDto) {
+        Optional<Candidate> candidateFromDb = candidateRepository.findById(id);
+        if (candidateFromDb.isPresent()) {
+            Candidate candidate = registerCandidateMapper.toEntity(registerCandidateDto);
+
+            candidate.setId(id);
+            candidate.setCv(candidateFromDb.get().getCv());
+            candidate.setCvPath(candidateFromDb.get().getCvPath());
+
+            Candidate savedCandidate = candidateRepository.save(candidate);
+            return candidateMapper.toDto(savedCandidate);
+        }
+        throw new DBNotFoundException("Unable to find candidate by id");
     }
 
     private List<SearchCandidateDto> getSearchCandidateDtos(List<UUID> list) {
@@ -339,40 +363,18 @@ public class CandidateServiceImpl implements CandidateService {
             }
             map.put("city_id", cityId.stream().map(UUID::toString).collect(Collectors.toList()));
         }
-        if(event != null && !event.isEmpty()){
+        if (event != null && !event.isEmpty()) {
             List<String> eventNames = event.stream().map(elem -> eventRepository.findByName(elem).get().getId().toString()).collect(Collectors.toList());
             map.put("event_id", eventNames);
         }
     }
 
-    @Override
-    public Map<String, Object> getInfoForFilter() {
-        List<Candidate> candidates = candidateRepository.findAll();
-        Map<String, Object> info = new HashMap<>();
-        Set<String> country = candidates.stream().map(elem -> elem.getCity().getCountry().getName()).collect(Collectors.toSet());
-        Set<String> tech = candidates.stream().map(elem -> elem.getPrimaryTech().getName()).collect(Collectors.toSet());
-        Set<String> event = candidates.stream().map(elem -> elem.getEvent().getName()).collect(Collectors.toSet());
-        Set<CandidateStatus> status = candidates.stream().map(elem -> elem.getStatus()).collect(Collectors.toSet());
-        Set<InterviewProcess> interviewProccess = candidates.stream().map(elem -> elem.getInterviewProcess()).collect(Collectors.toSet());
-        info.put("countryName", country);
-        info.put("primaryTech", tech);
-        info.put("eventName", event);
-        info.put("status", status);
-        info.put("interviewProccess", interviewProccess);
-        return info;
-    }
-
-    @Override
-    public CandidateRespDto editCandidate(UUID id, RegisterCandidateDto registerCandidateDto) {
-        Optional<Candidate> candidateFromDb = candidateRepository.findById(id);
-        if(candidateFromDb.isPresent()){
-            Candidate candidate = registerCandidateMapper.toEntity(registerCandidateDto);
-            candidate.setId(id);
-            Candidate savedCandidate = candidateRepository.save(candidate);
-            CandidateRespDto candidateRespDto = candidateMapper.toDto(savedCandidate);
-            return candidateRespDto;
-        } else {
-            return null;
+    private void sendMailToCandidate(String email, String name) {
+        String message = String.format("%s,\nyour registration completed successfully!\nWait for the recruiter's call soon.", name);
+        try {
+            mailSender.send(email, "Registration for Exadel event", message);
+        } catch (MailException ex) {
+            throw new ApiResponseException("Internal error: mail can't be send to candidate");
         }
     }
 }
